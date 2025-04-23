@@ -87,7 +87,7 @@ export function SignInForm() {
       </CardContent>
       <CardFooter className='flex justify-center'>
         <p className='text-sm text-gray-500'>
-          Don't have an account? Sign up
+          Don&apos;t have an account? Sign up
         </p>
       </CardFooter>
     </Card>
