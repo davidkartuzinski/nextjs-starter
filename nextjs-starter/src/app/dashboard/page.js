@@ -47,7 +47,7 @@ export default function Dashboard() {
     try {
       const { data, error } = await supabase
         .from('todos')
-        .insert([{ title: newTodo.trim() }])
+        .insert([{ title: newTodo.trim(), user_id: user.id }])
         .select();
 
       if (error) throw error;
