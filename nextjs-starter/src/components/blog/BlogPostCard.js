@@ -16,7 +16,7 @@ import path from 'path';
 
 export default function BlogPostCard({ post }) {
   // Check if the post has a hero image
-  const heroImagePath = `/blog/(posts)/${post.slug}/hero-image.jpg`;
+  const heroImagePath = `/images/posts/${post.slug}/hero-image.jpg`;
   const heroImageExists = fs.existsSync(
     path.join(process.cwd(), 'public', heroImagePath)
   );
@@ -24,7 +24,7 @@ export default function BlogPostCard({ post }) {
   // Fallback image if no hero image exists
   const featuredImage = heroImageExists
     ? heroImagePath
-    : post.coverImage || '/images/blog-placeholder.jpg';
+    : post.coverImage || '/images/blog-placeholder.png';
 
   return (
     <Card className='flex h-full flex-col overflow-hidden'>
