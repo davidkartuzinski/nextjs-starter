@@ -8,92 +8,80 @@ import { getAllPosts, getCategories } from '@/lib/supabase/blog';
 import Sidebar from '@/components/layout/Sidebar';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon } from 'lucide-react';
+import { mdxComponents } from '@/components/mdx-components'; // ✅
+import { compileMDX } from 'next-mdx-remote/rsc'; // ✅ Required to safely compile MDX in App Router
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params; // ✅ safely unwrap first
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
-    return {
-      title: 'Post Not Found',
-    };
+    return { title: 'Post Not Found' };
   }
 
   return {
-    title: `${post.title} | Your Blog Name`,
+    title: `${post.frontmatter.title} | Your Blog Name`,
     description: post.summary,
   };
 }
 
 async function getPostBySlug(slug) {
+  // 1. Build the absolute path to the MDX file for the blog post
   const postsDir = path.join(process.cwd(), 'posts', slug);
-
   const fullPath = path.join(postsDir, 'page.mdx');
 
+  // 2. Check if the file exists
   if (!fs.existsSync(fullPath)) {
     console.warn(`⚠️ No page.mdx found for slug: ${slug}`);
     return null;
   }
 
+  // 3. Read the file
   const raw = fs.readFileSync(fullPath, 'utf8');
-  const { data, content } = matter(raw);
+
+  // 4. Compile the MDX content using compileMDX() from next-mdx-remote
+  //    - This compiles the MDX string to a renderable React element
+  //    - It also parses the frontmatter (--- title: ... ---)
+
+  const { content, frontmatter } = await compileMDX({
+    source: raw,
+    components: mdxComponents, // ✅ you must pass custom components here
+    options: {
+      parseFrontmatter: true,
+    },
+  });
+
+  // 5. Return the compiled content and frontmatter
+  //    - The content is now a renderable React element
+  //    - The frontmatter is now a JavaScript object
+  //    - This is ready to be passed to MDXRemote
 
   return {
     slug,
     content,
-    ...data,
+    frontmatter,
   };
 }
-
-// Custom MDX components for the blog post
-const components = {
-  // Override the default img component to use Next.js Image when possible
-  img: ({ src, alt, ...props }) => {
-    // If the src is a relative path, it's a local image in the post's directory
-    if (src.startsWith('./')) {
-      // Convert to absolute path for the current post
-      const absoluteSrc = `/blog/(posts)/${slug}/${src.substring(2)}`;
-      return (
-        <Image
-          src={absoluteSrc}
-          alt={alt || ''}
-          width={800}
-          height={500}
-          className='rounded-md my-6'
-          {...props}
-        />
-      );
-    }
-
-    // For external or absolute URLs, use regular img tag
-    return (
-      <img
-        src={src}
-        alt={alt || ''}
-        className='rounded-md my-6 max-w-full h-auto'
-        {...props}
-      />
-    );
-  },
-};
 
 export default async function BlogPostPage(props) {
   const params = await props.params;
   const post = await getPostBySlug(params.slug);
   if (!post) return notFound();
+  console.log('🧪 post:', post);
+
+  if (!post?.frontmatter?.title) {
+    console.warn('⚠️ Post is missing title in frontmatter:', post);
+    return notFound();
+  }
 
   const allPosts = await getAllPosts();
   const categories = await getCategories();
 
-  // Check if the post has a hero image
   const heroImagePath = `/blog/${params.slug}/hero-image.jpg`;
   const publicHeroPath = path.join(
     process.cwd(),
@@ -113,7 +101,7 @@ export default async function BlogPostPage(props) {
               <div className='not-prose mb-8'>
                 <Image
                   src={heroImagePath}
-                  alt={post.title}
+                  alt={post.frontmatter.title}
                   width={1200}
                   height={630}
                   className='rounded-lg w-full h-auto'
@@ -122,24 +110,23 @@ export default async function BlogPostPage(props) {
               </div>
             )}
 
-            <h1 className='mb-2'>{post.title}</h1>
+            <h1 className='mb-2'>{post.frontmatter.title}</h1>
 
             <div className='flex flex-wrap items-center gap-2 mb-8 text-sm text-muted-foreground'>
               <div className='flex items-center'>
                 <CalendarIcon className='mr-1 h-4 w-4' />
-                {new Date(post.publishedAt).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                )}
+                {new Date(
+                  post.frontmatter.publishedAt
+                ).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </div>
 
-              {post.categories && post.categories.length > 0 && (
+              {post.frontmatter.categories?.length > 0 && (
                 <div className='flex flex-wrap gap-1 ml-4'>
-                  {post.categories.map((category) => (
+                  {post.frontmatter.categories.map((category) => (
                     <Badge
                       key={category}
                       variant='secondary'
@@ -152,15 +139,7 @@ export default async function BlogPostPage(props) {
               )}
             </div>
 
-            {/* Pass the slug to the components for image path resolution */}
-            <MDXRemote
-              source={post.content}
-              components={{
-                ...components,
-                img: (props) =>
-                  components.img({ ...props, slug: params.slug }),
-              }}
-            />
+            {post.content}
           </article>
         </div>
 

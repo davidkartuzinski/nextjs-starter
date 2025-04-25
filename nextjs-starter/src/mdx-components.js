@@ -1,10 +1,10 @@
-import Image from 'next/image';
+// import Image from 'next/image';
 
 export function useMDXComponents(components) {
   return {
     // Custom components
     // Nextjs Image component
-    Image,
+    // Image,
     // Use the default components with any custom components you provide
     ...components,
     // You can customize any default components here
