@@ -42,7 +42,7 @@ export default async function SearchPage({ searchParams }) {
           </h1>
           <p className='text-muted-foreground'>
             {posts.length} {posts.length === 1 ? 'result' : 'results'}{' '}
-            for "{query}"
+            for &quot{query}&quot
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export default async function SearchPage({ searchParams }) {
               <Card>
                 <CardContent className='flex flex-col items-center justify-center py-12'>
                   <p className='text-center text-muted-foreground'>
-                    No results found for "{query}".
+                    No results found for &quot{query}&quot.
                   </p>
                 </CardContent>
               </Card>

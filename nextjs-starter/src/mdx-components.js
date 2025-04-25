@@ -59,6 +59,7 @@ export function useMDXComponents(components) {
       />
     ),
     // Add custom image component with responsive styling
+    // DON'T USE THIS COMPONENT, USE THE NEXTJS IMAGE COMPONENT INSTEAD
     img: (props) => (
       <img
         className='rounded-md my-6 max-w-full h-auto'
