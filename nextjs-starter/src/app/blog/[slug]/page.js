@@ -72,7 +72,6 @@ export default async function BlogPostPage(props) {
   const params = await props.params;
   const post = await getPostBySlug(params.slug);
   if (!post) return notFound();
-  console.log('🧪 post:', post);
 
   if (!post?.frontmatter?.title) {
     console.warn('⚠️ Post is missing title in frontmatter:', post);
