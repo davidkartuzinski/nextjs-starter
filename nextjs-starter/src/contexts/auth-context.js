@@ -6,7 +6,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
+import { createClientComponentClient } from '@/lib/supabase/client';
+const supabase = createClientComponentClient();
 
 const AuthContext = createContext(undefined);
 

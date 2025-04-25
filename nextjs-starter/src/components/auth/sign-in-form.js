@@ -11,7 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { supabase } from '@/lib/supabase/supabase';
+import { createClientComponentClient } from '@/lib/supabase/client';
+const supabase = createClientComponentClient();
 
 export function SignInForm() {
   const [email, setEmail] = useState('');

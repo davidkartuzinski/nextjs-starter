@@ -1,4 +1,5 @@
-import { supabase } from './supabase';
+import { createClientComponentClient } from '@/lib/supabase/client';
+const supabase = createClientComponentClient();
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
