@@ -1,12 +1,11 @@
-// import Image from 'next/image';
+// This is a server component - match the client component in components/mdx-components.js
 
-export function useMDXComponents(components) {
+import Image from 'next/image';
+
+export function useMDXComponents(defaultComponents) {
   return {
     // Custom components
-    // Nextjs Image component
-    // Image,
-    // Use the default components with any custom components you provide
-    ...components,
+
     // You can customize any default components here
     h1: (props) => (
       <h1
@@ -59,13 +58,15 @@ export function useMDXComponents(components) {
       />
     ),
     // Add custom image component with responsive styling
-    // DON'T USE THIS COMPONENT, USE THE NEXTJS IMAGE COMPONENT INSTEAD
+
     img: (props) => (
-      <img
+      <Image
         className='rounded-md my-6 max-w-full h-auto'
         alt={props.alt || ''}
         {...props}
       />
     ),
+    // Use the default components with any custom components you provide
+    ...defaultComponents,
   };
 }

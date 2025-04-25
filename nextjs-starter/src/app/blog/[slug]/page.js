@@ -1,14 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getAllPosts, getCategories } from '@/lib/supabase/blog';
 import Sidebar from '@/components/layout/Sidebar';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon } from 'lucide-react';
-import { mdxComponents } from '@/components/mdx-components'; // ✅
+import { useMDXComponents } from '@/components/mdx-components';
 import { compileMDX } from 'next-mdx-remote/rsc'; // ✅ Required to safely compile MDX in App Router
 
 export async function generateStaticParams() {
@@ -50,7 +48,7 @@ async function getPostBySlug(slug) {
 
   const { content, frontmatter } = await compileMDX({
     source: raw,
-    components: mdxComponents, // ✅ you must pass custom components here
+    components: useMDXComponents,
     options: {
       parseFrontmatter: true,
     },
@@ -104,7 +102,6 @@ export default async function BlogPostPage(props) {
                   width={1200}
                   height={630}
                   className='rounded-lg w-full h-auto'
-                  priority
                 />
               </div>
             )}
