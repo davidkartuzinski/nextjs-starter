@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+// import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
+function createSupabaseClient() {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    { cookies }
+  );
+}
+
 export async function GET(request) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
     .from('todos')

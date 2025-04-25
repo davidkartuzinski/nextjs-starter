@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/supabase';
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
