@@ -7,6 +7,8 @@ const nextConfig = {
   //   mdxRs: true, // optional, but helps if you're experimenting
   //   serverActions: true, // optional for full RSC
   // },
+  transpilePackages: ['next-mdx-remote'],
+
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx'],
   // Optionally, add any other Next.js config below
