@@ -1,10 +1,13 @@
 'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Sheet,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -30,26 +33,32 @@ export default function MobileNav() {
           <span className='sr-only'>Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side='left' className='pr-0'>
-        <div className='px-7'>
+
+      <SheetContent side='left' className='px-6 pt-6 pb-8'>
+        <SheetHeader>
+          <SheetTitle className='sr-only'>Navigation Menu</SheetTitle>
+        </SheetHeader>
+
+        <div className='mb-8'>
           <Link
             href='/'
-            className='flex items-center'
             onClick={() => setOpen(false)}
+            className='text-xl font-bold tracking-tight'
           >
-            <span className='font-bold'>Your Site Name</span>
+            Your Site Name
           </Link>
         </div>
-        <nav className='flex flex-col gap-4 px-7 mt-8'>
+
+        <nav className='flex flex-col gap-4'>
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setOpen(false)}
               className={cn(
-                'text-foreground/60 transition-colors hover:text-foreground',
+                'text-muted-foreground transition-colors hover:text-foreground text-lg font-medium',
                 pathname === item.href && 'text-foreground'
               )}
-              onClick={() => setOpen(false)}
             >
               {item.label}
             </Link>
