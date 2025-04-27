@@ -51,8 +51,8 @@ export default function HomePage() {
                   Comfy
                 </h2>
                 <p className='text-muted-foreground'>
-                  You don't have to sacrifice feeling cozy for looking
-                  good.
+                  You do not have to sacrifice feeling cozy for
+                  looking good.
                 </p>
               </div>
 
