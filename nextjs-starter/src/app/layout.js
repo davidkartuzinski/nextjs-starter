@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
       <body
         className={`min-h-screen flex flex-col ${outfit.variable} ${lora.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <Header />
+        <Header option={1} />
 
         <main className='flex-1 w-full'>
           {/* Center everything inside container */}

@@ -1,20 +1,17 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { NavItems } from '@/app/site-config';
 
 export default function MainNav() {
   const pathname = usePathname();
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
-  ];
-
   return (
-    <nav className='flex items-center space-x-6 text-sm font-medium'>
-      {navItems.map((item) => (
+    <nav
+      className='flex items-center space-x-6 text-base
+ font-medium'
+    >
+      {NavItems.map((item) => (
         <Link
           key={item.href}
           href={item.href}
