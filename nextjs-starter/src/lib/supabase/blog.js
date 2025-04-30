@@ -190,7 +190,9 @@ export async function syncPostWithSupabase(
         slug,
         summary: frontmatter.summary,
         published_at:
-          frontmatter.publishedAt || new Date().toISOString(),
+          frontmatter.published_at ||
+          frontmatter.publishedAt ||
+          new Date().toISOString(),
         featured: frontmatter.featured || false,
       },
       { onConflict: 'slug', returning: 'representation' }
@@ -380,6 +382,22 @@ export async function getFeaturedPosts(limit = 3) {
 
   if (error) {
     console.error('Error fetching featured posts:', error);
+    return [];
+  }
+
+  return data;
+}
+
+// --- Recent Posts ---
+export async function getRecentPosts(limit = 3) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('id, title, slug, summary, published_at')
+    .order('published_at', { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching recent posts:', error);
     return [];
   }
 

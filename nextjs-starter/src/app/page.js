@@ -11,6 +11,7 @@ export default function HomePage() {
       <HeroSection />
       <CallToActionSection />
       <FeaturesSection />
+      <RecentPostsSection />
 
       {/* <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
         {Array.from({ length: 3 }).map((_, i) => (
