@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
 import fs from 'fs';
 import path from 'path';
+import slugify from 'react-slugify';
 
 export default function BlogPostCard({ post }) {
   // Check if the post has a hero image
@@ -41,17 +42,23 @@ export default function BlogPostCard({ post }) {
       )}
       <CardHeader className='flex-1'>
         <div className='space-y-1'>
-          {post.categories && post.categories.length > 0 && (
+          {post.categories?.length > 0 && (
             <div className='flex flex-wrap gap-1'>
-              {post.categories.map((category) => (
-                <Badge
-                  key={category}
-                  variant='secondary'
-                  className='text-xs'
-                >
-                  {category}
-                </Badge>
-              ))}
+              {post.categories.filter(Boolean).map((cat) => {
+                const key = typeof cat === 'object' ? cat.id : cat;
+                const label =
+                  typeof cat === 'object' ? cat.name : cat;
+                const slug =
+                  typeof cat === 'object' ? cat.slug : slugify(cat);
+
+                return (
+                  <Badge key={key} variant='secondary'>
+                    <Link href={`/blog/category/${slug}`}>
+                      {label || 'Unnamed'}
+                    </Link>
+                  </Badge>
+                );
+              })}
             </div>
           )}
           <CardTitle>
@@ -64,7 +71,7 @@ export default function BlogPostCard({ post }) {
           </CardTitle>
           <CardDescription className='flex items-center text-xs'>
             <CalendarIcon className='mr-1 h-3 w-3' />
-            {new Date(post.publishedAt).toLocaleDateString('en-US', {
+            {new Date(post.published_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',

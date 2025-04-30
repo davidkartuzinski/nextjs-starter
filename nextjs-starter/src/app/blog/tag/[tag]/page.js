@@ -1,10 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import {
-  getPostsByCategory,
-  getCategories,
-} from '@/lib/supabase/blog';
+import { getPostsByTag, getTags } from '@/lib/supabase/blog';
 import Sidebar from '@/components/layout/Sidebar';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Pagination from '@/components/blog/Pagination';
@@ -16,47 +13,41 @@ const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {
-  const { category } = await params;
-  const categorySlug = category;
+  const { tag } = await params;
+  const tagSlug = tag;
 
-  const categories = await getCategories();
-  const categoryFound = categories.find(
-    (c) => c.slug === categorySlug
-  );
+  const tags = await getTags();
+  const tagFound = tags.find((t) => t.slug === tagSlug);
 
-  if (!categoryFound) {
+  if (!tagFound) {
     return {
-      title: 'Category Not Found',
+      title: 'Tag Not Found',
     };
   }
 
   return {
-    title: `${categoryFound.name} | Your Blog Name`,
-    description: `Articles in the ${categoryFound.name} category`,
+    title: `${tagFound.name} | Your Blog Name`,
+    description: `Articles tagged with ${tagFound.name}`,
   };
 }
 
 // --- Page Component ---
-
-export default async function CategoryPage({ params, searchParams }) {
-  const { category } = await params;
+export default async function TagPage({ params, searchParams }) {
+  const { tag } = await params;
   const { page: pageParam } = await searchParams;
 
-  const categorySlug = category;
+  const tagSlug = tag;
   const page = parseInt(pageParam || '1', 10);
 
-  const categories = await getCategories();
-  const categoryFound = categories.find(
-    (c) => c.slug === categorySlug
-  );
+  const tags = await getTags();
+  const tagFound = tags.find((t) => t.slug === tagSlug);
 
-  if (!categoryFound) {
+  if (!tagFound) {
     notFound();
   }
 
-  const posts = await getPostsByCategory(categorySlug);
+  const posts = await getPostsByTag(tagSlug);
 
-  // Calculate pagination
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
     (page - 1) * POSTS_PER_PAGE,
@@ -66,22 +57,25 @@ export default async function CategoryPage({ params, searchParams }) {
   return (
     <div className='container py-8'>
       <div className='flex flex-col gap-4 md:gap-8'>
+        {/* Page Header */}
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            Category: {category.name}
+            Tag: {tag.name}
           </h1>
           <p className='text-muted-foreground'>
-            Browse articles in the {category.name} category.
+            Browse articles tagged with {tag.name}.
           </p>
         </div>
 
+        {/* Grid Layout */}
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4'>
+          {/* Main Content */}
           <div className='col-span-1 md:col-span-2 lg:col-span-3'>
             {currentPagePosts.length > 0 ? (
               <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
                 {currentPagePosts.map((post) => (
                   <Suspense
-                    key={post.id || post.slug}
+                    key={post.slug}
                     fallback={<PostSkeleton />}
                   >
                     <BlogPostCard post={post} />
@@ -92,40 +86,40 @@ export default async function CategoryPage({ params, searchParams }) {
               <Card>
                 <CardContent className='flex flex-col items-center justify-center py-12'>
                   <p className='text-center text-muted-foreground'>
-                    No posts found in this category.
+                    No posts found with this tag.
                   </p>
                 </CardContent>
               </Card>
             )}
 
+            {/* Pagination */}
             {totalPages > 1 && (
               <div className='mt-8'>
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/blog/category/${categorySlug}`}
+                  basePath={`/blog/tag/${tagSlug}`}
                 />
               </div>
             )}
           </div>
 
+          {/* Sidebar */}
           <div className='col-span-1'>
             <Sidebar
               recentPosts={posts.slice(0, 5).map((post) => ({
                 slug: post.slug,
                 title: post.title,
-                date: post.published_at
-                  ? new Date(post.published_at).toLocaleDateString(
-                      'en-US',
-                      {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      }
-                    )
-                  : 'Unpublished',
+                date: new Date(post.published_at).toLocaleDateString(
+                  'en-US',
+                  {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  }
+                ),
               }))}
-              categories={categories}
+              tags={tags}
             />
           </div>
         </div>
@@ -134,6 +128,7 @@ export default async function CategoryPage({ params, searchParams }) {
   );
 }
 
+// --- Loading Skeleton ---
 function PostSkeleton() {
   return (
     <Card>

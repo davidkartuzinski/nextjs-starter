@@ -50,7 +50,10 @@ export default async function BlogPage(props) {
                     key={post.slug}
                     fallback={<PostSkeleton />}
                   >
-                    <BlogPostCard post={post} />
+                    <BlogPostCard
+                      key={post.id || post.slug}
+                      post={post}
+                    />
                   </Suspense>
                 ))}
               </div>
@@ -80,7 +83,7 @@ export default async function BlogPage(props) {
               recentPosts={posts.slice(0, 5).map((post) => ({
                 slug: post.slug,
                 title: post.title,
-                date: new Date(post.publishedAt).toLocaleDateString(
+                date: new Date(post.published_at).toLocaleDateString(
                   'en-US',
                   {
                     year: 'numeric',
@@ -116,9 +119,3 @@ function PostSkeleton() {
     </Card>
   );
 }
-
-// import BlogPageContent from '@/components/blog/BlogPageContent';
-
-// export default function BlogPage() {
-//   return <BlogPageContent />;
-// }

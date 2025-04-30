@@ -4,7 +4,7 @@ import { AuthProvider } from '@/contexts/auth-context';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-// Setup your fonts (but you are now using Outfit + Lora, not Geist)
+// Setup fonts
 import { Outfit } from 'next/font/google';
 import { Lora } from 'next/font/google';
 
@@ -20,14 +20,12 @@ const lora = Lora({
   display: 'swap',
 });
 
-// Metadata for SEO
 export const metadata = {
-  title: 'Your Site Name',
+  title: 'NextJs Starter built with JavaScript',
   description:
     'A clean and modern blog built with Next.js and Shadcn.',
 };
 
-// Root Layout
 export default function RootLayout({ children }) {
   return (
     <html lang='en' suppressHydrationWarning>
@@ -37,10 +35,7 @@ export default function RootLayout({ children }) {
         <Header option={1} />
 
         <main className='flex-1 w-full'>
-          {/* Center everything inside container */}
-          <div className='container mx-auto px-4'>
-            <AuthProvider>{children}</AuthProvider>
-          </div>
+          <AuthProvider>{children}</AuthProvider>
         </main>
 
         <Footer />

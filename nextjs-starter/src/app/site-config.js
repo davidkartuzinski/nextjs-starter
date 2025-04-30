@@ -14,7 +14,13 @@ export const SiteName = 'NextJS Starter';
 
 // use this if you want to use a logo
 export const Logo = (
-  <Image src='/dummy_logo.png' alt='Logo' width={300} height={34} />
+  <Image
+    src='/dummy_logo.png'
+    alt='Logo'
+    width={300}
+    height={34}
+    priority
+  />
 );
 
 // export const Logo = ''; <--- use this if you don't want to use a logo
