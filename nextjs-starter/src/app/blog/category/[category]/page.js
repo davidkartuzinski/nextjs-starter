@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import {
-  getPostsByCategory,
   getCategories,
+  getPostsByCategory,
 } from '@/lib/supabase/blog';
 import Sidebar from '@/components/layout/Sidebar';
 import BlogPostCard from '@/components/blog/BlogPostCard';
@@ -11,52 +11,38 @@ import Pagination from '@/components/blog/Pagination';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Number of posts per page
 const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {
   const { category } = await params;
-  const categorySlug = category;
-
   const categories = await getCategories();
-  const categoryFound = categories.find(
-    (c) => c.slug === categorySlug
-  );
+  const found = categories.find((c) => c.slug === category);
 
-  if (!categoryFound) {
+  if (!found) {
     return {
       title: 'Category Not Found',
     };
   }
 
   return {
-    title: `${categoryFound.name} | Your Blog Name`,
-    description: `Articles in the ${categoryFound.name} category`,
+    title: `${found.name} | Your Blog Name`,
+    description: `Articles in the ${found.name} category`,
   };
 }
 
 // --- Page Component ---
-
 export default async function CategoryPage({ params, searchParams }) {
   const { category } = await params;
   const { page: pageParam } = await searchParams;
 
-  const categorySlug = category;
   const page = parseInt(pageParam || '1', 10);
-
   const categories = await getCategories();
-  const categoryFound = categories.find(
-    (c) => c.slug === categorySlug
-  );
+  const categoryFound = categories.find((c) => c.slug === category);
 
-  if (!categoryFound) {
-    notFound();
-  }
+  if (!categoryFound) notFound();
 
-  const posts = await getPostsByCategory(categorySlug);
-
-  // Calculate pagination
+  const posts = await getPostsByCategory(category);
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
     (page - 1) * POSTS_PER_PAGE,
@@ -68,10 +54,10 @@ export default async function CategoryPage({ params, searchParams }) {
       <div className='flex flex-col gap-4 md:gap-8'>
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            Category: {category.name}
+            Category: {categoryFound.name}
           </h1>
           <p className='text-muted-foreground'>
-            Browse articles in the {category.name} category.
+            Browse articles in the {categoryFound.name} category.
           </p>
         </div>
 
@@ -103,7 +89,7 @@ export default async function CategoryPage({ params, searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/blog/category/${categorySlug}`}
+                  basePath={`/blog/category/${category}`}
                 />
               </div>
             )}
@@ -134,6 +120,7 @@ export default async function CategoryPage({ params, searchParams }) {
   );
 }
 
+// --- Loading Skeleton ---
 function PostSkeleton() {
   return (
     <Card>

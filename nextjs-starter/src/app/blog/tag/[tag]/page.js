@@ -8,16 +8,13 @@ import Pagination from '@/components/blog/Pagination';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Number of posts per page
 const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {
   const { tag } = await params;
-  const tagSlug = tag;
-
   const tags = await getTags();
-  const tagFound = tags.find((t) => t.slug === tagSlug);
+  const tagFound = tags.find((t) => t.slug === tag);
 
   if (!tagFound) {
     return {
@@ -31,22 +28,21 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// --- Page Component ---
+// --- Optimized Page ---
 export default async function TagPage({ params, searchParams }) {
   const { tag } = await params;
   const { page: pageParam } = await searchParams;
 
   const tagSlug = tag;
   const page = parseInt(pageParam || '1', 10);
+  // Parallel data fetching
+  const [tags, posts] = await Promise.all([
+    getTags(),
+    getPostsByTag(tagSlug),
+  ]);
 
-  const tags = await getTags();
   const tagFound = tags.find((t) => t.slug === tagSlug);
-
-  if (!tagFound) {
-    notFound();
-  }
-
-  const posts = await getPostsByTag(tagSlug);
+  if (!tagFound) notFound();
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
@@ -60,10 +56,10 @@ export default async function TagPage({ params, searchParams }) {
         {/* Page Header */}
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            Tag: {tag.name}
+            Tag: {tagFound.name}
           </h1>
           <p className='text-muted-foreground'>
-            Browse articles tagged with {tag.name}.
+            Browse articles tagged with {tagFound.name}.
           </p>
         </div>
 
@@ -75,7 +71,7 @@ export default async function TagPage({ params, searchParams }) {
               <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
                 {currentPagePosts.map((post) => (
                   <Suspense
-                    key={post.slug}
+                    key={post.id || post.slug}
                     fallback={<PostSkeleton />}
                   >
                     <BlogPostCard post={post} />
@@ -92,7 +88,6 @@ export default async function TagPage({ params, searchParams }) {
               </Card>
             )}
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className='mt-8'>
                 <Pagination
@@ -128,7 +123,6 @@ export default async function TagPage({ params, searchParams }) {
   );
 }
 
-// --- Loading Skeleton ---
 function PostSkeleton() {
   return (
     <Card>

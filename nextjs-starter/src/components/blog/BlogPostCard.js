@@ -25,42 +25,28 @@ export default function BlogPostCard({ post }) {
   // Fallback image if no hero image exists
   const featuredImage = heroImageExists
     ? heroImagePath
-    : post.coverImage || '/images/blog-placeholder.png';
+    : post.coverImage || '/images/posts/blog-placeholder.png';
 
   return (
-    <Card className='flex h-full flex-col overflow-hidden'>
+    <Card className='flex flex-col justify-between h-full'>
       {featuredImage && (
         <div className='aspect-video w-full overflow-hidden'>
-          <Image
-            src={featuredImage}
-            alt={post.title}
-            width={600}
-            height={340}
-            className='h-full w-full object-cover transition-transform hover:scale-105'
-          />
+          <Link
+            href={`/blog/${post.slug}`}
+            className='hover:underline'
+          >
+            <Image
+              src={featuredImage}
+              alt={post.title}
+              width={600}
+              height={340}
+              className='h-full w-full object-cover transition-transform hover:scale-105'
+            />
+          </Link>
         </div>
       )}
       <CardHeader className='flex-1'>
-        <div className='space-y-1'>
-          {post.categories?.length > 0 && (
-            <div className='flex flex-wrap gap-1'>
-              {post.categories.filter(Boolean).map((cat) => {
-                const key = typeof cat === 'object' ? cat.id : cat;
-                const label =
-                  typeof cat === 'object' ? cat.name : cat;
-                const slug =
-                  typeof cat === 'object' ? cat.slug : slugify(cat);
-
-                return (
-                  <Badge key={key} variant='secondary'>
-                    <Link href={`/blog/category/${slug}`}>
-                      {label || 'Unnamed'}
-                    </Link>
-                  </Badge>
-                );
-              })}
-            </div>
-          )}
+        <div className='min-h-[56px] space-y-1'>
           <CardTitle>
             <Link
               href={`/blog/${post.slug}`}
@@ -69,7 +55,8 @@ export default function BlogPostCard({ post }) {
               {post.title}
             </Link>
           </CardTitle>
-          <CardDescription className='flex items-center text-xs'>
+
+          <CardDescription className='flex items-center text-xs text-muted-foreground'>
             <CalendarIcon className='mr-1 h-3 w-3' />
             {new Date(post.published_at).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -78,9 +65,77 @@ export default function BlogPostCard({ post }) {
             })}
           </CardDescription>
         </div>
+        {post.categories?.length > 0 && (
+          <div className='space-y-1'>
+            <span className='block text-xs font-semibold text-muted-foreground'>
+              Categories:
+            </span>
+            <div className='flex flex-wrap gap-2'>
+              {post.categories
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((cat) => {
+                  const key = typeof cat === 'object' ? cat.id : cat;
+                  const label =
+                    typeof cat === 'object' ? cat.name : cat;
+                  const slug =
+                    typeof cat === 'object' ? cat.slug : slugify(cat);
+
+                  return (
+                    <Badge key={key} variant='secondary'>
+                      <Link href={`/blog/category/${slug}`}>
+                        {label || 'Unnamed'}
+                      </Link>
+                    </Badge>
+                  );
+                })}
+              {post.categories.length > 2 && (
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className='text-muted-foreground text-sm'
+                >
+                  &hellip;
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
+        {post.tags?.length > 0 && (
+          <div className='space-y-1 mt-2'>
+            <span className='block text-xs font-semibold text-muted-foreground'>
+              Tags:
+            </span>
+            <div className='flex flex-wrap gap-2'>
+              {post.tags
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((tag) => {
+                  const key = typeof tag === 'object' ? tag.id : tag;
+                  const label =
+                    typeof tag === 'object' ? tag.name : tag;
+                  const slug =
+                    typeof tag === 'object' ? tag.slug : slugify(tag);
+
+                  return (
+                    <Badge key={key} variant='secondary'>
+                      <Link href={`/blog/tag/${slug}`}>{label}</Link>
+                    </Badge>
+                  );
+                })}
+              {post.tags.length > 2 && (
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className='text-muted-foreground text-sm'
+                >
+                  &hellip;
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
-        <p className='text-sm text-muted-foreground line-clamp-3'>
+        <p className='text-sm text-primary line-clamp-3 min-h-[60px]'>
           {post.summary}
         </p>
       </CardContent>

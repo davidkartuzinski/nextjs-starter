@@ -51,6 +51,9 @@ export async function getPostsByCategory(categorySlug) {
           published_at,
           post_categories(
             category:categories(id, name, slug)
+          ),
+          post_tags(
+            tag:tags(id, name, slug)
           )
         )
       )
@@ -72,6 +75,7 @@ export async function getPostsByCategory(categorySlug) {
         ...post,
         categories:
           post.post_categories?.map((pc) => pc.category) || [],
+        tags: post.post_tags?.map((pt) => pt.tag) || [],
       }))
       .sort(
         (a, b) => new Date(b.published_at) - new Date(a.published_at)
@@ -96,6 +100,9 @@ export async function getPostsByTag(tagSlug) {
           slug,
           summary,
           published_at,
+          post_tags(
+            tag:tags(id, name, slug)
+          ),
           post_categories(
             category:categories(id, name, slug)
           )
@@ -117,6 +124,7 @@ export async function getPostsByTag(tagSlug) {
       .filter(Boolean)
       .map((post) => ({
         ...post,
+        tags: post.post_tags?.map((pt) => pt.tag) || [],
         categories:
           post.post_categories?.map((pc) => pc.category) || [],
       }))
@@ -131,7 +139,21 @@ export async function getPostsByTag(tagSlug) {
 export async function searchPosts(query) {
   const { data, error } = await supabase
     .from('posts')
-    .select('*')
+    .select(
+      `
+      id,
+      title,
+      slug,
+      summary,
+      published_at,
+      post_categories(
+        category:categories(id, name, slug)
+      ),
+      post_tags(
+        tag:tags(id, name, slug)
+      )
+    `
+    )
     .or(`title.ilike.%${query}%,summary.ilike.%${query}%`)
     .order('published_at', { ascending: false });
 
@@ -140,10 +162,15 @@ export async function searchPosts(query) {
     return [];
   }
 
-  return data;
+  return data.map((post) => ({
+    ...post,
+    categories:
+      post.post_categories
+        ?.map((pc) => pc.category)
+        .filter(Boolean) || [],
+    tags: post.post_tags?.map((pt) => pt.tag).filter(Boolean) || [],
+  }));
 }
-
-// --- Sync MDX with Supabase ---
 
 // --- Sync MDX with Supabase ---
 export async function syncPostWithSupabase(

@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 import { getCategories, searchPosts } from '@/lib/supabase/blog';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Pagination from '@/components/blog/Pagination';
@@ -32,8 +33,11 @@ export default async function SearchPage({ searchParams }) {
   const query = q || '';
   const page = parseInt(pageParam || '1', 10);
 
-  const posts = await searchPosts(query);
-  const categories = await getCategories();
+  // Fetch posts and categories in parallel
+  const [posts, categories] = await Promise.all([
+    searchPosts(query),
+    getCategories(),
+  ]);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
@@ -56,12 +60,13 @@ export default async function SearchPage({ searchParams }) {
         </div>
 
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4'>
+          {/* Posts */}
           <div className='col-span-1 md:col-span-2 lg:col-span-3'>
             {currentPagePosts.length > 0 ? (
               <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
                 {currentPagePosts.map((post) => (
                   <Suspense
-                    key={post.slug}
+                    key={post.id || post.slug}
                     fallback={<PostSkeleton />}
                   >
                     <BlogPostCard post={post} />
@@ -90,6 +95,7 @@ export default async function SearchPage({ searchParams }) {
             )}
           </div>
 
+          {/* Sidebar */}
           <div className='col-span-1'>
             <Sidebar
               recentPosts={posts.slice(0, 5).map((post) => ({
