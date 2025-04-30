@@ -9,9 +9,9 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <CallToActionSection />
 
-      {/* Features Section */}
-      <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
+      {/* <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
@@ -25,12 +25,11 @@ export default function HomePage() {
             </p>
           </div>
         ))}
-      </section>
-
-      <section className='relative bg-background py-20'>
-        <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
-          {/* Left: Text content */}
-          <div className='space-y-10'>
+      </section> */}
+      {/* <section className='relative bg-background py-20'>
+        <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'> */}
+      {/* Left: Text content */}
+      {/* <div className='space-y-10'>
             <h1 className='text-4xl font-serif font-bold leading-tight text-foreground'>
               Personal space for the open office —
             </h1>
@@ -76,10 +75,9 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Right: Background Image */}
-          <div className='relative w-full h-[600px]'>
+          </div> */}
+      {/* Right: Background Image */}
+      {/* <div className='relative w-full h-[600px]'>
             <div
               className='absolute inset-0 bg-cover bg-center rounded-lg'
               style={{
@@ -91,11 +89,10 @@ export default function HomePage() {
             />
           </div>
         </div>
-      </section>
-
-      <section className='relative bg-blue-100 py-24'>
-        {/* SVG Shape Divider */}
-        <div className='absolute bottom-0 left-0 w-full overflow-hidden leading-none'>
+      </section> */}
+      {/* <section className='relative bg-blue-100 py-24'> */}
+      {/* SVG Shape Divider */}
+      {/* <div className='absolute bottom-0 left-0 w-full overflow-hidden leading-none'>
           <svg
             className='relative block w-[calc(100%+1.3px)] h-[100px]'
             xmlns='http://www.w3.org/2000/svg'
@@ -108,10 +105,9 @@ export default function HomePage() {
             ></path>
           </svg>
         </div>
-      </section>
-
+      </section> */}
       {/* Big CTA Banner */}
-      <section className='relative bg-blue-100 py-24'>
+      {/* <section className='relative bg-blue-100 py-24'>
         <div className='container mx-auto flex flex-col items-center text-center px-4'>
           <h2 className='text-4xl font-bold mb-4'>
             Ready to Build Your Future?
@@ -128,12 +124,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <ParallaxHalfPageSection />
-
-      <section className='py-16 bg-background'>
-        <div className='container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'>
-          {/* Left side: Text */}
-          <div className='text-center md:text-left md:w-1/2'>
+      <ParallaxHalfPageSection /> */}
+      {/* <section className='py-16 bg-background'>
+        <div className='container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'> */}
+      {/* Left side: Text */}
+      {/* <div className='text-center md:text-left md:w-1/2'>
             <h2 className='text-4xl font-bold tracking-tight mb-4'>
               Empower Your E-commerce Business
             </h2>
@@ -147,10 +142,9 @@ export default function HomePage() {
             >
               Get Started
             </a>
-          </div>
-
-          {/* Right side: Image */}
-          <div className='w-full md:w-1/2'>
+          </div> */}
+      {/* Right side: Image */}
+      {/* <div className='w-full md:w-1/2'>
             <img
               src='https://placehold.co/600x400?text=Your+Image'
               alt='Ecommerce Illustration'
@@ -159,17 +153,16 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className='relative overflow-hidden py-16 bg-background'>
-        {/* Dots background */}
-        <div className='absolute inset-0 pointer-events-none opacity-20 z-0'>
+      <section className='relative overflow-hidden py-16 bg-background'> */}
+      {/* Dots background */}
+      {/* <div className='absolute inset-0 pointer-events-none opacity-20 z-0'>
           <div
             className='h-full w-full bg-no-repeat bg-left-top bg-[length:240px]'
             style={{ backgroundImage: "url('/dots-1.svg')" }}
           ></div>
-        </div>
-
-        {/* Section content */}
-        <div className='relative z-10 container mx-auto px-4'>
+        </div> */}
+      {/* Section content */}
+      {/* <div className='relative z-10 container mx-auto px-4'>
           <img
             src='https://placehold.co/600x400'
             alt='Example image'
@@ -183,38 +176,36 @@ export default function HomePage() {
             Quisquam voluptatum, quibusdam voluptate.
           </p>
         </div>
-      </section>
-      <section className='py-16 bg-background'>
+      </section> */}
+      {/* <section className='py-16 bg-background'>
         <div className='relative container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'>
           {/* Dots background */}
-          <div
-            className='absolute pointer-events-none opacity-20 z-0'
-            style={{
-              inset: 'calc(var(--spacing) * -8)',
-              top: 'calc(var(--spacing) * -26)',
-            }}
-          >
-            <div
-              className='h-full w-full bg-no-repeat '
-              style={{
-                backgroundSize: '240px',
+      {/* <div
+        className='absolute pointer-events-none opacity-20 z-0'
+        style={{
+          inset: 'calc(var(--spacing) * -8)',
+          top: 'calc(var(--spacing) * -26)',
+        }}
+      >
+        <div
+          className='h-full w-full bg-no-repeat '
+          style={{
+            backgroundSize: '240px',
 
-                backgroundImage: "url('/dots-1.svg')",
-              }}
-            ></div>
-          </div>
-
-          {/* left side: Image */}
-          <div className='relative z-10 w-full md:w-1/2'>
+            backgroundImage: "url('/dots-1.svg')",
+          }}
+        ></div>
+      </div>{' '} */}
+      {/* left side: Image */}
+      {/* <div className='relative z-10 w-full md:w-1/2'>
             <img
               src='https://placehold.co/600x400?text=Your+Image'
               alt='Ecommerce Illustration'
               className='mx-auto rounded-lg shadow-lg'
             />
-          </div>
-          {/* right side: Text */}
-
-          <div className='text-center md:text-left md:w-1/2'>
+          </div> */}
+      {/* right side: Text */}
+      {/* <div className='text-center md:text-left md:w-1/2'>
             <h2 className='text-4xl font-bold tracking-tight mb-4'>
               Empower Your E-commerce Business
             </h2>
@@ -230,19 +221,18 @@ export default function HomePage() {
             </a>
           </div>
         </div>
-      </section>
-      <section className='relative bg-slate-50 py-20'>
+      </section> */}
+      {/* <section className='relative bg-slate-50 py-20'>
         <div className='container mx-auto'>
-          <div className='grid grid-cols-1 md:grid-cols-4 gap-8 items-center'>
-            {/* First column (50%) */}
-            <div className='md:col-span-2 flex justify-center md:justify-start'>
+          <div className='grid grid-cols-1 md:grid-cols-4 gap-8 items-center'> */}
+      {/* First column (50%) */}
+      {/* <div className='md:col-span-2 flex justify-center md:justify-start'>
               <p className='text-lg font-serif text-primary uppercase tracking-wider'>
                 Know our logos
               </p>
-            </div>
-
-            {/* Second column (25%) */}
-            <div className='flex justify-center'>
+            </div> */}
+      {/* Second column (25%) */}
+      {/* <div className='flex justify-center'>
               <img
                 src='/images/dummy_300x100.png'
                 alt='temp image'
@@ -250,10 +240,9 @@ export default function HomePage() {
                 height={100}
                 className='object-contain'
               />
-            </div>
-
-            {/* Third column (25%) */}
-            <div className='flex justify-center'>
+            </div> */}
+      {/* Third column (25%) */}
+      {/* <div className='flex justify-center'>
               <img
                 src='/images/dummy_300x100.png'
                 alt='temp image'
@@ -268,7 +257,7 @@ export default function HomePage() {
 
       <FeaturesSection />
       <RecentPostsSection />
-      <CallToActionSection />
+      */}
     </>
   );
 }

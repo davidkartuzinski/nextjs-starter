@@ -123,6 +123,13 @@ export default function Footer() {
         </p>
         <div className='flex items-center gap-4'>
           <Link
+            href='/login'
+            className='transition-colors hover:text-primary'
+          >
+            Login
+          </Link>
+          <span>|</span>
+          <Link
             href='/privacy'
             className='transition-colors hover:text-primary'
           >

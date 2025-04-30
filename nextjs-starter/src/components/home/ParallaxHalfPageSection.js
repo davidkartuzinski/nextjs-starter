@@ -1,6 +1,11 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+} from 'framer-motion';
 import { useRef } from 'react';
 
 export default function ParallaxHalfPageSection() {
@@ -11,6 +16,15 @@ export default function ParallaxHalfPageSection() {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const smoothY = useSpring(y, {
+    stiffness: 100,
+    damping: 20,
+  });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const smoothScale = useSpring(scale, {
+    stiffness: 100,
+    damping: 20,
+  });
 
   return (
     <section
@@ -31,13 +45,15 @@ export default function ParallaxHalfPageSection() {
       </div>
 
       {/* Background Image */}
+
       <motion.div
         style={{
+          y: smoothY, // <- This adds the scroll movement
+          scale: smoothScale,
           backgroundImage: "url('/images/dummy_1450x950.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          y, // <- This adds the scroll movement
         }}
         className='absolute right-0 top-0 bottom-0 w-1/2'
       />

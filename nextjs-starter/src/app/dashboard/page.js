@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
@@ -92,7 +93,17 @@ export default function Dashboard() {
   };
 
   if (!user) {
-    return <div>Please sign in to access this page.</div>;
+    return (
+      <div>
+        Please sign in to access this page.{' '}
+        <Link
+          href='/login'
+          className='transition-colors hover:text-primary'
+        >
+          Sign in here.
+        </Link>
+      </div>
+    );
   }
 
   return (

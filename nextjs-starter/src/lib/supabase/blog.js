@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-// Get all categories from Supabase
+// --- Categories ---
 export async function getCategories() {
   const { data, error } = await supabase
     .from('categories')
@@ -19,20 +19,39 @@ export async function getCategories() {
   return data;
 }
 
-// Get posts by category from Supabase
+// --- Tags: Get all tags ---
+export async function getTags() {
+  const { data, error } = await supabase
+    .from('tags')
+    .select('*')
+    .order('name');
+
+  if (error) {
+    console.error('Error fetching tags:', error);
+    return [];
+  }
+
+  return data;
+}
+
 export async function getPostsByCategory(categorySlug) {
   const { data, error } = await supabase
     .from('categories')
     .select(
       `
       id,
-      posts:post_categories(
+      name,
+      slug,
+      post_categories(
         post:posts(
           id,
           title,
           slug,
           summary,
-          published_at
+          published_at,
+          post_categories(
+            category:categories(id, name, slug)
+          )
         )
       )
     `
@@ -45,11 +64,15 @@ export async function getPostsByCategory(categorySlug) {
     return [];
   }
 
-  // Transform the data to a more usable format
   const posts =
-    data?.posts
-      .map((item) => item.post)
+    data?.post_categories
+      ?.map((item) => item.post)
       .filter(Boolean)
+      .map((post) => ({
+        ...post,
+        categories:
+          post.post_categories?.map((pc) => pc.category) || [],
+      }))
       .sort(
         (a, b) => new Date(b.published_at) - new Date(a.published_at)
       ) || [];
@@ -57,7 +80,54 @@ export async function getPostsByCategory(categorySlug) {
   return posts;
 }
 
-// Search posts in Supabase
+// --- Tags ---
+export async function getPostsByTag(tagSlug) {
+  const { data, error } = await supabase
+    .from('tags')
+    .select(
+      `
+      id,
+      name,
+      slug,
+      post_tags(
+        post:posts(
+          id,
+          title,
+          slug,
+          summary,
+          published_at,
+          post_categories(
+            category:categories(id, name, slug)
+          )
+        )
+      )
+    `
+    )
+    .eq('slug', tagSlug)
+    .single();
+
+  if (error) {
+    console.error('Error fetching posts by tag:', error);
+    return [];
+  }
+
+  const posts =
+    data?.post_tags
+      ?.map((item) => item.post)
+      .filter(Boolean)
+      .map((post) => ({
+        ...post,
+        categories:
+          post.post_categories?.map((pc) => pc.category) || [],
+      }))
+      .sort(
+        (a, b) => new Date(b.published_at) - new Date(a.published_at)
+      ) || [];
+
+  return posts;
+}
+
+// --- Search ---
 export async function searchPosts(query) {
   const { data, error } = await supabase
     .from('posts')
@@ -73,71 +143,154 @@ export async function searchPosts(query) {
   return data;
 }
 
-// Sync MDX post with Supabase
+// --- Sync MDX with Supabase ---
+
+// --- Sync MDX with Supabase ---
 export async function syncPostWithSupabase(
   slug,
   frontmatter,
-  categories = []
+  categories = [],
+  tags = []
 ) {
-  // First, upsert the post
+  const supabase = createClientComponentClient();
+
+  // 1. Upsert the post (DO NOT insert tags/categories into posts table)
   const { data: post, error: postError } = await supabase
     .from('posts')
     .upsert(
       {
         title: frontmatter.title,
-        slug: slug,
+        slug,
         summary: frontmatter.summary,
         published_at:
           frontmatter.publishedAt || new Date().toISOString(),
       },
-      {
-        onConflict: 'slug',
-        returning: true,
-      }
+      { onConflict: 'slug', returning: 'representation' }
     )
     .select()
     .single();
 
-  if (postError) {
+  if (postError || !post) {
     console.error('Error upserting post:', postError);
     return null;
   }
 
-  // If categories are provided, sync them
+  // 2. Handle Categories
   if (categories.length > 0) {
-    // Get category IDs
-    const { data: categoryData, error: categoryError } =
-      await supabase
-        .from('categories')
-        .select('id, slug')
-        .in('slug', categories);
+    const { data: existingCategories = [] } = await supabase
+      .from('categories')
+      .select('id, slug')
+      .in('slug', categories);
 
-    if (categoryError) {
-      console.error('Error fetching categories:', categoryError);
-    } else {
-      // Delete existing category associations
-      await supabase
-        .from('post_categories')
-        .delete()
-        .eq('post_id', post.id);
+    const existingSlugs = existingCategories.map((c) => c.slug);
+    const missingCategories = categories.filter(
+      (slug) => !existingSlugs.includes(slug)
+    );
 
-      // Create new category associations
-      const categoryAssociations = categoryData.map((category) => ({
-        post_id: post.id,
-        category_id: category.id,
+    if (missingCategories.length > 0) {
+      const insertData = missingCategories.map((slug) => ({
+        name: slug
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (c) => c.toUpperCase()),
+        slug,
       }));
 
-      if (categoryAssociations.length > 0) {
-        const { error: associationError } = await supabase
-          .from('post_categories')
-          .insert(categoryAssociations);
+      const { error: insertCategoryError } = await supabase
+        .from('categories')
+        .insert(insertData);
 
-        if (associationError) {
-          console.error(
-            'Error creating category associations:',
-            associationError
-          );
-        }
+      if (
+        insertCategoryError &&
+        insertCategoryError.code !== '23505'
+      ) {
+        console.error(
+          'Error inserting categories:',
+          insertCategoryError
+        );
+      }
+    }
+
+    const { data: finalCategories = [] } = await supabase
+      .from('categories')
+      .select('id, slug')
+      .in('slug', categories);
+
+    await supabase
+      .from('post_categories')
+      .delete()
+      .eq('post_id', post.id);
+
+    const categoryAssociations = finalCategories.map((cat) => ({
+      post_id: post.id,
+      category_id: cat.id,
+    }));
+
+    if (categoryAssociations.length > 0) {
+      const { error: categoryAssociationError } = await supabase
+        .from('post_categories')
+        .insert(categoryAssociations);
+
+      if (categoryAssociationError) {
+        console.error(
+          'Error creating category associations:',
+          categoryAssociationError
+        );
+      }
+    }
+  }
+
+  // 3. Handle Tags
+  if (tags.length > 0) {
+    const { data: existingTags = [] } = await supabase
+      .from('tags')
+      .select('id, slug')
+      .in('slug', tags);
+
+    const existingTagSlugs = existingTags.map((t) => t.slug);
+    const missingTags = tags.filter(
+      (slug) => !existingTagSlugs.includes(slug)
+    );
+
+    // --- Insert Missing Tags ---
+    if (missingTags.length > 0) {
+      const insertData = missingTags.map((slug) => ({
+        name: slug
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (c) => c.toUpperCase()),
+        slug,
+      }));
+
+      const { error: insertTagError } = await supabase
+        .from('tags')
+        .insert(insertData);
+
+      if (insertTagError && insertTagError.code !== '23505') {
+        console.error('Error inserting tags:', insertTagError);
+      }
+    }
+
+    const { data: finalTags = [] } = await supabase
+      .from('tags')
+      .select('id, slug')
+      .in('slug', tags);
+
+    await supabase.from('post_tags').delete().eq('post_id', post.id);
+
+    const tagAssociations = finalTags.map((tag) => ({
+      post_id: post.id,
+      tag_id: tag.id,
+    }));
+
+    if (tagAssociations.length > 0) {
+      const { error: tagAssociationError } = await supabase
+        .from('post_tags')
+        .insert(tagAssociations);
+
+      if (tagAssociationError) {
+        console.error(
+          'Error creating tag associations:',
+          tagAssociationError
+        );
       }
     }
   }
@@ -145,55 +298,41 @@ export async function syncPostWithSupabase(
   return post;
 }
 
-// Get all blog posts from filesystem and sync with Supabase
+// --- Load all MDX posts ---
 export async function getAllPosts() {
   const postsDir = path.join(process.cwd(), 'posts');
-  const entries = fs.readdirSync(postsDir, {
-    withFileTypes: true,
-  });
+  const entries = fs.readdirSync(postsDir, { withFileTypes: true });
 
-  const posts = entries
-    .filter((entry) => entry.isDirectory())
-    .map((dir) => {
-      const slug = dir.name;
+  const posts = await Promise.all(
+    entries
+      .filter((entry) => entry.isDirectory())
+      .map(async (dir) => {
+        const slug = dir.name;
+        const postsPath = path.join(postsDir, slug, 'page.mdx');
 
-      const postsDir = path.join(process.cwd(), 'posts', slug);
-      const fullPath = path.join(postsDir, 'page.mdx');
+        if (!fs.existsSync(postsPath)) {
+          console.warn(
+            `⚠️ Skipping: No MDX found for slug '${slug}'`
+          );
+          return null;
+        }
 
-      // ⛔ prevent crashes from invalid slugs like image filenames
-      if (!fs.existsSync(fullPath)) {
-        console.warn(`⚠️ Skipping: No MDX found for slug '${slug}'`);
-        return null;
-      }
+        const fileContents = fs.readFileSync(postsPath, 'utf8');
+        const { data } = matter(fileContents);
 
-      const mdxPath = path.join(postsDir, 'page.mdx');
+        // ❗️ Important: await the sync!
+        await syncPostWithSupabase(
+          slug,
+          data,
+          data.categories || [],
+          data.tags || []
+        );
 
-      // Skip if page.mdx doesn't exist
-      if (!fs.existsSync(mdxPath)) return null;
+        return { slug, ...data };
+      })
+  );
 
-      // Read markdown file as string
-      const fileContents = fs.readFileSync(mdxPath, 'utf8');
-
-      // Use gray-matter to parse the post metadata section
-      const { data } = matter(fileContents);
-
-      // Sync with Supabase
-      syncPostWithSupabase(slug, data, data.categories || []);
-
-      // Combine the data with the slug
-      return {
-        slug,
-        ...data,
-      };
-    })
-    .filter(Boolean); // Remove null entries
-
-  // Sort posts by date
-  return posts.sort((a, b) => {
-    if (a.publishedAt < b.publishedAt) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  return posts
+    .filter(Boolean)
+    .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
 }
