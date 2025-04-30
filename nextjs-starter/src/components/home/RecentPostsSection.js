@@ -1,6 +1,5 @@
-// src/components/home/RecentPostsSection.js
-
 import Link from 'next/link';
+import { getRecentPosts } from '@/lib/supabase/blog';
 import {
   Card,
   CardContent,
@@ -8,48 +7,56 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-const posts = [
-  {
-    title: 'How to Start with Next.js',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    href: '/blog/how-to-start',
-  },
-  {
-    title: 'Why Tailwind CSS is Awesome',
-    excerpt:
-      'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '/blog/tailwind-awesome',
-  },
-  {
-    title: 'Tips for Building Faster Websites',
-    excerpt:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-    href: '/blog/faster-websites',
-  },
-];
+export default async function RecentPostsSection() {
+  const posts = await getRecentPosts();
 
-export default function RecentPostsSection() {
   return (
-    <section className='py-20'>
-      <div className='container space-y-12'>
+    <section className='w-full'>
+      <div className='container mx-auto px-4 flex flex-col items-center justify-center text-left space-y-6 py-20 max-w-6xl'>
         <h2 className='text-3xl font-bold text-center'>
-          Recent Posts
+          Read Recent Posts
         </h2>
         <div className='grid gap-8 md:grid-cols-3'>
-          {posts.map((post, index) => (
-            <Card key={index}>
+          {posts.map((post) => (
+            <Card
+              key={post.id}
+              className='flex flex-col justify-between h-full'
+            >
               <CardHeader>
-                <CardTitle>{post.title}</CardTitle>
+                <CardTitle>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className='hover:underline'
+                  >
+                    {post.title}
+                  </Link>
+                </CardTitle>
               </CardHeader>
-              <CardContent className='text-muted-foreground space-y-4'>
-                <p>{post.excerpt}</p>
-                <Link
-                  href={post.href}
-                  className='text-primary hover:underline'
-                >
-                  Read more →
-                </Link>
+
+              <CardContent className='flex flex-col justify-between flex-1 space-y-4 text-muted-foreground'>
+                <p className='text-sm text-primary line-clamp-3 min-h-[60px]'>
+                  {post.summary}
+                </p>
+
+                <p className='text-xs'>
+                  {new Date(post.published_at).toLocaleDateString(
+                    'en-US',
+                    {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    }
+                  )}
+                </p>
+
+                <div>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className='text-primary text-sm hover:underline'
+                  >
+                    Read more →
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           ))}
