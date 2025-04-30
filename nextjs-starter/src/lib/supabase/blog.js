@@ -228,7 +228,9 @@ export async function syncPostWithSupabase(
     if (categoryAssociations.length > 0) {
       const { error: categoryAssociationError } = await supabase
         .from('post_categories')
-        .insert(categoryAssociations);
+        .upsert(categoryAssociations, {
+          onConflict: ['post_id', 'category_id'],
+        });
 
       if (categoryAssociationError) {
         console.error(
@@ -284,7 +286,9 @@ export async function syncPostWithSupabase(
     if (tagAssociations.length > 0) {
       const { error: tagAssociationError } = await supabase
         .from('post_tags')
-        .insert(tagAssociations);
+        .upsert(tagAssociations, {
+          onConflict: ['post_id', 'tag_id'],
+        });
 
       if (tagAssociationError) {
         console.error(
