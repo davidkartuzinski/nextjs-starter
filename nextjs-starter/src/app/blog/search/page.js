@@ -1,32 +1,40 @@
-import Link from 'next/link';
 import { Suspense } from 'react';
-import { searchPosts, getCategories } from '@/lib/supabase/blog';
-import Sidebar from '@/components/layout/Sidebar';
+import { getCategories, searchPosts } from '@/lib/supabase/blog';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Pagination from '@/components/blog/Pagination';
-import { Card, CardContent } from '@/components/ui/card';
+import Sidebar from '@/components/layout/Sidebar';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Number of posts per page
 const POSTS_PER_PAGE = 6;
 
-export function generateMetadata({ searchParams }) {
-  const query = searchParams?.q || '';
+// --- Metadata ---
+export async function generateMetadata({ searchParams }) {
+  const { q } = await searchParams;
+  const query = q || '';
 
   return {
-    title: `Search: ${query} | Your Blog Name`,
-    description: `Search results for "${query}"`,
+    title: query ? `Search: ${query}` : 'Search',
+    description: query
+      ? `Search results for "${query}"`
+      : 'Search blog content by keywords',
   };
 }
 
+// --- Page Component ---
 export default async function SearchPage({ searchParams }) {
-  const query = searchParams?.q || '';
-  const page = parseInt(searchParams?.page || '1');
+  const { q, page: pageParam } = await searchParams;
+  const query = q || '';
+  const page = parseInt(pageParam || '1', 10);
 
   const posts = await searchPosts(query);
   const categories = await getCategories();
 
-  // Calculate pagination
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
     (page - 1) * POSTS_PER_PAGE,
@@ -38,11 +46,12 @@ export default async function SearchPage({ searchParams }) {
       <div className='flex flex-col gap-4 md:gap-8'>
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            Search Results
+            {query ? `Results for "${query}"` : 'Search'}
           </h1>
           <p className='text-muted-foreground'>
-            {posts.length} {posts.length === 1 ? 'result' : 'results'}{' '}
-            for &quot{query}&quot
+            {query
+              ? 'Showing results that match your search.'
+              : 'Enter a search term to explore blog content.'}
           </p>
         </div>
 
@@ -55,12 +64,7 @@ export default async function SearchPage({ searchParams }) {
                     key={post.slug}
                     fallback={<PostSkeleton />}
                   >
-                    <BlogPostCard
-                      post={{
-                        ...post,
-                        publishedAt: post.published_at,
-                      }}
-                    />
+                    <BlogPostCard post={post} />
                   </Suspense>
                 ))}
               </div>
@@ -68,7 +72,7 @@ export default async function SearchPage({ searchParams }) {
               <Card>
                 <CardContent className='flex flex-col items-center justify-center py-12'>
                   <p className='text-center text-muted-foreground'>
-                    No results found for &quot{query}&quot.
+                    No posts found matching that search.
                   </p>
                 </CardContent>
               </Card>
@@ -79,10 +83,8 @@ export default async function SearchPage({ searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/blog/search?q=${encodeURIComponent(
-                    query
-                  )}`}
-                  isQueryParam
+                  basePath='/blog/search'
+                  searchParams={{ q: query }}
                 />
               </div>
             )}
@@ -95,11 +97,7 @@ export default async function SearchPage({ searchParams }) {
                 title: post.title,
                 date: new Date(post.published_at).toLocaleDateString(
                   'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
+                  { year: 'numeric', month: 'long', day: 'numeric' }
                 ),
               }))}
               categories={categories}
@@ -111,21 +109,22 @@ export default async function SearchPage({ searchParams }) {
   );
 }
 
+// --- Loading Skeleton ---
 function PostSkeleton() {
   return (
     <Card>
-      <div className='p-6 space-y-2'>
+      <CardHeader className='space-y-2'>
         <Skeleton className='h-4 w-1/2' />
         <Skeleton className='h-4 w-1/4' />
-        <div className='space-y-2 mt-4'>
-          <Skeleton className='h-4 w-full' />
-          <Skeleton className='h-4 w-full' />
-          <Skeleton className='h-4 w-2/3' />
-        </div>
-        <div className='mt-4'>
-          <Skeleton className='h-8 w-24' />
-        </div>
-      </div>
+      </CardHeader>
+      <CardContent className='space-y-2'>
+        <Skeleton className='h-4 w-full' />
+        <Skeleton className='h-4 w-full' />
+        <Skeleton className='h-4 w-2/3' />
+      </CardContent>
+      <CardFooter>
+        <Skeleton className='h-8 w-24' />
+      </CardFooter>
     </Card>
   );
 }
