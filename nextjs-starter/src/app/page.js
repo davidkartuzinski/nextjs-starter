@@ -3,7 +3,8 @@ import FeaturesSection from '@/components/home/FeaturesSection';
 import RecentPostsSection from '@/components/home/RecentPostsSection';
 import CallToActionSection from '@/components/home/CallToActionSection';
 import FeatureGrid from '@/components/home/FeatureGrid';
-import { Features } from './site-config';
+import SplitSection from '@/components/home/SplitSection';
+import { Features, SplitSectionFeatures } from './site-config';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -27,76 +28,28 @@ export default function HomePage() {
         buttonLink={'/'}
       />
 
+      <SplitSection
+        title={'Split Section'}
+        features={SplitSectionFeatures}
+        imageUrl={'/images/dummy_1450x950.png'}
+        imageAlt={'Dummy Image'}
+        imageLayout={'left'}
+      />
+
       <FeatureGrid features={Features} />
 
       <FeaturesSection />
 
+      <SplitSection
+        title={'Split Section'}
+        features={SplitSectionFeatures}
+        imageUrl={'/images/dummy_1450x950.png'}
+        imageAlt={'Dummy Image'}
+        imageLayout={'right'}
+      />
+
       <RecentPostsSection backgroundImage={true} />
 
-      {/* <section className='relative bg-background py-20'>
-        <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'> */}
-      {/* Left: Text content */}
-      {/* <div className='space-y-10'>
-            <h1 className='text-4xl font-serif font-bold leading-tight text-foreground'>
-              Personal space for the open office —
-            </h1>
-
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-              <div className='space-y-2'>
-                <h2 className='text-2xl font-bold text-primary'>
-                  Stunning
-                </h2>
-                <p className='text-muted-foreground'>
-                  Make a statement that will last a lifetime with our
-                  pieces.
-                </p>
-              </div>
-
-              <div className='space-y-2'>
-                <h2 className='text-2xl font-bold text-primary'>
-                  Comfy
-                </h2>
-                <p className='text-muted-foreground'>
-                  You do not have to sacrifice feeling cozy for
-                  looking good.
-                </p>
-              </div>
-
-              <div className='space-y-2'>
-                <h2 className='text-2xl font-bold text-primary'>
-                  Sustainable
-                </h2>
-                <p className='text-muted-foreground'>
-                  We strive to make our products out of 100%
-                  recyclable goods.
-                </p>
-              </div>
-
-              <div className='space-y-2'>
-                <h2 className='text-2xl font-bold text-primary'>
-                  Stylish
-                </h2>
-                <p className='text-muted-foreground'>
-                  Contemporary lines and a modern finish make for a
-                  beautiful home.
-                </p>
-              </div>
-            </div>
-          </div> */}
-      {/* Right: Background Image */}
-      {/* <div className='relative w-full h-[600px]'>
-            <div
-              className='absolute inset-0 bg-cover bg-center'
-              style={{
-                backgroundImage: "url('/images/dummy_1450x950.png')",
-                backgroundPosition: '100% 50%',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
-          </div>
-        </div>
-      </section> */}
       {/* <section className='relative bg-blue-100 py-24'> */}
       {/* SVG Shape Divider */}
       {/* <div className='absolute bottom-0 left-0 w-full overflow-hidden leading-none'>

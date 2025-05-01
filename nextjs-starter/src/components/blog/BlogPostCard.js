@@ -139,7 +139,7 @@ export default function BlogPostCard({ post }) {
           {post.summary}
         </p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className='pb-6'>
         <Button asChild variant='ghost' size='sm' className='w-full'>
           <Link href={`/blog/${post.slug}`}>Read more</Link>
         </Button>
