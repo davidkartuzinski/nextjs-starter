@@ -2,15 +2,34 @@ import HeroSection from '@/components/home/HeroSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import RecentPostsSection from '@/components/home/RecentPostsSection';
 import CallToActionSection from '@/components/home/CallToActionSection';
-import ParallaxHalfPageSection from '@/components/home/ParallaxHalfPageSection';
+import FeatureGrid from '@/components/home/FeatureGrid';
+import { Features } from './site-config';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <CallToActionSection />
+      <HeroSection
+        title={'Welcome to NextJS Starter Demo'}
+        description={
+          'Kickstart your modern web presence with a fast, flexible, and SEO-friendly Next.js boilerplate. Built with MDX, Supabase, Tailwind CSS, Shadcn UI, and the App Router — this starter gives you everything you need to publish, grow, and scale your content. Start creating. Customize freely. MIT Licensed. Deploy instantly.'
+        }
+        buttonText={'Read the Blog'}
+        buttonLink={'/blog'}
+      />
+      <CallToActionSection
+        title={'Download the Starter'}
+        description={
+          'Get started with the Next.js Starter — a powerful foundation built for speed, flexibility, and scale. Whether you’re launching a blog, docs site, or personal brand, this stack is production-ready from day one.'
+        }
+        buttonText={'Download the Starter'}
+        buttonLink={'/'}
+      />
+
+      <FeatureGrid features={Features} />
+
       <FeaturesSection />
+
       <RecentPostsSection />
 
       {/* <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
@@ -28,6 +47,7 @@ export default function HomePage() {
           </div>
         ))}
       </section> */}
+
       {/* <section className='relative bg-background py-20'>
         <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'> */}
       {/* Left: Text content */}
@@ -126,7 +146,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <ParallaxHalfPageSection /> */}
+       */}
       {/* <section className='py-16 bg-background'>
         <div className='container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'> */}
       {/* Left side: Text */}
@@ -258,7 +278,7 @@ export default function HomePage() {
       </section>
 
 
-      <RecentPostsSection />
+
       */}
     </>
   );
