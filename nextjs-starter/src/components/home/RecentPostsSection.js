@@ -21,64 +21,41 @@ export default async function RecentPostsSection({
 
         <div className='grid gap-8 md:grid-cols-3'>
           {posts.map((post) => {
-            const heroImage = `/images/posts/${post.slug}/hero-image.jpg`;
-            const textColor = backgroundImage
-              ? 'text-white'
-              : 'text-muted-foreground';
-            const titleColor = backgroundImage
-              ? 'text-white'
-              : 'text-primary';
-
-            return (
+            const cardContent = (
               <Card
                 key={post.id}
-                className={`flex flex-col justify-between h-full overflow-hidden pt-4 pb-4 transition-all ${
-                  backgroundImage
-                    ? 'relative bg-cover bg-center shadow-lg hover:shadow-2xl before:absolute before:inset-0 before:bg-black/50 before:z-0'
-                    : 'shadow-sm hover:shadow-md'
+                className={`relative flex flex-col justify-between h-full overflow-hidden pt-4 pb-4 transition-shadow hover:shadow-2xl ${
+                  backgroundImage ? 'text-white' : ''
                 }`}
-                style={
-                  backgroundImage
-                    ? { backgroundImage: `url(${heroImage})` }
-                    : {}
-                }
               >
-                <div
-                  className={`${
-                    backgroundImage
-                      ? 'bg-black/60 backdrop-blur-sm p-6 h-full flex flex-col justify-between'
-                      : ''
-                  }`}
-                >
-                  <CardHeader
-                    className={backgroundImage ? 'p-0 pb-4' : ''}
-                  >
-                    <CardTitle className={`${titleColor}`}>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className={`hover:underline ${
-                          backgroundImage
-                            ? 'text-white hover:text-white'
-                            : ''
-                        }`}
-                      >
-                        {post.title}
-                      </Link>
+                {backgroundImage && (
+                  <>
+                    {/* Background Image */}
+                    <div
+                      className='absolute inset-0 bg-cover bg-center z-0'
+                      style={{
+                        backgroundImage: `url('/images/posts/${post.slug}/hero-image.jpg')`,
+                      }}
+                    />
+                    {/* Overlay */}
+                    <div className='absolute inset-0 bg-black/60 z-10' />
+                  </>
+                )}
+
+                {/* Content */}
+                <div className='relative z-20 px-6'>
+                  <CardHeader>
+                    <CardTitle className='hover:underline'>
+                      {post.title}
                     </CardTitle>
                   </CardHeader>
 
-                  <CardContent
-                    className={`flex flex-col flex-1 space-y-4 z-10 relative ${
-                      backgroundImage ? 'p-0' : ''
-                    }`}
-                  >
-                    <p
-                      className={`text-sm line-clamp-3 min-h-[60px] ${textColor}`}
-                    >
+                  <CardContent className='flex flex-col justify-between flex-1 space-y-4'>
+                    <p className='text-sm line-clamp-3 min-h-[60px]'>
                       {post.summary}
                     </p>
 
-                    <p className={`text-xs ${textColor}`}>
+                    <p className='text-xs'>
                       {new Date(post.published_at).toLocaleDateString(
                         'en-US',
                         {
@@ -89,21 +66,24 @@ export default async function RecentPostsSection({
                       )}
                     </p>
 
-                    <div>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className={`text-sm font-medium hover:underline ${
-                          backgroundImage
-                            ? 'text-white hover:text-white'
-                            : textColor
-                        }`}
-                      >
-                        Read more →
-                      </Link>
-                    </div>
+                    <span className='text-sm font-medium hover:underline'>
+                      Read more →
+                    </span>
                   </CardContent>
                 </div>
               </Card>
+            );
+
+            return backgroundImage ? (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className='block h-full w-full'
+              >
+                {cardContent}
+              </Link>
+            ) : (
+              cardContent
             );
           })}
         </div>
