@@ -16,7 +16,7 @@ export default function FeatureGrid({ features }) {
         return (
           <div
             key={i}
-            className='rounded-lg border p-6 text-center shadow-sm hover:shadow-md transition'
+            className=' border p-6 text-center shadow-sm hover:shadow-md transition'
           >
             {LucideIcon && (
               <div className='mb-4 flex justify-center text-primary'>

@@ -7,7 +7,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export default async function RecentPostsSection() {
+export default async function RecentPostsSection({
+  backgroundImage = false,
+}) {
   const posts = await getRecentPosts();
 
   return (
@@ -16,50 +18,94 @@ export default async function RecentPostsSection() {
         <h2 className='text-3xl font-bold text-center'>
           Read Recent Posts
         </h2>
+
         <div className='grid gap-8 md:grid-cols-3'>
-          {posts.map((post) => (
-            <Card
-              key={post.id}
-              className='flex flex-col justify-between h-full'
-            >
-              <CardHeader>
-                <CardTitle>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className='hover:underline'
+          {posts.map((post) => {
+            const heroImage = `/images/posts/${post.slug}/hero-image.jpg`;
+            const textColor = backgroundImage
+              ? 'text-white'
+              : 'text-muted-foreground';
+            const titleColor = backgroundImage
+              ? 'text-white'
+              : 'text-primary';
+
+            return (
+              <Card
+                key={post.id}
+                className={`flex flex-col justify-between h-full overflow-hidden pt-4 pb-4 transition-all ${
+                  backgroundImage
+                    ? 'relative bg-cover bg-center shadow-lg hover:shadow-2xl before:absolute before:inset-0 before:bg-black/50 before:z-0'
+                    : 'shadow-sm hover:shadow-md'
+                }`}
+                style={
+                  backgroundImage
+                    ? { backgroundImage: `url(${heroImage})` }
+                    : {}
+                }
+              >
+                <div
+                  className={`${
+                    backgroundImage
+                      ? 'bg-black/60 backdrop-blur-sm p-6 h-full flex flex-col justify-between'
+                      : ''
+                  }`}
+                >
+                  <CardHeader
+                    className={backgroundImage ? 'p-0 pb-4' : ''}
                   >
-                    {post.title}
-                  </Link>
-                </CardTitle>
-              </CardHeader>
+                    <CardTitle className={`${titleColor}`}>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className={`hover:underline ${
+                          backgroundImage
+                            ? 'text-white hover:text-white'
+                            : ''
+                        }`}
+                      >
+                        {post.title}
+                      </Link>
+                    </CardTitle>
+                  </CardHeader>
 
-              <CardContent className='flex flex-col justify-between flex-1 space-y-4 text-muted-foreground'>
-                <p className='text-sm text-primary line-clamp-3 min-h-[60px]'>
-                  {post.summary}
-                </p>
-
-                <p className='text-xs'>
-                  {new Date(post.published_at).toLocaleDateString(
-                    'en-US',
-                    {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    }
-                  )}
-                </p>
-
-                <div>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className='text-primary text-sm hover:underline'
+                  <CardContent
+                    className={`flex flex-col flex-1 space-y-4 z-10 relative ${
+                      backgroundImage ? 'p-0' : ''
+                    }`}
                   >
-                    Read more →
-                  </Link>
+                    <p
+                      className={`text-sm line-clamp-3 min-h-[60px] ${textColor}`}
+                    >
+                      {post.summary}
+                    </p>
+
+                    <p className={`text-xs ${textColor}`}>
+                      {new Date(post.published_at).toLocaleDateString(
+                        'en-US',
+                        {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        }
+                      )}
+                    </p>
+
+                    <div>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className={`text-sm font-medium hover:underline ${
+                          backgroundImage
+                            ? 'text-white hover:text-white'
+                            : textColor
+                        }`}
+                      >
+                        Read more →
+                      </Link>
+                    </div>
+                  </CardContent>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

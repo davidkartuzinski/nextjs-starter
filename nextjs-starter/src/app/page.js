@@ -17,6 +17,7 @@ export default function HomePage() {
         buttonText={'Read the Blog'}
         buttonLink={'/blog'}
       />
+
       <CallToActionSection
         title={'Download the Starter'}
         description={
@@ -30,23 +31,7 @@ export default function HomePage() {
 
       <FeaturesSection />
 
-      <RecentPostsSection />
-
-      {/* <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div
-            key={i}
-            className='rounded-lg border p-6 text-center shadow-sm hover:shadow-md transition'
-          >
-            <h3 className='text-2xl font-semibold mb-4'>
-              Feature {i + 1}
-            </h3>
-            <p className='text-muted-foreground'>
-              Short description about this awesome feature you offer.
-            </p>
-          </div>
-        ))}
-      </section> */}
+      <RecentPostsSection backgroundImage={true} />
 
       {/* <section className='relative bg-background py-20'>
         <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'> */}
@@ -101,7 +86,7 @@ export default function HomePage() {
       {/* Right: Background Image */}
       {/* <div className='relative w-full h-[600px]'>
             <div
-              className='absolute inset-0 bg-cover bg-center rounded-lg'
+              className='absolute inset-0 bg-cover bg-center'
               style={{
                 backgroundImage: "url('/images/dummy_1450x950.png')",
                 backgroundPosition: '100% 50%',
@@ -139,7 +124,7 @@ export default function HomePage() {
           </p>
           <Link
             href='/contact'
-            className='rounded-md bg-primary px-6 py-3 text-white hover:bg-primary/90 transition'
+            className=' bg-primary px-6 py-3 text-white hover:bg-primary/90 transition'
           >
             Contact Us
           </Link>
@@ -160,7 +145,7 @@ export default function HomePage() {
             </p>
             <a
               href='/contact'
-              className='inline-block rounded-lg bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
+              className='inline-block  bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
             >
               Get Started
             </a>
@@ -170,7 +155,7 @@ export default function HomePage() {
             <img
               src='https://placehold.co/600x400?text=Your+Image'
               alt='Ecommerce Illustration'
-              className='mx-auto rounded-lg shadow-lg'
+              className='mx-auto  shadow-lg'
             />
           </div>
         </div>
@@ -223,7 +208,7 @@ export default function HomePage() {
             <img
               src='https://placehold.co/600x400?text=Your+Image'
               alt='Ecommerce Illustration'
-              className='mx-auto rounded-lg shadow-lg'
+              className='mx-auto  shadow-lg'
             />
           </div> */}
       {/* right side: Text */}
@@ -237,7 +222,7 @@ export default function HomePage() {
             </p>
             <a
               href='/contact'
-              className='inline-block rounded-lg bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
+              className='inline-block  bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
             >
               Get Started
             </a>
