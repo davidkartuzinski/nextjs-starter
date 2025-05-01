@@ -10,7 +10,7 @@ export default function CallToActionSection({
   buttonLink = '/newsletter',
 }) {
   return (
-    <section className='py-20 bg-primary text-primary-foreground text-center space-y-6'>
+    <section className='py-20 bg-primary text-primary-foreground text-center space-y-6 px-4 sm:px-6'>
       <h2 className='text-4xl font-bold'>{title}</h2>
       <p className='max-w-2xl mx-auto'>{description}</p>
       <Button variant='secondary' size='lg' asChild>

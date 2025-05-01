@@ -53,7 +53,7 @@ export function useMDXComponents(defaultComponents) {
     ),
     pre: (props) => (
       <pre
-        className='mb-4 mt-4 overflow-x-auto rounded-lg border bg-black p-4'
+        className='mb-4 mt-4 overflow-x-auto  border bg-black p-4'
         {...props}
       />
     ),
@@ -61,7 +61,7 @@ export function useMDXComponents(defaultComponents) {
 
     img: (props) => (
       <Image
-        className='rounded-md my-6 max-w-full h-auto'
+        className=' my-6 max-w-full h-auto'
         alt={props.alt || ''}
         {...props}
       />

@@ -101,3 +101,24 @@ export const Features = [
     linkText: 'Start customizing →',
   },
 ];
+// SplitSectionFeatures
+export const SplitSectionFeatures = [
+  {
+    title: 'Fast Setup',
+    description: 'Get up and running in minutes with minimal config.',
+  },
+  {
+    title: 'Modern Stack',
+    description: 'Built with Next.js, Tailwind, Supabase, and more.',
+  },
+  {
+    title: 'Fully Customizable',
+    description:
+      'Tweak anything. Components, layout, styles — it’s yours.',
+  },
+  {
+    title: 'SEO Optimized',
+    description:
+      'Built with SEO in mind. Get found on Google and other search engines.',
+  },
+];

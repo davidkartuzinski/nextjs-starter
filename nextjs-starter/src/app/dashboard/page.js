@@ -146,7 +146,7 @@ export default function Dashboard() {
             {todos.map((todo) => (
               <div
                 key={todo.id}
-                className='flex items-center justify-between p-4 border rounded-lg'
+                className='flex items-center justify-between p-4 border'
               >
                 <div className='flex items-center gap-2'>
                   <input

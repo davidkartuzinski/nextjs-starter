@@ -101,7 +101,7 @@ export default async function BlogPostPage(props) {
                   alt={post.frontmatter.title}
                   width={1200}
                   height={630}
-                  className='rounded-lg w-full h-auto'
+                  className=' w-full h-auto'
                 />
               </div>
             )}
