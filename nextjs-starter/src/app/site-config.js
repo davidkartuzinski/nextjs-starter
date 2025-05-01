@@ -74,3 +74,30 @@ export const LinkedInIcon = FaLinkedin;
 export const GithubIcon = FaGithub;
 export const DiscordIcon = FaDiscord;
 export const InstagramIcon = FaInstagram;
+
+// Features for the FeatureGrid component
+export const Features = [
+  {
+    title: 'Fast Setup',
+    description:
+      'Get up and running in minutes with minimal config. Vercel deployment ready.',
+    icon: 'Rocket',
+    link: '/docs/setup',
+    linkText: 'Learn more →',
+  },
+  {
+    title: 'Modern Stack',
+    description: 'Built with Next.js, Tailwind, Supabase, and more.',
+    icon: 'Wrench',
+    link: '/stack',
+    linkText: 'Explore the stack →',
+  },
+  {
+    title: 'Fully Customizable',
+    description:
+      'Tweak anything. Components, layout, styles — it’s yours.',
+    icon: 'ShieldCheck',
+    link: '/customize',
+    linkText: 'Start customizing →',
+  },
+];
