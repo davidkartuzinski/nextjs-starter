@@ -122,3 +122,18 @@ export const SplitSectionFeatures = [
       'Built with SEO in mind. Get found on Google and other search engines.',
   },
 ];
+
+export const logos = [
+  {
+    src: '/images/dummy_300x100.png',
+    alt: 'Logo One',
+  },
+  {
+    src: '/images/dummy_300x100.png',
+    alt: 'Logo Two',
+  },
+  {
+    src: '/images/dummy_300x100.png',
+    alt: 'Logo Three',
+  },
+];
