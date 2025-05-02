@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import {
-  getCategories,
   getPostsByCategory,
-} from '@/lib/supabase/blog';
+  getCategories,
+} from '@/lib/supabase/blog.client';
 
 export const metadata = {
   title: 'All Categories | Your Blog Name',

@@ -1,6 +1,9 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { getCategories, searchPosts } from '@/lib/supabase/blog';
+import {
+  getCategories,
+  searchPosts,
+} from '@/lib/supabase/blog.client';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Pagination from '@/components/blog/Pagination';
 import Sidebar from '@/components/layout/Sidebar';

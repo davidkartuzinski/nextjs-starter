@@ -11,21 +11,12 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
-import fs from 'fs';
-import path from 'path';
+import ImageWithFallback from '@/components/optional/ImageWithFallback';
+
 import slugify from 'react-slugify';
 
 export default function BlogPostCard({ post }) {
-  // Check if the post has a hero image
-  const heroImagePath = `/images/posts/${post.slug}/hero-image.jpg`;
-  const heroImageExists = fs.existsSync(
-    path.join(process.cwd(), 'public', heroImagePath)
-  );
-
-  // Fallback image if no hero image exists
-  const featuredImage = heroImageExists
-    ? heroImagePath
-    : post.coverImage || '/images/posts/blog-placeholder.png';
+  const featuredImage = `/images/posts/${post.slug}/hero-image.jpg`;
 
   return (
     <Card className='flex flex-col justify-between h-full'>
@@ -35,7 +26,7 @@ export default function BlogPostCard({ post }) {
             href={`/blog/${post.slug}`}
             className='hover:underline'
           >
-            <Image
+            <ImageWithFallback
               src={featuredImage}
               alt={post.title}
               width={600}
