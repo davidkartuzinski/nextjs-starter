@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getTags, getPostsByTag } from '@/lib/supabase/blog';
+import { getPostsByTag, getTags } from '@/lib/supabase/blog.client';
 
 export const metadata = {
   title: 'All Tags | Your Blog Name',

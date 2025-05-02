@@ -1,12 +1,14 @@
 import HeroSection from '@/components/home/HeroSection';
-import FeaturesSection from '@/components/home/FeaturesSection';
-import RecentPostsSection from '@/components/home/RecentPostsSection';
-import CallToActionSection from '@/components/home/CallToActionSection';
+import BlogPosts from '@/components/home/BlogPosts';
+
 import FeatureGrid from '@/components/home/FeatureGrid';
 import SplitSection from '@/components/home/SplitSection';
+import CallToAction from '@/components/optional/CallToAction';
+import CallToActionWithPicture from '@/components/optional/CallToActionWithPicture';
 import { Features, SplitSectionFeatures } from './site-config';
-import Link from 'next/link';
-
+import CenterTitlePicture from '@/components/optional/CenterTitlePicture';
+import LogoColumns from '@/components/optional/LogoColumns';
+import { logos } from './site-config';
 export default function HomePage() {
   return (
     <>
@@ -18,8 +20,17 @@ export default function HomePage() {
         buttonText={'Read the Blog'}
         buttonLink={'/blog'}
       />
-
-      <CallToActionSection
+      <CallToActionWithPicture
+        title='Start Your Journey Today'
+        description='Everything you need to launch and grow your brand.'
+        buttonText='Join Now'
+        buttonLink='/signup'
+        imageSrc='/images/dummy_600x400.png'
+        imageAlt='Demo Illustration'
+        imagePosition='right' // or 'right'
+      />
+      <LogoColumns heading='Our Logos' logos={logos} />;
+      <CallToAction
         title={'Download the Starter'}
         description={
           'Get started with the Next.js Starter — a powerful foundation built for speed, flexibility, and scale. Whether you’re launching a blog, docs site, or personal brand, this stack is production-ready from day one.'
@@ -27,197 +38,36 @@ export default function HomePage() {
         buttonText={'Download the Starter'}
         buttonLink={'/'}
       />
-
       <SplitSection
         title={'Split Section'}
         features={SplitSectionFeatures}
-        imageUrl={'/images/dummy_1450x950.png'}
+        imageUrl={'/images/dummy_720x600.png'}
         imageAlt={'Dummy Image'}
         imageLayout={'left'}
       />
-
       <FeatureGrid features={Features} />
-
-      <FeaturesSection />
-
+      <BlogPosts />
       <SplitSection
         title={'Split Section'}
         features={SplitSectionFeatures}
-        imageUrl={'/images/dummy_1450x950.png'}
+        imageUrl={'/images/dummy_720x600.png'}
         imageAlt={'Dummy Image'}
-        imageLayout={'right'}
+        imageLayout={'left'}
       />
-
-      <RecentPostsSection backgroundImage={true} />
-
-      {/* <section className='relative bg-blue-100 py-24'> */}
-      {/* SVG Shape Divider */}
-      {/* <div className='absolute bottom-0 left-0 w-full overflow-hidden leading-none'>
-          <svg
-            className='relative block w-[calc(100%+1.3px)] h-[100px]'
-            xmlns='http://www.w3.org/2000/svg'
-            preserveAspectRatio='none'
-            viewBox='0 0 1200 100'
-          >
-            <path
-              d='M1200 100H0V0l400 77.2L1200 0z'
-              className='fill-blue-100'
-            ></path>
-          </svg>
-        </div>
-      </section> */}
-      {/* Big CTA Banner */}
-      {/* <section className='relative bg-blue-100 py-24'>
-        <div className='container mx-auto flex flex-col items-center text-center px-4'>
-          <h2 className='text-4xl font-bold mb-4'>
-            Ready to Build Your Future?
-          </h2>
-          <p className='mb-8 max-w-2xl text-muted-foreground'>
-            Let’s work together to create something amazing.
-          </p>
-          <Link
-            href='/contact'
-            className=' bg-primary px-6 py-3 text-white hover:bg-primary/90 transition'
-          >
-            Contact Us
-          </Link>
-        </div>
-      </section>
-
-       */}
-      {/* <section className='py-16 bg-background'>
-        <div className='container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'> */}
-      {/* Left side: Text */}
-      {/* <div className='text-center md:text-left md:w-1/2'>
-            <h2 className='text-4xl font-bold tracking-tight mb-4'>
-              Empower Your E-commerce Business
-            </h2>
-            <p className='text-muted-foreground mb-6'>
-              We help you launch, grow, and scale your store with
-              cutting-edge strategies and solutions.
-            </p>
-            <a
-              href='/contact'
-              className='inline-block  bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
-            >
-              Get Started
-            </a>
-          </div> */}
-      {/* Right side: Image */}
-      {/* <div className='w-full md:w-1/2'>
-            <img
-              src='https://placehold.co/600x400?text=Your+Image'
-              alt='Ecommerce Illustration'
-              className='mx-auto  shadow-lg'
-            />
-          </div>
-        </div>
-      </section>
-      <section className='relative overflow-hidden py-16 bg-background'> */}
-      {/* Dots background */}
-      {/* <div className='absolute inset-0 pointer-events-none opacity-20 z-0'>
-          <div
-            className='h-full w-full bg-no-repeat bg-left-top bg-[length:240px]'
-            style={{ backgroundImage: "url('/dots-1.svg')" }}
-          ></div>
-        </div> */}
-      {/* Section content */}
-      {/* <div className='relative z-10 container mx-auto px-4'>
-          <img
-            src='https://placehold.co/600x400'
-            alt='Example image'
-            className='mx-auto'
-          />
-          <h2 className='text-3xl font-bold text-center mt-8'>
-            Section Title
-          </h2>
-          <p className='mt-4 text-center text-muted-foreground max-w-2xl mx-auto'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Quisquam voluptatum, quibusdam voluptate.
-          </p>
-        </div>
-      </section> */}
-      {/* <section className='py-16 bg-background'>
-        <div className='relative container mx-auto flex flex-col-reverse items-center gap-12 px-4 md:flex-row md:gap-20'>
-          {/* Dots background */}
-      {/* <div
-        className='absolute pointer-events-none opacity-20 z-0'
-        style={{
-          inset: 'calc(var(--spacing) * -8)',
-          top: 'calc(var(--spacing) * -26)',
-        }}
-      >
-        <div
-          className='h-full w-full bg-no-repeat '
-          style={{
-            backgroundSize: '240px',
-
-            backgroundImage: "url('/dots-1.svg')",
-          }}
-        ></div>
-      </div>{' '} */}
-      {/* left side: Image */}
-      {/* <div className='relative z-10 w-full md:w-1/2'>
-            <img
-              src='https://placehold.co/600x400?text=Your+Image'
-              alt='Ecommerce Illustration'
-              className='mx-auto  shadow-lg'
-            />
-          </div> */}
-      {/* right side: Text */}
-      {/* <div className='text-center md:text-left md:w-1/2'>
-            <h2 className='text-4xl font-bold tracking-tight mb-4'>
-              Empower Your E-commerce Business
-            </h2>
-            <p className='text-muted-foreground mb-6'>
-              We help you launch, grow, and scale your store with
-              cutting-edge strategies and solutions.
-            </p>
-            <a
-              href='/contact'
-              className='inline-block  bg-primary px-6 py-3 text-white hover:bg-primary/80 transition-colors'
-            >
-              Get Started
-            </a>
-          </div>
-        </div>
-      </section> */}
-      {/* <section className='relative bg-slate-50 py-20'>
-        <div className='container mx-auto'>
-          <div className='grid grid-cols-1 md:grid-cols-4 gap-8 items-center'> */}
-      {/* First column (50%) */}
-      {/* <div className='md:col-span-2 flex justify-center md:justify-start'>
-              <p className='text-lg font-serif text-primary uppercase tracking-wider'>
-                Know our logos
-              </p>
-            </div> */}
-      {/* Second column (25%) */}
-      {/* <div className='flex justify-center'>
-              <img
-                src='/images/dummy_300x100.png'
-                alt='temp image'
-                width={300}
-                height={100}
-                className='object-contain'
-              />
-            </div> */}
-      {/* Third column (25%) */}
-      {/* <div className='flex justify-center'>
-              <img
-                src='/images/dummy_300x100.png'
-                alt='temp image'
-                width={300}
-                height={100}
-                className='object-contain'
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-      */}
+      <CenterTitlePicture
+        title='Center Title Picture'
+        description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam voluptate.'
+        imageUrl='/images/dummy_800x500.png'
+        imageAlt='Dummy Image'
+      />
+      <BlogPosts title='Featured Posts' featured={true} />
+      <CallToAction
+        title='Join the Movement'
+        description='Start building better web experiences with our Next.js Starter.'
+        buttonText='Get Started'
+        buttonLink='/get-started'
+        backgroundClass='bg-yellow-100'
+      />
     </>
   );
 }

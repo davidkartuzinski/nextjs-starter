@@ -2,7 +2,10 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getAllPosts, getCategories } from '@/lib/supabase/blog';
+import {
+  getAllPosts,
+  getCategories,
+} from '@/lib/supabase/blog.client';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Sidebar from '@/components/layout/Sidebar';
 import Pagination from '@/components/blog/Pagination';

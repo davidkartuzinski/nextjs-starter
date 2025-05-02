@@ -14,10 +14,7 @@ export default function FeatureGrid({ features }) {
         const LucideIcon = Icons[feature.icon]; // Pull the icon by string
 
         return (
-          <div
-            key={i}
-            className=' border p-6 text-center shadow-sm hover:shadow-md transition'
-          >
+          <div key={i} className='p-6 text-center shadow-lg '>
             {LucideIcon && (
               <div className='mb-4 flex justify-center text-primary'>
                 <LucideIcon className='h-8 w-8' />

@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { getAllPosts, getCategories } from '@/lib/supabase/blog';
+import { getCategories } from '@/lib/supabase/blog.client';
+
+import { getAllPosts } from '@/lib/supabase/blog.server';
 import Sidebar from '@/components/layout/Sidebar';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon } from 'lucide-react';

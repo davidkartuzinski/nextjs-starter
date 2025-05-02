@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { getAllPosts } from '@/lib/supabase/blog';
-import { getCategories } from '@/lib/supabase/blog';
+import { getAllPosts } from '@/lib/supabase/blog.server';
+import { getCategories } from '@/lib/supabase/blog.client';
 import Sidebar from '@/components/layout/Sidebar';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import Pagination from '@/components/blog/Pagination';

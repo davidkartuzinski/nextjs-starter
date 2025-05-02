@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import clsx from 'clsx';
-
+import FloatingBackgroundIcon from '@/components/optional/FloatingBackgroundIcon';
 export default function SplitSection({
   title,
   features = [],
@@ -12,6 +12,14 @@ export default function SplitSection({
 
   return (
     <section className='relative bg-background py-20'>
+      {/* Reusable Dots Layer */}
+      <FloatingBackgroundIcon
+        top={40}
+        left={40}
+        zIndex={0}
+        position='left'
+      />
+
       <div className='container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-4 sm:px-6'>
         {/* Text Column */}
         <div
@@ -47,7 +55,7 @@ export default function SplitSection({
             alt={imageAlt}
             fill
             priority
-            className='object-cover '
+            className='object-cover shadow-lg'
             sizes='(max-width: 1024px) 100vw, 50vw'
           />
         </div>
