@@ -11,9 +11,9 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
+    "components": "@/cms-core/components",
+    "utils": "@/cms-core/lib/utils",
+    "ui": "@/cms-core/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

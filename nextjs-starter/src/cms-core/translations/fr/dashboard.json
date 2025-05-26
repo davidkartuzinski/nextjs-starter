@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Tableau de bord",
+    "signOut": "Se déconnecter",
+    "addTitle": "Ajouter une tâche",
+    "addDescription": "Que devez-vous faire aujourd'hui ?",
+    "inputPlaceholder": "Entrez une nouvelle tâche...",
+    "addButton": "Ajouter",
+    "yourTodos": "Vos tâches",
+    "loading": "Chargement des tâches...",
+    "empty": "Aucune tâche pour l’instant.",
+    "delete": "Supprimer",
+    "authMessage": "Veuillez vous connecter pour accéder à cette page.",
+    "signIn": "Se connecter ici."
+  }
+}
