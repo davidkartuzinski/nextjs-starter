@@ -15,8 +15,11 @@ import { Menu } from 'lucide-react';
 import { cn } from '@/cms-core/lib/utils';
 import { NavItems, SiteName, Logo } from '@/app/site-config';
 import SocialFollowMe from '@/cms-core/components/optional/social-follow-me'; // 👈 import your socials component
-
-export default function MobileNav({ option = 1 }) {
+import LanguageSwitcher from '@/cms-core/components/optional/LanguageSwitcher';
+export default function MobileNav({
+  mobileOption = 1,
+  labelLanguageOption,
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -67,9 +70,12 @@ export default function MobileNav({ option = 1 }) {
               {item.label}
             </Link>
           ))}
+          <LanguageSwitcher
+            labelLanguageOption={labelLanguageOption}
+          />
         </nav>
 
-        {option === 2 && (
+        {mobileOption === 2 && (
           <div className='mt-6'>
             <SocialFollowMe />
           </div>

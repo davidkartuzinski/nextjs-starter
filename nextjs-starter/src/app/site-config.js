@@ -15,7 +15,7 @@ export const SiteName = 'NextJS Starter';
 // use this if you want to use a logo
 export const Logo = (
   <Image
-    src='/dummy_logo.png'
+    src='/user-content/images/dummy_logo.png'
     alt='Logo'
     width={300}
     height={34}
@@ -24,6 +24,9 @@ export const Logo = (
 );
 
 // export const Logo = ''; <--- use this if you don't want to use a logo
+
+// NavItems are now handled by translations in /cms-core/translations/[locale]/navigation.json
+// This allows the navigation menu to change languages dynamically
 
 export const NavItems = [
   {
@@ -95,7 +98,7 @@ export const Features = [
   {
     title: 'Fully Customizable',
     description:
-      'Tweak anything. Components, layout, styles — it’s yours.',
+      "Tweak anything. Components, layout, styles — it's yours.",
     icon: 'ShieldCheck',
     link: '/customize',
     linkText: 'Start customizing →',
@@ -114,7 +117,7 @@ export const SplitSectionFeatures = [
   {
     title: 'Fully Customizable',
     description:
-      'Tweak anything. Components, layout, styles — it’s yours.',
+      "Tweak anything. Components, layout, styles — it's yours.",
   },
   {
     title: 'SEO Optimized',
@@ -125,15 +128,15 @@ export const SplitSectionFeatures = [
 
 export const logos = [
   {
-    src: '/images/dummy_300x100.png',
+    src: '/user-content/images/dummy_300x100.png',
     alt: 'Logo One',
   },
   {
-    src: '/images/dummy_300x100.png',
+    src: '/user-content/images/dummy_300x100.png',
     alt: 'Logo Two',
   },
   {
-    src: '/images/dummy_300x100.png',
+    src: '/user-content/images/dummy_300x100.png',
     alt: 'Logo Three',
   },
 ];

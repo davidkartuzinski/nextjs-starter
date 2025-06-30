@@ -1,35 +1,66 @@
 import { defaultLocale } from './config';
 
+// Import all translation files statically
+import enPages from '@/user-content/translations/en/pages.json';
+import esPages from '@/user-content/translations/es/pages.json';
+import frPages from '@/user-content/translations/fr/pages.json';
+
+import enAbout from '@/user-content/translations/en/about.json';
+import esAbout from '@/user-content/translations/es/about.json';
+import frAbout from '@/user-content/translations/fr/about.json';
+
+import enContact from '@/user-content/translations/en/contact.json';
+import esContact from '@/user-content/translations/es/contact.json';
+import frContact from '@/user-content/translations/fr/contact.json';
+
+import enDashboard from '@/cms-core/translations/en/dashboard.json';
+import esDashboard from '@/cms-core/translations/es/dashboard.json';
+import frDashboard from '@/cms-core/translations/fr/dashboard.json';
+
+// Translation mapping
+const translations = {
+  pages: {
+    en: enPages,
+    es: esPages,
+    fr: frPages,
+  },
+  about: {
+    en: enAbout,
+    es: esAbout,
+    fr: frAbout,
+  },
+  contact: {
+    en: enContact,
+    es: esContact,
+    fr: frContact,
+  },
+  dashboard: {
+    en: enDashboard,
+    es: esDashboard,
+    fr: frDashboard,
+  },
+};
+
 export async function loadTranslation(locale, namespace = 'pages') {
-  let messages = {};
-  let fallback = {};
+  console.log(
+    `Loading translations for locale: ${locale}, namespace: ${namespace}`
+  );
 
-  try {
-    messages = (
-      await import(
-        `@/cms-core/translations/${locale}/${namespace}.json`
-      )
-    ).default;
-  } catch {
-    console.warn(`⚠️ Missing translations for locale "${locale}"`);
-  }
+  // Get the requested translations
+  const messages = translations[namespace]?.[locale] || {};
 
-  if (locale !== defaultLocale) {
-    try {
-      fallback = (
-        await import(
-          `@/cms-core/translations/${defaultLocale}/${namespace}.json`
-        )
-      ).default;
-    } catch {
-      console.warn(
-        `⚠️ Missing fallback translations for default locale "${defaultLocale}"`
-      );
-    }
-  }
+  // Get fallback translations if needed
+  const fallback =
+    locale !== defaultLocale
+      ? translations[namespace]?.[defaultLocale] || {}
+      : {};
 
-  return {
+  // Merge fallback with messages (messages override fallback)
+  const result = {
     ...fallback,
     ...messages,
   };
+
+  console.log('Final merged translations:', result);
+  return result;
 }

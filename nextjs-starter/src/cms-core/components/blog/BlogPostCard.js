@@ -16,7 +16,7 @@ import ImageWithFallback from '@/cms-core/components/optional/ImageWithFallback'
 import slugify from 'react-slugify';
 
 export default function BlogPostCard({ post }) {
-  const featuredImage = `/images/posts/${post.slug}/hero-image.jpg`;
+  const featuredImage = `/user-content/images/posts/${post.slug}/hero-image.jpg`;
 
   return (
     <Card className='flex flex-col justify-between h-full'>

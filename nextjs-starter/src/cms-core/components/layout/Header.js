@@ -6,8 +6,13 @@ import MainNav from './MainNav';
 import MobileNav from './MobileNav';
 import SocialFollowMe from '../optional/social-follow-me';
 import { Logo, SiteName } from '@/app/site-config';
+import LanguageSwitcher from '../optional/LanguageSwitcher';
 
-export default function Header({ option = 1 }) {
+export default function Header({
+  menuOption = 1,
+  mobileOption = 1,
+  labelLanguageOption,
+}) {
   return (
     <header className='sticky top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
       <div className='container flex h-24 items-center justify-between px-5 md:px-8 max-w-6xl mx-auto'>
@@ -20,7 +25,7 @@ export default function Header({ option = 1 }) {
         </Link>
 
         {/* Center: MainNav if option 2 */}
-        {option === 2 && (
+        {menuOption === 2 && (
           <div className='absolute left-1/2 transform -translate-x-1/2 hidden md:flex'>
             <MainNav />
           </div>
@@ -28,20 +33,29 @@ export default function Header({ option = 1 }) {
 
         {/* Right: */}
         <div className='flex items-center gap-4'>
-          {option === 1 && (
-            <div className='hidden md:flex'>
+          {menuOption === 1 && (
+            <div className='hidden md:flex items-center gap-x-4'>
               <MainNav />
+              <LanguageSwitcher
+                labelLanguageOption={labelLanguageOption}
+              />
             </div>
           )}
-          {option === 2 && (
+          {menuOption === 2 && (
             <div className='hidden md:flex items-center gap-4'>
               <SocialFollowMe />
               <Toggle />
+              <LanguageSwitcher
+                labelLanguageOption={labelLanguageOption}
+              />
             </div>
           )}
           {/* Mobile menu trigger */}
           <div className='md:hidden'>
-            <MobileNav option={2} />
+            <MobileNav
+              mobileOption={mobileOption}
+              labelLanguageOption={labelLanguageOption}
+            />
           </div>
         </div>
       </div>

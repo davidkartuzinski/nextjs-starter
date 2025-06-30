@@ -1,0 +1,305 @@
+---
+title: Guía Rápida de Markdown
+published_at: '2025-04-29'
+summary: Ve qué tan bien se soporta Markdown usando MDX y Next.js. Comparado con la Guía Rápida de Markdown.
+featured: true
+categories:
+  - markdown
+  - mdx
+  - coding
+tags: ['mdx', 'editor', 'markdown']
+---
+
+<small>
+  Nota: Tomado de [Markdown
+  Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+  y editado en algunos lugares para adaptarse a este tema.
+</small>
+
+Esta guía rápida te muestra el markdown que se soporta cuando usas MDX con Next.js.
+
+<img
+  src='/user-content/images/posts/markdown-cheatsheet/markdown.svg'
+  alt='Este es el Logo de Markdown'
+  width={300}
+  height={300}
+  priority='true'
+/>
+
+## Encabezados
+
+Cada uno de los 6 diferentes encabezados están abajo.
+
+```
+# H1  - Soy un Encabezado
+## H2 - Soy un Encabezado
+### H3 - Soy un Encabezado
+#### H4 - Soy un Encabezado
+##### H5 - Soy un Encabezado
+###### H6 - Soy un Encabezado
+```
+
+# H1 - Soy un Encabezado
+
+## H2 - Soy un Encabezado
+
+### H3 - Soy un Encabezado
+
+#### H4 - Soy un Encabezado
+
+##### H5 - Soy un Encabezado
+
+###### H6 - Soy un Encabezado
+
+## Énfasis
+
+La forma moderna de agregar énfasis a palabras y frases.
+
+```
+Énfasis, también conocido como cursiva, con *asteriscos*.
+
+Énfasis fuerte, también conocido como negrita, con **asteriscos**.
+
+Énfasis combinado con **asteriscos y *asteriscos simples***.
+
+Tachado usa dos tildes. ~~Tacha esto.~~
+```
+
+Énfasis, también conocido como cursiva, con _asteriscos_.
+
+Énfasis fuerte, también conocido como negrita, con **asteriscos**.
+
+Énfasis combinado con **asteriscos y _asteriscos simples_**.
+
+Tachado usa dos tildes. ~~Tacha esto.~~
+
+## Listas
+
+Estos son los diferentes tipos de listas.
+
+```
+1. Primer elemento de lista ordenada
+2. Otro elemento
+    - Sub-lista desordenada.
+1. Los números reales no importan, solo que sea un número
+    1. Sub-lista ordenada
+4. Y otro elemento.
+
+* Las listas desordenadas pueden usar asteriscos
+- O guiones
++ O signos más
+```
+
+1. Primer elemento de lista ordenada
+2. Otro elemento
+   - Sub-lista desordenada.
+3. Los números reales no importan, solo que sea un número
+   1. Sub-lista ordenada
+4. Y otro elemento.
+
+- Las listas desordenadas pueden usar asteriscos
+
+* O guiones
+
+- O signos más
+
+## Enlaces
+
+Así es como crear enlaces.
+
+```
+[Soy un enlace en línea](https://www.google.com)
+
+[Soy un enlace en línea con título](https://www.google.com "Página de Inicio de Google")
+
+[Soy un enlace de referencia][Texto de referencia arbitrario]
+
+[Soy una referencia relativa a un archivo de repositorio](../Article_1)
+
+[Puedes usar números para definiciones de enlaces de referencia][1]
+
+O déjalo vacío y usa el [texto del enlace mismo].
+```
+
+[Soy un enlace en línea](https://www.google.com)
+
+[Soy un enlace en línea con título](https://www.google.com 'Página de Inicio de Google')
+
+[Soy un enlace de referencia][texto de referencia arbitrario]
+
+[Soy una referencia relativa a un archivo de repositorio](../Article_1)
+
+[Puedes usar números para definiciones de enlaces de referencia][1]
+
+O déjalo vacío y usa el [texto del enlace mismo].
+
+[texto de referencia arbitrario]: https://www.mozilla.org
+[1]: http://slashdot.org
+[texto del enlace mismo]: http://www.reddit.com
+
+## Código y Resaltado de Sintaxis (con PrismJS)
+
+Usar PrismJS con Next.js te da la capacidad de compartir y resaltar fragmentos de código.
+
+```
+El código en línea tiene solo `una comilla` alrededor.
+```
+
+Ejemplo de Código en Línea:
+
+El código en línea tiene solo `una comilla` alrededor.
+
+Los bloques de código tienen tres comillas alrededor. `CÓDIGO`. Después de la primera comilla agrega el lenguaje de tu elección. Mira estos ejemplos abajo:
+
+```javascript
+var s = 'Resaltado de sintaxis JavaScript';
+alert(s);
+```
+
+```python
+s = "Resaltado de sintaxis Python"
+print s
+```
+
+```
+No se indica lenguaje, así que no hay resaltado de sintaxis.
+Pero agreguemos una <b>etiqueta</b>.
+```
+
+## Tablas
+
+Puedes agregar tablas a tus artículos de blog así.
+
+```markdown
+Los dos puntos se pueden usar para alinear columnas.
+
+| Tablas         |          Son          | Geniales |
+| -------------- | :-------------------: | -------: |
+| col 3 es       | alineada a la derecha |    $1600 |
+| col 2 es       |       centrada        |      $12 |
+| rayas de cebra |     son ordenadas     |       $1 |
+
+Debe haber al menos 3 guiones separando cada celda de encabezado.
+Los pipes externos (|) son opcionales, y no necesitas hacer que el
+Markdown crudo se vea bonito. También puedes usar Markdown en línea.
+
+| Markdown | Menos       | Bonito   |
+| -------- | ----------- | -------- |
+| _Aún_    | `renderiza` | **bien** |
+| 1        | 2           | 3        |
+```
+
+Los dos puntos se pueden usar para alinear columnas.
+
+| Tablas         |          Son          | Geniales |
+| -------------- | :-------------------: | -------: |
+| col 3 es       | alineada a la derecha |   \$1600 |
+| col 2 es       |       centrada        |     \$12 |
+| rayas de cebra |     son ordenadas     |      \$1 |
+
+Debe haber al menos 3 guiones separando cada celda de encabezado.
+Los pipes externos (|) son opcionales, y no necesitas hacer que el
+Markdown crudo se vea bonito. También puedes usar Markdown en línea.
+
+| Markdown | Menos       | Bonito   |
+| -------- | ----------- | -------- |
+| _Aún_    | `renderiza` | **bien** |
+| 1        | 2           | 3        |
+
+## Citas
+
+Agrega una cita usando la siguiente sintaxis.
+
+```markdown
+> Las citas son muy útiles en email para emular texto de respuesta.
+> Esta línea es parte de la misma cita.
+
+Ruptura de cita.
+
+> Esta es una línea muy larga que aún será citada correctamente cuando se envuelva. Oh chico, sigamos escribiendo para asegurarnos de que esto sea lo suficientemente largo para envolverse para todos. Oh, puedes _poner_ **Markdown** en una cita.
+```
+
+> Las citas son muy útiles en email para emular texto de respuesta.
+> Esta línea es parte de la misma cita.
+
+Ruptura de cita.
+
+> Esta es una línea muy larga que aún será citada correctamente cuando se envuelva. Oh chico, sigamos escribiendo para asegurarnos de que esto sea lo suficientemente largo para envolverse para todos. Oh, puedes _poner_ **Markdown** en una cita.
+
+## HTML en Línea
+
+Podrías usar HTML crudo en tu Markdown. Pero como esto es MDX no deberías necesitarlo. Ahora puedes simplemente crear componentes e importarlos.
+
+```html
+<dl>
+  <dt>Lista de definición</dt>
+  <dd>Es algo que la gente usa a veces.</dd>
+
+  <dt>Markdown en HTML</dt>
+  <dd>No funciona **muy** bien. Usa etiquetas HTML <em>tags</em>.</dd>
+</dl>
+```
+
+<dl>
+  <dt>Lista de definición</dt>
+  <dd>Es algo que la gente usa a veces.</dd>
+
+  <dt>Markdown en HTML</dt>
+  <dd>No funciona **muy** bien. Usa etiquetas HTML <em>tags</em>.</dd>
+</dl>
+
+## Regla horizontal
+
+```markdown
+Tres o más...
+
+---
+
+Guiones
+
+---
+
+Asteriscos
+
+---
+
+Guiones bajos
+```
+
+Tres o más...
+
+---
+
+Guiones
+
+---
+
+Asteriscos
+
+---
+
+Guiones bajos
+
+## Saltos de línea
+
+Mi recomendación básica para aprender cómo funcionan los saltos de línea es experimentar y descubrir -- presiona **Enter** una vez (es decir, inserta una nueva línea), luego presiónalo dos veces (es decir, inserta dos nuevas líneas), mira qué pasa. Pronto aprenderás a obtener lo que quieres. "Markdown Toggle" es tu amigo.
+
+```
+Aquí hay una línea para que empecemos.
+
+Esta línea está separada de la de arriba por dos nuevas líneas, así que será un *párrafo separado*.
+
+Esta línea también es un párrafo separado, pero...
+Esta línea solo está separada por una nueva línea, así que es una línea separada en el *mismo párrafo*.
+```
+
+Aquí hay una línea para que empecemos.
+
+Esta línea está separada de la de arriba por dos nuevas líneas, así que será un _párrafo separado_.
+
+Esta línea también es un párrafo separado, pero...
+Esta línea solo está separada por una nueva línea, así que es una línea separada en el _mismo párrafo_.
+
+## Resumen
+
+Como puedes ver, usar Markdown con PrismJS en una aplicación Next.js y MDX te da todo lo que podrías necesitar para escribir correctamente tus artículos en Markdown.

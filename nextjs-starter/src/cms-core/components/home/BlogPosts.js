@@ -7,7 +7,7 @@ import {
   getRecentPosts,
   getPostsByTag,
   getPostsByCategory,
-} from '@/cms-core/lib/supabase/blog.client';
+} from '@/cms-core/lib/supabase/blog.server';
 
 export default async function BlogPosts({
   title = 'Recent Posts',

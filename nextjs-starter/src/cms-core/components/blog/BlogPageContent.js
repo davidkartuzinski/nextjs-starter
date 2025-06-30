@@ -60,7 +60,9 @@ export default function BlogPageContent() {
               recentPosts={posts.slice(0, 5).map((post) => ({
                 slug: post.slug,
                 title: post.title,
-                date: new Date(post.publishedAt).toLocaleDateString(),
+                date: new Date(
+                  post.published_at
+                ).toLocaleDateString(),
               }))}
               categories={categories}
             />

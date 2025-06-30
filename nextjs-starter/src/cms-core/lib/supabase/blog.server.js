@@ -123,8 +123,33 @@ export async function getAllPosts() {
       .filter((entry) => entry.isDirectory())
       .map(async (dir) => {
         const slug = dir.name;
-        const postPath = path.join(postsDir, slug, 'page.mdx');
-        if (!fs.existsSync(postPath)) return null;
+        // Look for the English version first, then fallback to other locales
+        const postPath = path.join(postsDir, slug, 'en', 'page.mdx');
+        if (!fs.existsSync(postPath)) {
+          // Try other locales if English doesn't exist
+          const locales = ['es', 'fr'];
+          for (const locale of locales) {
+            const altPath = path.join(
+              postsDir,
+              slug,
+              locale,
+              'page.mdx'
+            );
+            if (fs.existsSync(altPath)) {
+              const file = fs.readFileSync(altPath, 'utf8');
+              const { data } = matter(file);
+
+              await syncPostWithSupabase(
+                slug,
+                data,
+                data.categories || [],
+                data.tags || []
+              );
+              return { slug, ...data };
+            }
+          }
+          return null;
+        }
 
         const file = fs.readFileSync(postPath, 'utf8');
         const { data } = matter(file);
@@ -142,6 +167,195 @@ export async function getAllPosts() {
   return posts
     .filter(Boolean)
     .sort(
-      (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+      (a, b) => new Date(b.published_at) - new Date(a.published_at)
     );
+}
+
+// --- Search MDX posts ---
+export async function searchPosts(query) {
+  if (!query || query.trim() === '') {
+    return [];
+  }
+
+  const postsDir = path.join(process.cwd(), 'posts');
+  const entries = fs.readdirSync(postsDir, { withFileTypes: true });
+  const searchTerm = query.toLowerCase().trim();
+
+  const posts = await Promise.all(
+    entries
+      .filter((entry) => entry.isDirectory())
+      .map(async (dir) => {
+        const slug = dir.name;
+        // Look for the English version first, then fallback to other locales
+        const postPath = path.join(postsDir, slug, 'en', 'page.mdx');
+        let file, data, content;
+
+        if (!fs.existsSync(postPath)) {
+          // Try other locales if English doesn't exist
+          const locales = ['es', 'fr'];
+          for (const locale of locales) {
+            const altPath = path.join(
+              postsDir,
+              slug,
+              locale,
+              'page.mdx'
+            );
+            if (fs.existsSync(altPath)) {
+              file = fs.readFileSync(altPath, 'utf8');
+              const parsed = matter(file);
+              data = parsed.data;
+              content = parsed.content;
+              break;
+            }
+          }
+          if (!file) return null;
+        } else {
+          file = fs.readFileSync(postPath, 'utf8');
+          const parsed = matter(file);
+          data = parsed.data;
+          content = parsed.content;
+        }
+
+        // Search in title, summary, content, categories, and tags
+        const searchableText = [
+          data.title || '',
+          data.summary || '',
+          content,
+          (data.categories || []).join(' '),
+          (data.tags || []).join(' '),
+        ]
+          .join(' ')
+          .toLowerCase();
+
+        if (searchableText.includes(searchTerm)) {
+          return {
+            slug,
+            ...data,
+            published_at: data.published_at || data.publishedAt,
+            categories: data.categories || [],
+            tags: data.tags || [],
+          };
+        }
+
+        return null;
+      })
+  );
+
+  return posts
+    .filter(Boolean)
+    .sort(
+      (a, b) =>
+        new Date(b.published_at || b.publishedAt) -
+        new Date(a.published_at || a.publishedAt)
+    );
+}
+
+// --- Get categories from MDX posts ---
+export async function getCategories() {
+  const posts = await getAllPosts();
+  const categorySet = new Set();
+
+  posts.forEach((post) => {
+    if (post.categories) {
+      post.categories.forEach((category) =>
+        categorySet.add(category)
+      );
+    }
+  });
+
+  return Array.from(categorySet).map((category) => ({
+    id: category,
+    name: category
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase()),
+    slug: category,
+  }));
+}
+
+// --- Get posts by category ---
+export async function getPostsByCategory(categorySlug) {
+  const posts = await getAllPosts();
+
+  return posts
+    .filter(
+      (post) =>
+        post.categories &&
+        post.categories.some(
+          (category) =>
+            category.toLowerCase() === categorySlug.toLowerCase()
+        )
+    )
+    .map((post) => ({
+      ...post,
+      published_at: post.published_at || post.publishedAt,
+      categories: post.categories || [],
+      tags: post.tags || [],
+    }));
+}
+
+// --- Get posts by tag ---
+export async function getPostsByTag(tagSlug) {
+  const posts = await getAllPosts();
+
+  return posts
+    .filter(
+      (post) =>
+        post.tags &&
+        post.tags.some(
+          (tag) => tag.toLowerCase() === tagSlug.toLowerCase()
+        )
+    )
+    .map((post) => ({
+      ...post,
+      published_at: post.published_at || post.publishedAt,
+      categories: post.categories || [],
+      tags: post.tags || [],
+    }));
+}
+
+// --- Get tags from MDX posts ---
+export async function getTags() {
+  const posts = await getAllPosts();
+  const tagSet = new Set();
+
+  posts.forEach((post) => {
+    if (post.tags) {
+      post.tags.forEach((tag) => tagSet.add(tag));
+    }
+  });
+
+  return Array.from(tagSet).map((tag) => ({
+    id: tag,
+    name: tag
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase()),
+    slug: tag,
+  }));
+}
+
+// --- Get featured posts ---
+export async function getFeaturedPosts(limit = 3) {
+  const posts = await getAllPosts();
+
+  return posts
+    .filter((post) => post.featured)
+    .slice(0, limit)
+    .map((post) => ({
+      ...post,
+      published_at: post.published_at || post.publishedAt,
+      categories: post.categories || [],
+      tags: post.tags || [],
+    }));
+}
+
+// --- Get recent posts ---
+export async function getRecentPosts(limit = 3) {
+  const posts = await getAllPosts();
+
+  return posts.slice(0, limit).map((post) => ({
+    ...post,
+    published_at: post.published_at || post.publishedAt,
+    categories: post.categories || [],
+    tags: post.tags || [],
+  }));
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Separator } from '@/cms-core/components/ui/separator';
+import LanguageSwitcher from '@/cms-core/components/optional/LanguageSwitcher';
 
 export default function Footer() {
   return (
@@ -122,6 +123,7 @@ export default function Footer() {
           reserved.
         </p>
         <div className='flex items-center gap-4'>
+          <LanguageSwitcher /> |{' '}
           <Link
             href='/admin/login'
             className='transition-colors hover:text-primary'

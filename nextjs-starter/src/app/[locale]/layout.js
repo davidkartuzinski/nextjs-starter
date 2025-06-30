@@ -16,7 +16,11 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <>
-      <Header option={1} />
+      <Header
+        menuOption={2}
+        mobileOption={2}
+        labelLanguageOption={2}
+      />
       <main className='flex-1 w-full'>
         <AuthProvider>{children}</AuthProvider>
       </main>

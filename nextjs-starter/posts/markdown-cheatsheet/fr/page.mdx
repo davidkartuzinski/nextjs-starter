@@ -1,0 +1,308 @@
+---
+title: Guide Rapide Markdown
+published_at: '2025-04-29'
+summary: Voyez à quel point Markdown est bien supporté en utilisant MDX et Next.js. Comparé au Guide Rapide Markdown.
+featured: true
+categories:
+  - markdown
+  - mdx
+  - coding
+tags: ['mdx', 'editor', 'markdown']
+---
+
+<small>
+  Note : Tiré de [Markdown
+  Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+  et édité à quelques endroits pour s'adapter à ce thème.
+</small>
+
+Ce guide rapide vous montre le markdown qui est supporté lors de l'utilisation de MDX avec Next.js.
+
+<img
+  src='/user-content/images/posts/markdown-cheatsheet/markdown.svg'
+  alt="C'est le Logo Markdown"
+  width={300}
+  height={300}
+  priority='true'
+/>
+
+## En-têtes
+
+Chacun des 6 différents en-têtes sont ci-dessous.
+
+```
+# H1  - Je suis un En-tête
+## H2 - Je suis un En-tête
+### H3 - Je suis un En-tête
+#### H4 - Je suis un En-tête
+##### H5 - Je suis un En-tête
+###### H6 - Je suis un En-tête
+```
+
+# H1 - Je suis un En-tête
+
+## H2 - Je suis un En-tête
+
+### H3 - Je suis un En-tête
+
+#### H4 - Je suis un En-tête
+
+##### H5 - Je suis un En-tête
+
+###### H6 - Je suis un En-tête
+
+## Emphase
+
+La façon moderne d'ajouter de l'emphase aux mots et phrases.
+
+```
+Emphase, alias italique, avec *astérisques*.
+
+Emphase forte, alias gras, avec **astérisques**.
+
+Emphase combinée avec **astérisques et *astérisques simples***.
+
+Barré utilise deux tildes. ~~Barrer ceci.~~
+```
+
+Emphase, alias italique, avec _astérisques_.
+
+Emphase forte, alias gras, avec **astérisques**.
+
+Emphase combinée avec **astérisques et _astérisques simples_**.
+
+Barré utilise deux tildes. ~~Barrer ceci.~~
+
+## Listes
+
+Ce sont les différents types de listes.
+
+```
+1. Premier élément de liste ordonnée
+2. Un autre élément
+    - Sous-liste non ordonnée.
+1. Les vrais chiffres n'importent pas, juste que ce soit un nombre
+    1. Sous-liste ordonnée
+4. Et un autre élément.
+
+* Les listes non ordonnées peuvent utiliser des astérisques
+- Ou des tirets
++ Ou des plus
+```
+
+1. Premier élément de liste ordonnée
+2. Un autre élément
+   - Sous-liste non ordonnée.
+3. Les vrais chiffres n'importent pas, juste que ce soit un nombre
+   1. Sous-liste ordonnée
+4. Et un autre élément.
+
+- Les listes non ordonnées peuvent utiliser des astérisques
+
+* Ou des tirets
+
+- Ou des plus
+
+## Liens
+
+Voici comment créer des liens.
+
+```
+[Je suis un lien en ligne](https://www.google.com)
+
+[Je suis un lien en ligne avec titre](https://www.google.com "Page d'accueil de Google")
+
+[Je suis un lien de référence][Texte de référence arbitraire]
+
+[Je suis une référence relative à un fichier de dépôt](../Article_1)
+
+[Vous pouvez utiliser des nombres pour les définitions de liens de référence][1]
+
+Ou laissez-le vide et utilisez le [texte du lien lui-même].
+```
+
+[Je suis un lien en ligne](https://www.google.com)
+
+[Je suis un lien en ligne avec titre](https://www.google.com "Page d'accueil de Google")
+
+[Je suis un lien de référence][texte de référence arbitraire]
+
+[Je suis une référence relative à un fichier de dépôt](../Article_1)
+
+[Vous pouvez utiliser des nombres pour les définitions de liens de référence][1]
+
+Ou laissez-le vide et utilisez le [texte du lien lui-même].
+
+[texte de référence arbitraire]: https://www.mozilla.org
+[1]: http://slashdot.org
+[texte du lien lui-même]: http://www.reddit.com
+
+## Code et Coloration de Syntaxe (avec PrismJS)
+
+Utiliser PrismJS avec Next.js vous donne la capacité de partager et mettre en évidence des extraits de code.
+
+```
+Le code en ligne n'a qu'une `accent grave` autour.
+```
+
+Exemple de Code en Ligne :
+
+Le code en ligne n'a qu'une `accent grave` autour.
+
+Les blocs de code ont trois accents graves autour. `CODE`. Après le premier accent, ajoutez le langage de votre choix. Regardez ces exemples ci-dessous :
+
+```javascript
+var s = 'Coloration de syntaxe JavaScript';
+alert(s);
+```
+
+```python
+s = "Coloration de syntaxe Python"
+print s
+```
+
+```
+Aucun langage indiqué, donc pas de coloration de syntaxe.
+Mais ajoutons une <b>balise</b>.
+```
+
+## Tableaux
+
+Vous pouvez ajouter des tableaux à vos articles de blog comme ceci.
+
+```markdown
+Les deux-points peuvent être utilisés pour aligner les colonnes.
+
+| Tableaux      |      Sont       |  Cool |
+| ------------- | :-------------: | ----: |
+| col 3 est     | aligné à droite | $1600 |
+| col 2 est     |     centré      |   $12 |
+| rayures zèbre |   sont nettes   |    $1 |
+
+Il doit y avoir au moins 3 tirets séparant chaque cellule d'en-tête.
+Les pipes externes (|) sont optionnels, et vous n'avez pas besoin de faire
+que le Markdown brut s'aligne joliment. Vous pouvez aussi utiliser du Markdown en ligne.
+
+| Markdown | Moins   | Joli     |
+| -------- | ------- | -------- |
+| _Encore_ | `rendu` | **bien** |
+| 1        | 2       | 3        |
+```
+
+Les deux-points peuvent être utilisés pour aligner les colonnes.
+
+| Tableaux      |      Sont       |   Cool |
+| ------------- | :-------------: | -----: |
+| col 3 est     | aligné à droite | \$1600 |
+| col 2 est     |     centré      |   \$12 |
+| rayures zèbre |   sont nettes   |    \$1 |
+
+Il doit y avoir au moins 3 tirets séparant chaque cellule d'en-tête.
+Les pipes externes (|) sont optionnels, et vous n'avez pas besoin de faire
+que le Markdown brut s'aligne joliment. Vous pouvez aussi utiliser du Markdown en ligne.
+
+| Markdown | Moins   | Joli     |
+| -------- | ------- | -------- |
+| _Encore_ | `rendu` | **bien** |
+| 1        | 2       | 3        |
+
+## Citations
+
+Ajoutez une citation en utilisant la syntaxe suivante.
+
+```markdown
+> Les citations sont très utiles dans les emails pour émuler le texte de réponse.
+> Cette ligne fait partie de la même citation.
+
+Rupture de citation.
+
+> Ceci est une très longue ligne qui sera encore correctement citée quand elle se wrap. Oh garçon, continuons à écrire pour nous assurer que ceci soit assez long pour se wrapper pour tout le monde. Oh, vous pouvez _mettre_ **Markdown** dans une citation.
+```
+
+> Les citations sont très utiles dans les emails pour émuler le texte de réponse.
+> Cette ligne fait partie de la même citation.
+
+Rupture de citation.
+
+> Ceci est une très longue ligne qui sera encore correctement citée quand elle se wrap. Oh garçon, continuons à écrire pour nous assurer que ceci soit assez long pour se wrapper pour tout le monde. Oh, vous pouvez _mettre_ **Markdown** dans une citation.
+
+## HTML en Ligne
+
+Vous pourriez utiliser du HTML brut dans votre Markdown. Mais comme ceci est MDX, vous ne devriez pas en avoir besoin. Maintenant vous pouvez simplement créer des composants et les importer.
+
+```html
+<dl>
+  <dt>Liste de définition</dt>
+  <dd>Est quelque chose que les gens utilisent parfois.</dd>
+
+  <dt>Markdown dans HTML</dt>
+  <dd>
+    Ne fonctionne **pas très** bien. Utilisez les balises HTML
+    <em>tags</em>.
+  </dd>
+</dl>
+```
+
+<dl>
+  <dt>Liste de définition</dt>
+  <dd>Est quelque chose que les gens utilisent parfois.</dd>
+
+  <dt>Markdown dans HTML</dt>
+  <dd>Ne fonctionne **pas très** bien. Utilisez les balises HTML <em>tags</em>.</dd>
+</dl>
+
+## Règle horizontale
+
+```markdown
+Trois ou plus...
+
+---
+
+Tirets
+
+---
+
+Astérisques
+
+---
+
+Soulignés
+```
+
+Trois ou plus...
+
+---
+
+Tirets
+
+---
+
+Astérisques
+
+---
+
+Soulignés
+
+## Sauts de ligne
+
+Ma recommandation de base pour apprendre comment fonctionnent les sauts de ligne est d'expérimenter et découvrir -- appuyez sur **Enter** une fois (c'est-à-dire, insérez une nouvelle ligne), puis appuyez deux fois (c'est-à-dire, insérez deux nouvelles lignes), voyez ce qui se passe. Vous apprendrez bientôt à obtenir ce que vous voulez. "Markdown Toggle" est votre ami.
+
+```
+Voici une ligne pour que nous commencions.
+
+Cette ligne est séparée de celle du dessus par deux nouvelles lignes, donc ce sera un *paragraphe séparé*.
+
+Cette ligne est aussi un paragraphe séparé, mais...
+Cette ligne n'est séparée que par une seule nouvelle ligne, donc c'est une ligne séparée dans le *même paragraphe*.
+```
+
+Voici une ligne pour que nous commencions.
+
+Cette ligne est séparée de celle du dessus par deux nouvelles lignes, donc ce sera un _paragraphe séparé_.
+
+Cette ligne est aussi un paragraphe séparé, mais...
+Cette ligne n'est séparée que par une seule nouvelle ligne, donc c'est une ligne séparée dans le _même paragraphe_.
+
+## Résumé
+
+Comme vous pouvez le voir, utiliser Markdown avec PrismJS dans une application Next.js et MDX vous donne tout ce que vous pourriez possiblement avoir besoin pour écrire correctement vos articles en Markdown.
