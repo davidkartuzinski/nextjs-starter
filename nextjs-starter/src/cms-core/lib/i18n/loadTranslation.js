@@ -17,6 +17,10 @@ import enDashboard from '@/cms-core/translations/en/dashboard.json';
 import esDashboard from '@/cms-core/translations/es/dashboard.json';
 import frDashboard from '@/cms-core/translations/fr/dashboard.json';
 
+import enNavigation from '@/cms-core/translations/en/navigation.json';
+import esNavigation from '@/cms-core/translations/es/navigation.json';
+import frNavigation from '@/cms-core/translations/fr/navigation.json';
+
 // Translation mapping
 const translations = {
   pages: {
@@ -38,6 +42,11 @@ const translations = {
     en: enDashboard,
     es: esDashboard,
     fr: frDashboard,
+  },
+  navigation: {
+    en: enNavigation,
+    es: esNavigation,
+    fr: frNavigation,
   },
 };
 

@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { Toggle } from '@/cms-core/components/ui/toggle';
-import MainNav from './MainNav';
-import MobileNav from './MobileNav';
+import TranslatedNav from './TranslatedNav';
+import TranslatedMobileNav from './TranslatedMobileNav';
 import SocialFollowMe from '../optional/social-follow-me';
 import { Logo, SiteName } from '@/app/site-config';
 import LanguageSwitcher from '../optional/LanguageSwitcher';
 
 export default function Header({
+  locale,
   menuOption = 1,
   mobileOption = 1,
   labelLanguageOption,
@@ -18,7 +19,7 @@ export default function Header({
       <div className='container flex h-24 items-center justify-between px-5 md:px-8 max-w-6xl mx-auto'>
         {/* Left: Logo */}
         <Link
-          href='/'
+          href={`/${locale}`}
           className='flex items-center space-x-2 font-bold text-lg'
         >
           {Logo ? Logo : SiteName}
@@ -27,7 +28,7 @@ export default function Header({
         {/* Center: MainNav if option 2 */}
         {menuOption === 2 && (
           <div className='absolute left-1/2 transform -translate-x-1/2 hidden md:flex'>
-            <MainNav />
+            <TranslatedNav locale={locale} />
           </div>
         )}
 
@@ -35,7 +36,7 @@ export default function Header({
         <div className='flex items-center gap-4'>
           {menuOption === 1 && (
             <div className='hidden md:flex items-center gap-x-4'>
-              <MainNav />
+              <TranslatedNav locale={locale} />
               <LanguageSwitcher
                 labelLanguageOption={labelLanguageOption}
               />
@@ -52,7 +53,8 @@ export default function Header({
           )}
           {/* Mobile menu trigger */}
           <div className='md:hidden'>
-            <MobileNav
+            <TranslatedMobileNav
+              locale={locale}
               mobileOption={mobileOption}
               labelLanguageOption={labelLanguageOption}
             />

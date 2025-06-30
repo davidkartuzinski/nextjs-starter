@@ -17,6 +17,7 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <>
       <Header
+        locale={locale}
         menuOption={2}
         mobileOption={2}
         labelLanguageOption={2}
