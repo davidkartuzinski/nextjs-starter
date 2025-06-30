@@ -8,17 +8,10 @@ export default async function ContactPage({ params }) {
 
   const t = await loadTranslation(locale, 'pages');
 
-  // Debug: Log what translations were loaded
-  console.log('Loaded translations for locale:', locale);
-  console.log('All translations:', t);
-
   // Get the appropriate translation key based on locale
   let translationKey = 'contact';
   if (locale === 'es') translationKey = 'contacto';
   if (locale === 'fr') translationKey = 'contactezNous';
-
-  console.log('Using translation key:', translationKey);
-  console.log('Contact data:', t[translationKey]);
 
   const contactData = t[translationKey] || {};
 

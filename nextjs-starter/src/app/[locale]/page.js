@@ -25,7 +25,7 @@ export default function HomePage() {
         description='Everything you need to launch and grow your brand.'
         buttonText='Join Now'
         buttonLink='/signup'
-        imageSrc='/images/dummy_600x400.png'
+        imageSrc='/user-content/images/dummy_600x400.png'
         imageAlt='Demo Illustration'
         imagePosition='right' // or 'right'
       />
@@ -41,7 +41,7 @@ export default function HomePage() {
       <SplitSection
         title={'Split Section'}
         features={SplitSectionFeatures}
-        imageUrl={'/images/dummy_720x600.png'}
+        imageUrl={'/user-content/images/dummy_720x600.png'}
         imageAlt={'Dummy Image'}
         imageLayout={'left'}
       />
@@ -50,14 +50,14 @@ export default function HomePage() {
       <SplitSection
         title={'Split Section'}
         features={SplitSectionFeatures}
-        imageUrl={'/images/dummy_720x600.png'}
+        imageUrl={'/user-content/images/dummy_720x600.png'}
         imageAlt={'Dummy Image'}
         imageLayout={'left'}
       />
       <CenterTitlePicture
         title='Center Title Picture'
         description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam voluptate.'
-        imageUrl='/images/dummy_800x500.png'
+        imageUrl='/user-content/images/dummy_800x500.png'
         imageAlt='Dummy Image'
       />
       <BlogPosts title='Featured Posts' featured={true} />

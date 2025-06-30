@@ -1,7 +1,7 @@
 // components/optional/FloatingBackgroundIcon.js
 
 export default function FloatingBackgroundIcon({
-  image = '/dots-1.svg',
+  image = '/user-content/images/dots-1.svg',
   top,
   left,
   right,

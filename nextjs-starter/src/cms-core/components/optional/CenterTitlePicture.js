@@ -17,7 +17,7 @@ export default function CenterTitlePicture({
         position='left'
         size={240}
         opacity={0.2}
-        image={'/boxes.svg'}
+        image={'/user-content/images/boxes.svg'}
       />
 
       {/* Section Content */}

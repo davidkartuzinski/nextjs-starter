@@ -78,10 +78,6 @@ const translations = {
 };
 
 export async function loadTranslation(locale, namespace = 'pages') {
-  console.log(
-    `Loading translations for locale: ${locale}, namespace: ${namespace}`
-  );
-
   // Get the requested translations
   const messages = translations[namespace]?.[locale] || {};
 
@@ -97,6 +93,5 @@ export async function loadTranslation(locale, namespace = 'pages') {
     ...messages,
   };
 
-  console.log('Final merged translations:', result);
   return result;
 }

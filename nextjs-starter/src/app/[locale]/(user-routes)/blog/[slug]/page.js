@@ -58,7 +58,6 @@ async function getPostBySlug(slug, locale) {
 
     // Fallback to English if locale-specific file doesn't exist
     if (locale !== 'en') {
-      console.log(`🔄 Falling back to English for slug: ${slug}`);
       return getPostBySlug(slug, 'en');
     }
 
