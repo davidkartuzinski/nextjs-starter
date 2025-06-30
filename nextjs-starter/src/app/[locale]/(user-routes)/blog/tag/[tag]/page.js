@@ -4,7 +4,9 @@ import { notFound } from 'next/navigation';
 import {
   getPostsByTag,
   getTags,
+  getCategories,
 } from '@/cms-core/lib/supabase/blog.server';
+import { locales } from '@/cms-core/lib/i18n/config';
 import Sidebar from '@/cms-core/components/layout/Sidebar';
 import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
 import Pagination from '@/cms-core/components/blog/Pagination';
@@ -15,8 +17,15 @@ const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {
-  const { tag } = await params;
-  const tags = await getTags();
+  const { tag, locale } = await params;
+
+  if (!locales.includes(locale)) {
+    return {
+      title: 'Tag Not Found',
+    };
+  }
+
+  const tags = await getTags(locale);
   const tagFound = tags.find((t) => t.slug === tag);
 
   if (!tagFound) {
@@ -33,15 +42,19 @@ export async function generateMetadata({ params }) {
 
 // --- Optimized Page ---
 export default async function TagPage({ params, searchParams }) {
-  const { tag } = await params;
+  const { tag, locale } = await params;
   const { page: pageParam } = await searchParams;
+
+  if (!locales.includes(locale)) notFound();
 
   const tagSlug = tag;
   const page = parseInt(pageParam || '1', 10);
+
   // Parallel data fetching
-  const [tags, posts] = await Promise.all([
-    getTags(),
-    getPostsByTag(tagSlug),
+  const [tags, posts, categories] = await Promise.all([
+    getTags(locale),
+    getPostsByTag(tagSlug, locale),
+    getCategories(locale),
   ]);
 
   const tagFound = tags.find((t) => t.slug === tagSlug);
@@ -77,7 +90,7 @@ export default async function TagPage({ params, searchParams }) {
                     key={post.id || post.slug}
                     fallback={<PostSkeleton />}
                   >
-                    <BlogPostCard post={post} />
+                    <BlogPostCard post={post} locale={locale} />
                   </Suspense>
                 ))}
               </div>
@@ -96,7 +109,7 @@ export default async function TagPage({ params, searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/blog/tag/${tagSlug}`}
+                  basePath={`/${locale}/blog/tag/${tagSlug}`}
                 />
               </div>
             )}
@@ -116,7 +129,10 @@ export default async function TagPage({ params, searchParams }) {
                   day: 'numeric',
                 }),
               }))}
+              categories={categories}
               tags={tags}
+              locale={locale}
+              minPostCount={2}
             />
           </div>
         </div>

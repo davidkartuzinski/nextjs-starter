@@ -1,14 +1,11 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-
 import {
-  getPostsByCategory,
-  getCategories,
+  getPostsByTag,
   getTags,
+  getCategories,
 } from '@/cms-core/lib/supabase/blog.server';
-import { getCategoryInfo } from '@/cms-core/lib/i18n/category-utils';
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
 import { locales } from '@/cms-core/lib/i18n/config';
 import Sidebar from '@/cms-core/components/layout/Sidebar';
 import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
@@ -20,82 +17,71 @@ const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {
-  const { category, locale } = await Promise.resolve(params);
+  const { tag, locale } = await params;
 
   if (!locales.includes(locale)) {
     return {
-      title: 'Category Not Found',
+      title: 'Tag Not Found',
     };
   }
 
-  const categoryInfo = await getCategoryInfo(category, locale);
-  const categories = await getCategories(locale);
-  const found = categories.find((c) => c.slug === category);
+  const tags = await getTags(locale);
+  const tagFound = tags.find((t) => t.slug === tag);
 
-  if (!found && !categoryInfo) {
+  if (!tagFound) {
     return {
-      title: 'Category Not Found',
+      title: 'Tag Not Found',
     };
   }
-
-  const categoryName = categoryInfo?.name || found?.name || category;
 
   return {
-    title: `${categoryName} | Your Blog Name`,
-    description: `Articles in the ${categoryName} category`,
+    title: `${tagFound.name} | Your Blog Name`,
+    description: `Articles tagged with ${tagFound.name}`,
   };
 }
 
-// --- Page Component ---
-export default async function CategoryPage({ params, searchParams }) {
-  const { category, locale } = await Promise.resolve(params);
+// --- Optimized Page ---
+export default async function TagPage({ params, searchParams }) {
+  const { tag, locale } = await params;
+  const { page: pageParam } = await searchParams;
 
   if (!locales.includes(locale)) notFound();
 
-  const { page: pageParam } = await searchParams;
-
+  const tagSlug = tag;
   const page = parseInt(pageParam || '1', 10);
 
-  // Load translations
-  const t = await loadTranslation(locale, 'categories');
+  // Parallel data fetching
+  const [tags, posts, categories] = await Promise.all([
+    getTags(locale),
+    getPostsByTag(tagSlug, locale),
+    getCategories(locale),
+  ]);
 
-  const categories = await getCategories(locale);
-  const tags = await getTags(locale);
-  const categoryFound = categories.find((c) => c.slug === category);
-  const categoryInfo = await getCategoryInfo(category, locale);
+  const tagFound = tags.find((t) => t.slug === tagSlug);
+  if (!tagFound) notFound();
 
-  if (!categoryFound && !categoryInfo) notFound();
-
-  const posts = await getPostsByCategory(category, locale);
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
     (page - 1) * POSTS_PER_PAGE,
     page * POSTS_PER_PAGE
   );
 
-  // Use translated category info if available, fallback to found category
-  const displayCategory = categoryInfo || categoryFound;
-  const categoryName = displayCategory?.name || category;
-  const categoryDescription =
-    displayCategory?.description ||
-    `Browse articles in the ${categoryName} category.`;
-
   return (
     <div className='container py-8'>
       <div className='flex flex-col gap-4 md:gap-8'>
+        {/* Page Header */}
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            {t.categories?.categoryTitle?.replace(
-              '{name}',
-              categoryName
-            ) || `Category: ${categoryName}`}
+            Tag: {tagFound.name}
           </h1>
           <p className='text-muted-foreground'>
-            {categoryDescription}
+            Browse articles tagged with {tagFound.name}.
           </p>
         </div>
 
+        {/* Grid Layout */}
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4'>
+          {/* Main Content */}
           <div className='col-span-1 md:col-span-2 lg:col-span-3'>
             {currentPagePosts.length > 0 ? (
               <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
@@ -112,8 +98,7 @@ export default async function CategoryPage({ params, searchParams }) {
               <Card>
                 <CardContent className='flex flex-col items-center justify-center py-12'>
                   <p className='text-center text-muted-foreground'>
-                    {t.categories?.noPosts ||
-                      'No posts found in this category.'}
+                    No posts found with this tag.
                   </p>
                 </CardContent>
               </Card>
@@ -124,27 +109,25 @@ export default async function CategoryPage({ params, searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/${locale}/blog/category/${category}`}
+                  basePath={`/${locale}/blog/etiqueta/${tagSlug}`}
                 />
               </div>
             )}
           </div>
 
+          {/* Sidebar */}
           <div className='col-span-1'>
             <Sidebar
               recentPosts={posts.slice(0, 5).map((post) => ({
                 slug: post.slug,
                 title: post.title,
-                date:
+                date: new Date(
                   post.published_at || post.publishedAt
-                    ? new Date(
-                        post.published_at || post.publishedAt
-                      ).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })
-                    : 'Unpublished',
+                ).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }),
               }))}
               categories={categories}
               tags={tags}
@@ -158,7 +141,6 @@ export default async function CategoryPage({ params, searchParams }) {
   );
 }
 
-// --- Loading Skeleton ---
 function PostSkeleton() {
   return (
     <Card>

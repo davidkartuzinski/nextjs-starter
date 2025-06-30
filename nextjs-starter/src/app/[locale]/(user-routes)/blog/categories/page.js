@@ -2,7 +2,10 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getCategories } from '@/cms-core/lib/supabase/blog.server';
+import {
+  getCategories,
+  getTags,
+} from '@/cms-core/lib/supabase/blog.server';
 import { getCategoryUrl } from '@/cms-core/lib/i18n/category-utils';
 import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
 import { locales } from '@/cms-core/lib/i18n/config';
@@ -42,6 +45,7 @@ export default async function CategoriesPage({ params }) {
   const t = await loadTranslation(locale, 'categories');
 
   const categories = await getCategories(locale);
+  const tags = await getTags(locale);
 
   // Generate category URLs
   const categoriesWithUrls = await Promise.all(
@@ -117,7 +121,9 @@ export default async function CategoriesPage({ params }) {
             <Sidebar
               recentPosts={[]}
               categories={categories}
+              tags={tags}
               locale={locale}
+              minPostCount={2}
             />
           </div>
         </div>

@@ -13,13 +13,16 @@ import { useState, useEffect } from 'react';
 import AboutWidget from '@/user-content/components/sidebar/optional/about-widget';
 import SearchWidget from '@/user-content/components/sidebar/optional/search-widget';
 import CategoryWidget from '@/user-content/components/sidebar/optional/category-widget';
+import TagWidget from '@/user-content/components/sidebar/optional/tag-widget';
 import RecentPostsWidget from '@/user-content/components/sidebar/optional/recent-posts-widget';
 import RecentPostsList from '@/user-content/components/sidebar/optional/recent-posts-list';
 
 export default function Sidebar({
   recentPosts = [],
   categories = [],
+  tags = [],
   locale = 'en',
+  minPostCount = 1,
 }) {
   const router = useRouter();
   const [translations, setTranslations] = useState({});
@@ -88,6 +91,12 @@ export default function Sidebar({
       />
 
       <CategoryWidget categories={categories} locale={locale} />
+
+      <TagWidget
+        tags={tags}
+        locale={locale}
+        minPostCount={minPostCount}
+      />
     </aside>
   );
 }

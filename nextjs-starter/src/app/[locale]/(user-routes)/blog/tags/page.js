@@ -3,19 +3,26 @@ import {
   getPostsByTag,
   getTags,
 } from '@/cms-core/lib/supabase/blog.server';
+import { locales } from '@/cms-core/lib/i18n/config';
 
 export const metadata = {
   title: 'All Tags | Your Blog Name',
   description: 'Browse all tags and their blog posts.',
 };
 
-export default async function TagsSummaryPage() {
-  const tags = await getTags();
+export default async function TagsSummaryPage({ params }) {
+  const { locale } = await params;
+
+  if (!locales.includes(locale)) {
+    return null;
+  }
+
+  const tags = await getTags(locale);
 
   // Fetch posts for all tags in parallel
   const tagsWithPosts = await Promise.all(
     tags.map(async (tag) => {
-      const posts = await getPostsByTag(tag.slug);
+      const posts = await getPostsByTag(tag.slug, locale);
       return { ...tag, posts };
     })
   );
@@ -36,7 +43,7 @@ export default async function TagsSummaryPage() {
                 {tag.posts.map((post) => (
                   <li key={post.slug}>
                     <Link
-                      href={`/blog/${post.slug}`}
+                      href={`/${locale}/blog/${post.slug}`}
                       className='text-lg font-medium text-blue-600 hover:underline'
                     >
                       {post.title}

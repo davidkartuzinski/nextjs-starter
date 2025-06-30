@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import {
   getPostsByCategory,
   getCategories,
+  getTags,
 } from '@/cms-core/lib/supabase/blog.server';
 import { getCategoryInfo } from '@/cms-core/lib/i18n/category-utils';
 import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
@@ -59,6 +60,7 @@ export default async function CategoryPage({ params, searchParams }) {
   const t = await loadTranslation(locale, 'categories');
 
   const categories = await getCategories(locale);
+  const tags = await getTags(locale);
   const categoryFound = categories.find((c) => c.slug === category);
   const categoryInfo = await getCategoryInfo(category, locale);
 
@@ -102,7 +104,7 @@ export default async function CategoryPage({ params, searchParams }) {
                     key={post.id || post.slug}
                     fallback={<PostSkeleton />}
                   >
-                    <BlogPostCard post={post} />
+                    <BlogPostCard post={post} locale={locale} />
                   </Suspense>
                 ))}
               </div>
@@ -122,7 +124,7 @@ export default async function CategoryPage({ params, searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath={`/${locale}/blog/category/${category}`}
+                  basePath={`/${locale}/blog/categorie/${category}`}
                 />
               </div>
             )}
@@ -145,7 +147,9 @@ export default async function CategoryPage({ params, searchParams }) {
                     : 'Unpublished',
               }))}
               categories={categories}
+              tags={tags}
               locale={locale}
+              minPostCount={2}
             />
           </div>
         </div>

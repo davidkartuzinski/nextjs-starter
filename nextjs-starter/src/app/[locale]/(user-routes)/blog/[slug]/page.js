@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { getCategories } from '@/cms-core/lib/supabase/blog.client';
+import {
+  getCategories,
+  getTags,
+} from '@/cms-core/lib/supabase/blog.client';
 import { getAllPosts } from '@/cms-core/lib/supabase/blog.server';
 import Sidebar from '@/cms-core/components/layout/Sidebar';
 import { Badge } from '@/cms-core/components/ui/badge';
@@ -98,6 +101,7 @@ export default async function BlogPostPage(props) {
 
   const allPosts = await getAllPosts();
   const categories = await getCategories();
+  const tags = await getTags();
 
   const heroImagePath = `/user-content/images/posts/${params.slug}/hero-image.jpg`;
   const publicHeroPath = path.join(
@@ -176,6 +180,9 @@ export default async function BlogPostPage(props) {
               ),
             }))}
             categories={categories}
+            tags={tags}
+            locale={locale}
+            minPostCount={2}
           />
         </div>
       </div>

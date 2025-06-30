@@ -424,42 +424,135 @@ export async function getPostsByCategory(
 
 // --- Get posts by tag ---
 export async function getPostsByTag(tagSlug, locale = 'en') {
-  const posts = await getAllPosts(locale);
+  try {
+    const posts = await getAllPosts(locale);
 
-  return posts
-    .filter(
-      (post) =>
-        post.tags &&
-        post.tags.some(
-          (tag) => tag.toLowerCase() === tagSlug.toLowerCase()
-        )
-    )
-    .map((post) => ({
-      ...post,
-      published_at: post.published_at || post.publishedAt,
-      categories: post.categories || [],
-      tags: post.tags || [],
-    }));
+    // Import tag utilities to get tag info
+    const { getTagInfo } = await import(
+      '@/cms-core/lib/i18n/tag-utils'
+    );
+
+    // Get tag info to find the tag name
+    const tagInfo = await getTagInfo(tagSlug, locale);
+    const tagName = tagInfo?.name || tagSlug;
+
+    return posts
+      .filter(
+        (post) =>
+          post.tags &&
+          post.tags.some(
+            (tag) =>
+              tag.toLowerCase() === tagName.toLowerCase() ||
+              tag.toLowerCase() === tagSlug.toLowerCase()
+          )
+      )
+      .map((post) => ({
+        ...post,
+        published_at: post.published_at || post.publishedAt,
+        categories: post.categories || [],
+        tags: post.tags || [],
+      }));
+  } catch (error) {
+    console.error('Error getting posts by tag:', error);
+    // Fallback to original method
+    const posts = await getAllPosts(locale);
+
+    return posts
+      .filter(
+        (post) =>
+          post.tags &&
+          post.tags.some(
+            (tag) => tag.toLowerCase() === tagSlug.toLowerCase()
+          )
+      )
+      .map((post) => ({
+        ...post,
+        published_at: post.published_at || post.publishedAt,
+        categories: post.categories || [],
+        tags: post.tags || [],
+      }));
+  }
 }
 
 // --- Get tags from MDX posts ---
 export async function getTags(locale = 'en') {
-  const posts = await getAllPosts(locale);
-  const tagSet = new Set();
+  try {
+    // Import the tag utility functions
+    const { getAllTags, getTagInfo } = await import(
+      '@/cms-core/lib/i18n/tag-utils'
+    );
 
-  posts.forEach((post) => {
-    if (post.tags) {
-      post.tags.forEach((tag) => tagSet.add(tag));
-    }
-  });
+    // Get tags from translation files - return ALL tags, not just those with posts
+    const translatedTags = await getAllTags(locale);
 
-  return Array.from(tagSet).map((tag) => ({
-    id: tag,
-    name: tag
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase()),
-    slug: tag,
-  }));
+    // Get posts to calculate post counts for each tag
+    const posts = await getAllPosts(locale);
+    const tagCounts = {};
+
+    posts.forEach((post) => {
+      if (post.tags) {
+        post.tags.forEach((tagName) => {
+          // Try to find the corresponding slug for this tag name
+          const matchingTag = translatedTags.find(
+            (tag) =>
+              tag.name === tagName ||
+              tag.name.toLowerCase() === tagName.toLowerCase() ||
+              tag.slug ===
+                tagName
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, '')
+                  .replace(/\s+/g, '-')
+          );
+
+          if (matchingTag) {
+            tagCounts[matchingTag.slug] =
+              (tagCounts[matchingTag.slug] || 0) + 1;
+          } else {
+            // If no matching tag found, use the tag name as is
+            const fallbackSlug = tagName
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-');
+            tagCounts[fallbackSlug] =
+              (tagCounts[fallbackSlug] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    return translatedTags.map((tag) => ({
+      id: tag.slug,
+      name: tag.name,
+      slug: tag.slug,
+      description: tag.description,
+      path: tag.path,
+      postCount: tagCounts[tag.slug] || 0,
+    }));
+  } catch (error) {
+    console.error('Error getting tags:', error);
+    // Fallback to original method
+    const posts = await getAllPosts(locale);
+    const tagSet = new Set();
+    const tagCounts = {};
+
+    posts.forEach((post) => {
+      if (post.tags) {
+        post.tags.forEach((tag) => {
+          tagSet.add(tag);
+          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+      }
+    });
+
+    return Array.from(tagSet).map((tag) => ({
+      id: tag,
+      name: tag
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+      slug: tag,
+      postCount: tagCounts[tag] || 0,
+    }));
+  }
 }
 
 // --- Get featured posts ---

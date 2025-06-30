@@ -20,39 +20,95 @@ import slugify from 'react-slugify';
 
 export default function BlogPostCard({ post, locale = 'en' }) {
   const [categoryUrls, setCategoryUrls] = useState({});
+  const [tagUrls, setTagUrls] = useState({});
+  const [tagNames, setTagNames] = useState({});
 
   useEffect(() => {
-    async function loadCategoryUrls() {
+    async function loadUrls() {
       try {
         const { getCategoryUrl } = await import(
           '@/cms-core/lib/i18n/category-utils'
         );
-        const urls = {};
+        const { getTagUrl, getTagInfo, getAllTags } = await import(
+          '@/cms-core/lib/i18n/tag-utils'
+        );
+
+        const categoryUrls = {};
+        const tagUrls = {};
+        const tagNames = {};
 
         if (post.categories) {
           for (const category of post.categories) {
-            urls[category] = await getCategoryUrl(category, locale);
+            categoryUrls[category] = await getCategoryUrl(
+              category,
+              locale
+            );
           }
         }
 
-        setCategoryUrls(urls);
+        if (post.tags) {
+          for (const tag of post.tags) {
+            // First try to find the corresponding slug for this tag name
+            const translatedTags = await getAllTags(locale);
+
+            const matchingTag = translatedTags.find(
+              (t) =>
+                t.name === tag ||
+                t.name.toLowerCase() === tag.toLowerCase() ||
+                t.slug ===
+                  tag
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+            );
+
+            const tagSlug = matchingTag ? matchingTag.slug : tag;
+            tagUrls[tag] = await getTagUrl(tagSlug, locale);
+            const tagInfo = await getTagInfo(tagSlug, locale);
+            tagNames[tag] = tagInfo?.name || tag;
+          }
+        }
+
+        setCategoryUrls(categoryUrls);
+        setTagUrls(tagUrls);
+        setTagNames(tagNames);
       } catch (error) {
-        console.error('Error loading category URLs:', error);
+        console.error('Error loading URLs:', error);
         // Fallback to simple URLs
-        const fallbackUrls = {};
+        const fallbackCategoryUrls = {};
+        const fallbackTagUrls = {};
+        const fallbackTagNames = {};
+
         if (post.categories) {
           post.categories.forEach((category) => {
-            fallbackUrls[
+            fallbackCategoryUrls[
               category
             ] = `/${locale}/blog/category/${category}`;
           });
         }
-        setCategoryUrls(fallbackUrls);
+
+        if (post.tags) {
+          post.tags.forEach((tag) => {
+            // Try to find the corresponding slug for this tag name
+            const fallbackSlug = tag
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-');
+            fallbackTagUrls[
+              tag
+            ] = `/${locale}/blog/tag/${fallbackSlug}`;
+            fallbackTagNames[tag] = tag;
+          });
+        }
+
+        setCategoryUrls(fallbackCategoryUrls);
+        setTagUrls(fallbackTagUrls);
+        setTagNames(fallbackTagNames);
       }
     }
 
-    loadCategoryUrls();
-  }, [post.categories, locale]);
+    loadUrls();
+  }, [post.categories, post.tags, locale]);
 
   const featuredImage = `/user-content/images/posts/${post.slug}/hero-image.jpg`;
 
@@ -157,14 +213,19 @@ export default function BlogPostCard({ post, locale = 'en' }) {
                 .slice(0, 2)
                 .map((tag) => {
                   const key = typeof tag === 'object' ? tag.id : tag;
-                  const label =
-                    typeof tag === 'object' ? tag.name : tag;
+                  const label = tagNames[tag] || tag;
                   const slug =
                     typeof tag === 'object' ? tag.slug : slugify(tag);
 
                   return (
                     <Badge key={key} variant='secondary'>
-                      <Link href={`/${locale}/blog/tag/${slug}`}>
+                      <Link
+                        href={
+                          tagUrls[tag] ||
+                          `/${locale}/blog/tag/${slug}`
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {label}
                       </Link>
                     </Badge>

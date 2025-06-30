@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import {
   searchPosts,
   getCategories,
+  getTags,
 } from '@/cms-core/lib/supabase/blog.server';
 import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
 import { locales } from '@/cms-core/lib/i18n/config';
@@ -47,9 +48,10 @@ export default async function SearchPage({ searchParams, params }) {
   const t = await loadTranslation(locale, 'search');
 
   // Fetch posts and categories in parallel
-  const [posts, categories] = await Promise.all([
+  const [posts, categories, tags] = await Promise.all([
     searchPosts(query, locale),
     getCategories(locale),
+    getTags(locale),
   ]);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -125,7 +127,9 @@ export default async function SearchPage({ searchParams, params }) {
                 }),
               }))}
               categories={categories}
+              tags={tags}
               locale={locale}
+              minPostCount={2}
             />
           </div>
         </div>

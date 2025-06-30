@@ -15,5 +15,8 @@
   },
   "categories": {
     "title": "Categories"
+  },
+  "tags": {
+    "title": "Tags"
   }
 }

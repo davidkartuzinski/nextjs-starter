@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import {
   getAllPosts,
   getCategories,
+  getTags,
 } from '@/cms-core/lib/supabase/blog.server';
 import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
 import { locales } from '@/cms-core/lib/i18n/config';
@@ -29,6 +30,7 @@ export default async function BlogPage(props) {
 
   const posts = await getAllPosts(locale);
   const categories = await getCategories(locale);
+  const tags = await getTags(locale);
 
   // Calculate pagination
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -95,7 +97,9 @@ export default async function BlogPage(props) {
                 }),
               }))}
               categories={categories}
+              tags={tags}
               locale={locale}
+              minPostCount={2}
             />
           </div>
         </div>
