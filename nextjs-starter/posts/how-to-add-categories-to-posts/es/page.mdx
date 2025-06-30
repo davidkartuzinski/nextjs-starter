@@ -1,0 +1,274 @@
+---
+title: Cómo Agregar Categorías a las Publicaciones
+published_at: '2025-06-30'
+summary: Una guía completa para agregar, gestionar y traducir categorías en tu blog de Next.js
+featured: true
+categories:
+  - tutorial
+  - nextjs
+  - mdx
+tags:
+  ['Categorías', 'MDX', 'Next.js', 'Tutorial', 'Gestión de Contenido']
+---
+
+# Cómo Agregar Categorías a las Publicaciones
+
+Esta guía te llevará a través del proceso completo de agregar, gestionar y traducir categorías en tu blog de Next.js. Las categorías ayudan a organizar tu contenido y mejorar la navegación del usuario.
+
+## Resumen
+
+Las categorías en este sistema de blog se gestionan a través de:
+
+1. **Frontmatter** - Agregar categorías a publicaciones individuales
+2. **Archivos de Traducción** - Gestionar nombres y URLs de categorías
+3. **Estructura de Rutas** - Manejar páginas de categorías multilingües
+
+## Paso 1: Agregar Categorías a una Publicación
+
+### 1.1 Editar el Frontmatter de la Publicación
+
+Abre el archivo MDX de tu publicación y agrega categorías al frontmatter:
+
+```yaml
+---
+title: Título de tu Publicación
+published_at: '2025-06-30'
+summary: Resumen de tu publicación
+featured: false
+categories:
+  - nextjs
+  - tutorial
+  - mdx
+tags: ['Tus', 'Etiquetas', 'Aquí']
+---
+```
+
+**Ubicación del Archivo**: `posts/nombre-de-tu-publicacion/es/page.mdx`
+
+### 1.2 Convención de Nomenclatura de Categorías
+
+- Usa nombres de categorías en **minúsculas**
+- Usa **guiones** para categorías de múltiples palabras (ej., `getting-started`)
+- Mantén nombres **cortos y descriptivos**
+- Usa **inglés** como idioma base
+
+**Ejemplos**:
+
+- `nextjs` (no `Next.js`)
+- `getting-started` (no `getting started`)
+- `tutorial` (no `tutorials`)
+
+## Paso 2: Agregar Nuevas Categorías a los Archivos de Traducción
+
+Cuando agregues una nueva categoría a una publicación, necesitas agregarla a los archivos de traducción.
+
+### 2.1 Archivo de Traducción en Inglés
+
+**Ubicación del Archivo**: `src/user-content/translations/en/categories.json`
+
+Agrega tu nueva categoría:
+
+```json
+{
+  "categories": {
+    "tu-nueva-categoria": {
+      "name": "Your New Category",
+      "description": "Description of your new category",
+      "path": "category"
+    }
+  }
+}
+```
+
+### 2.2 Archivo de Traducción en Español
+
+**Ubicación del Archivo**: `src/user-content/translations/es/categories.json`
+
+Agrega la traducción en español:
+
+```json
+{
+  "categories": {
+    "tu-nueva-categoria": {
+      "name": "Tu Nueva Categoría",
+      "description": "Descripción de tu nueva categoría",
+      "path": "categoria"
+    }
+  }
+}
+```
+
+### 2.3 Archivo de Traducción en Francés
+
+**Ubicación del Archivo**: `src/user-content/translations/fr/categories.json`
+
+Agrega la traducción en francés:
+
+```json
+{
+  "categories": {
+    "tu-nueva-categoria": {
+      "name": "Votre Nouvelle Catégorie",
+      "description": "Description de votre nouvelle catégorie",
+      "path": "categorie"
+    }
+  }
+}
+```
+
+## Paso 3: Entender la Estructura de URLs
+
+Las categorías usan rutas de URL traducidas:
+
+| Idioma  | Patrón de URL               | Ejemplo                     |
+| ------- | --------------------------- | --------------------------- |
+| Inglés  | `/en/blog/category/{slug}`  | `/en/blog/category/nextjs`  |
+| Español | `/es/blog/categoria/{slug}` | `/es/blog/categoria/nextjs` |
+| Francés | `/fr/blog/categorie/{slug}` | `/fr/blog/categorie/nextjs` |
+
+## Paso 4: Eliminar Categorías
+
+### 4.1 Remover de las Publicaciones
+
+Primero, elimina la categoría de todas las publicaciones que la usen:
+
+**Ubicación del Archivo**: `posts/nombre-de-tu-publicacion/es/page.mdx`
+
+```yaml
+categories:
+  - nextjs
+  - tutorial
+  # Elimina la categoría que quieres borrar
+```
+
+### 4.2 Remover de los Archivos de Traducción
+
+Elimina la categoría de los tres archivos de traducción:
+
+**Archivos a Editar**:
+
+- `src/user-content/translations/en/categories.json`
+- `src/user-content/translations/es/categories.json`
+- `src/user-content/translations/fr/categories.json`
+
+Elimina el objeto de la categoría:
+
+```json
+{
+  "categories": {
+    // Elimina este bloque completo
+    "categoria-a-eliminar": {
+      "name": "Categoría a Eliminar",
+      "description": "Descripción",
+      "path": "category"
+    }
+  }
+}
+```
+
+## Paso 5: Mejores Prácticas
+
+### 5.1 Organización de Categorías
+
+- **Manténlo simple**: No crees demasiadas categorías
+- **Sé consistente**: Usa el mismo patrón de nomenclatura
+- **Piensa globalmente**: Las categorías deben funcionar en todos los idiomas
+- **Planifica con anticipación**: Considera cómo escalarán las categorías
+
+### 5.2 Categorías Recomendadas
+
+Aquí tienes algunas categorías recomendadas para un blog de Next.js:
+
+- `nextjs` - Contenido específico de Next.js
+- `tutorial` - Guías paso a paso
+- `mdx` - MDX y creación de contenido
+- `design` - Temas de UI/UX y diseño
+- `deployment` - Hosting y despliegue
+- `performance` - Optimización de rendimiento
+- `seo` - Optimización para motores de búsqueda
+
+### 5.3 Límites de Categorías
+
+- **Por publicación**: Máximo 1-3 categorías
+- **Total de categorías**: Máximo 10-15 categorías
+- **Nombres de categorías**: Mantén bajo 20 caracteres
+
+## Paso 6: Probar tus Cambios
+
+### 6.1 Verificar la Visualización de Categorías
+
+1. Inicia tu servidor de desarrollo: `npm run dev`
+2. Navega a tu blog: `http://localhost:3000/es/blog`
+3. Revisa las categorías en la barra lateral
+4. Haz clic en una categoría para verificar que la URL funcione
+
+### 6.2 Probar URLs Multilingües
+
+Prueba las URLs de categorías en todos los idiomas:
+
+- Inglés: `http://localhost:3000/en/blog/category/tu-categoria`
+- Español: `http://localhost:3000/es/blog/categoria/tu-categoria`
+- Francés: `http://localhost:3000/fr/blog/categorie/tu-categoria`
+
+### 6.3 Verificar Traducciones
+
+Verifica que los nombres de las categorías se muestren correctamente en cada idioma:
+
+- Inglés: "Your Category"
+- Español: "Tu Categoría"
+- Francés: "Votre Catégorie"
+
+## Solución de Problemas
+
+### Problemas Comunes
+
+**La categoría no aparece en la barra lateral**:
+
+- Verifica que la categoría existe en los archivos de traducción
+- Confirma que el slug de la categoría coincide exactamente
+- Asegúrate de que la publicación esté publicada
+
+**Error 404 en la página de categoría**:
+
+- Verifica que la categoría existe en todos los archivos de traducción
+- Revisa que existan los directorios de rutas (`category`, `categoria`, `categorie`)
+- Asegúrate de que el slug de la categoría sea correcto
+
+**La traducción no funciona**:
+
+- Verifica que los tres archivos de traducción tengan la categoría
+- Confirma que la configuración regional sea correcta
+- Limpia la caché del navegador y reinicia el servidor de desarrollo
+
+## Resumen de Estructura de Archivos
+
+```
+posts/
+├── nombre-de-tu-publicacion/
+│   ├── en/page.mdx          # Agregar categorías al frontmatter
+│   ├── es/page.mdx
+│   └── fr/page.mdx
+
+src/user-content/translations/
+├── en/categories.json       # Traducciones de categorías en inglés
+├── es/categories.json       # Traducciones de categorías en español
+└── fr/categories.json       # Traducciones de categorías en francés
+
+src/app/[locale]/(user-routes)/blog/
+├── category/[category]/     # Páginas de categorías en inglés
+├── categoria/[category]/    # Páginas de categorías en español
+└── categorie/[category]/    # Páginas de categorías en francés
+```
+
+## Conclusión
+
+Las categorías son una forma poderosa de organizar el contenido de tu blog y mejorar la experiencia del usuario. Siguiendo esta guía, puedes gestionar efectivamente las categorías en múltiples idiomas mientras mantienes una estructura limpia y escalable.
+
+Recuerda:
+
+- Usar convenciones de nomenclatura consistentes
+- Mantener las categorías simples y enfocadas
+- Probar exhaustivamente en todos los idiomas
+- Planificar para el crecimiento futuro
+
+¡Feliz categorización!

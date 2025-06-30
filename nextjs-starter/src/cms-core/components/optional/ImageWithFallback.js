@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 export default function ImageWithFallback({
   src,
-  fallbackSrc = '/images/posts/dummy_600x400.png',
+  fallbackSrc = '/user-content/images/dummy_600x400.png',
   alt,
   ...props
 }) {
