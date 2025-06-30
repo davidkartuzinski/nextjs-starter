@@ -18,10 +18,10 @@ export default function AboutWidget({ locale }) {
     async function loadTranslations() {
       try {
         // Import the translation file dynamically
-        const module = await import(
+        const sidebarTranslations = await import(
           `@/user-content/translations/${locale}/sidebar.json`
         );
-        setTranslations(module.default);
+        setTranslations(sidebarTranslations.default);
       } catch (error) {
         console.warn(
           `Failed to load sidebar translations for ${locale}:`,
@@ -29,10 +29,10 @@ export default function AboutWidget({ locale }) {
         );
         // Fallback to English
         try {
-          const fallbackModule = await import(
+          const fallbackTranslations = await import(
             '@/user-content/translations/en/sidebar.json'
           );
-          setTranslations(fallbackModule.default);
+          setTranslations(fallbackTranslations.default);
         } catch (fallbackError) {
           console.error(
             'Failed to load fallback sidebar translations:',

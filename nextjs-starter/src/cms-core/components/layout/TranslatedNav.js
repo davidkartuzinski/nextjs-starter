@@ -34,10 +34,10 @@ export default function TranslatedNav({ locale }) {
     async function loadTranslations() {
       try {
         // Import the translation file dynamically
-        const module = await import(
+        const navigationTranslations = await import(
           `@/cms-core/translations/${locale}/navigation.json`
         );
-        setTranslations(module.default);
+        setTranslations(navigationTranslations.default);
       } catch (error) {
         console.warn(
           `Failed to load navigation translations for ${locale}:`,
@@ -45,10 +45,10 @@ export default function TranslatedNav({ locale }) {
         );
         // Fallback to English
         try {
-          const fallbackModule = await import(
+          const fallbackTranslations = await import(
             '@/cms-core/translations/en/navigation.json'
           );
-          setTranslations(fallbackModule.default);
+          setTranslations(fallbackTranslations.default);
         } catch (fallbackError) {
           console.error(
             'Failed to load fallback navigation translations:',
