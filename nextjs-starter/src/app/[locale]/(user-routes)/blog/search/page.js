@@ -4,6 +4,8 @@ import {
   searchPosts,
   getCategories,
 } from '@/cms-core/lib/supabase/blog.server';
+import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
+import { locales } from '@/cms-core/lib/i18n/config';
 import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
 import Pagination from '@/cms-core/components/blog/Pagination';
 import Sidebar from '@/cms-core/components/layout/Sidebar';
@@ -18,8 +20,9 @@ import { Skeleton } from '@/cms-core/components/ui/skeleton';
 const POSTS_PER_PAGE = 6;
 
 // --- Metadata ---
-export async function generateMetadata({ searchParams }) {
+export async function generateMetadata({ searchParams, params }) {
   const { q } = await searchParams;
+  const { locale } = await Promise.resolve(params);
   const query = q || '';
 
   return {
@@ -31,15 +34,22 @@ export async function generateMetadata({ searchParams }) {
 }
 
 // --- Page Component ---
-export default async function SearchPage({ searchParams }) {
+export default async function SearchPage({ searchParams, params }) {
   const { q, page: pageParam } = await searchParams;
+  const { locale } = await Promise.resolve(params);
+
+  if (!locales.includes(locale)) notFound();
+
   const query = q || '';
   const page = parseInt(pageParam || '1', 10);
 
+  // Load translations
+  const t = await loadTranslation(locale, 'search');
+
   // Fetch posts and categories in parallel
   const [posts, categories] = await Promise.all([
-    searchPosts(query),
-    getCategories(),
+    searchPosts(query, locale),
+    getCategories(locale),
   ]);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -53,12 +63,14 @@ export default async function SearchPage({ searchParams }) {
       <div className='flex flex-col gap-4 md:gap-8'>
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>
-            {query ? `Results for "${query}"` : 'Search'}
+            {query
+              ? t.search.resultsFor.replace('{query}', query)
+              : t.search.title}
           </h1>
           <p className='text-muted-foreground'>
             {query
-              ? 'Showing results that match your search.'
-              : 'Enter a search term to explore blog content.'}
+              ? t.search.showingResults
+              : t.search.enterSearchTerm}
           </p>
         </div>
 
@@ -80,7 +92,7 @@ export default async function SearchPage({ searchParams }) {
               <Card>
                 <CardContent className='flex flex-col items-center justify-center py-12'>
                   <p className='text-center text-muted-foreground'>
-                    No posts found matching that search.
+                    {t.search.noResults}
                   </p>
                 </CardContent>
               </Card>
@@ -91,7 +103,7 @@ export default async function SearchPage({ searchParams }) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath='/blog/search'
+                  basePath={`/${locale}/blog/search`}
                   searchParams={{ q: query }}
                 />
               </div>
@@ -113,6 +125,7 @@ export default async function SearchPage({ searchParams }) {
                 }),
               }))}
               categories={categories}
+              locale={locale}
             />
           </div>
         </div>

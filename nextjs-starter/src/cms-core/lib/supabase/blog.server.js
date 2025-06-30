@@ -215,7 +215,7 @@ export async function getAllPosts(locale = 'en') {
 }
 
 // --- Search MDX posts ---
-export async function searchPosts(query) {
+export async function searchPosts(query, locale = 'en') {
   if (!query || query.trim() === '') {
     return [];
   }
@@ -229,34 +229,78 @@ export async function searchPosts(query) {
       .filter((entry) => entry.isDirectory())
       .map(async (dir) => {
         const slug = dir.name;
-        // Look for the English version first, then fallback to other locales
-        const postPath = path.join(postsDir, slug, 'en', 'page.mdx');
+
+        // First, try to get the post in the requested locale
+        const localePostPath = path.join(
+          postsDir,
+          slug,
+          locale,
+          'page.mdx'
+        );
+        let postData = null;
+        let postLocale = locale;
         let file, data, content;
 
-        if (!fs.existsSync(postPath)) {
-          // Try other locales if English doesn't exist
-          const locales = ['es', 'fr'];
-          for (const locale of locales) {
-            const altPath = path.join(
-              postsDir,
-              slug,
-              locale,
-              'page.mdx'
-            );
-            if (fs.existsSync(altPath)) {
-              file = fs.readFileSync(altPath, 'utf8');
-              const parsed = matter(file);
-              data = parsed.data;
-              content = parsed.content;
-              break;
-            }
-          }
-          if (!file) return null;
-        } else {
-          file = fs.readFileSync(postPath, 'utf8');
+        if (fs.existsSync(localePostPath)) {
+          // Post exists in requested locale
+          file = fs.readFileSync(localePostPath, 'utf8');
           const parsed = matter(file);
           data = parsed.data;
           content = parsed.content;
+          postData = { slug, ...data, locale: locale };
+          postLocale = locale;
+        } else {
+          // Post doesn't exist in requested locale, fall back to English
+          const englishPostPath = path.join(
+            postsDir,
+            slug,
+            'en',
+            'page.mdx'
+          );
+          if (fs.existsSync(englishPostPath)) {
+            file = fs.readFileSync(englishPostPath, 'utf8');
+            const parsed = matter(file);
+            data = parsed.data;
+            content = parsed.content;
+            postData = {
+              slug,
+              ...data,
+              locale: 'en',
+              fallback: true,
+            };
+            postLocale = 'en';
+          } else {
+            // Try other locales if English doesn't exist
+            const otherLocales = ['es', 'fr'].filter(
+              (l) => l !== locale
+            );
+            for (const altLocale of otherLocales) {
+              const altPath = path.join(
+                postsDir,
+                slug,
+                altLocale,
+                'page.mdx'
+              );
+              if (fs.existsSync(altPath)) {
+                file = fs.readFileSync(altPath, 'utf8');
+                const parsed = matter(file);
+                data = parsed.data;
+                content = parsed.content;
+                postData = {
+                  slug,
+                  ...data,
+                  locale: altLocale,
+                  fallback: true,
+                };
+                postLocale = altLocale;
+                break;
+              }
+            }
+          }
+        }
+
+        if (!postData) {
+          return null;
         }
 
         // Search in title, summary, content, categories, and tags
@@ -277,6 +321,8 @@ export async function searchPosts(query) {
             published_at: data.published_at || data.publishedAt,
             categories: data.categories || [],
             tags: data.tags || [],
+            locale: postLocale,
+            fallback: postLocale !== locale,
           };
         }
 

@@ -21,6 +21,10 @@ import enNavigation from '@/cms-core/translations/en/navigation.json';
 import esNavigation from '@/cms-core/translations/es/navigation.json';
 import frNavigation from '@/cms-core/translations/fr/navigation.json';
 
+import enSearch from '@/user-content/translations/en/search.json';
+import esSearch from '@/user-content/translations/es/search.json';
+import frSearch from '@/user-content/translations/fr/search.json';
+
 // Translation mapping
 const translations = {
   pages: {
@@ -47,6 +51,11 @@ const translations = {
     en: enNavigation,
     es: esNavigation,
     fr: frNavigation,
+  },
+  search: {
+    en: enSearch,
+    es: esSearch,
+    fr: frSearch,
   },
 };
 

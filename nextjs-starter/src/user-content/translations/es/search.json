@@ -1,0 +1,10 @@
+{
+  "search": {
+    "title": "Buscar",
+    "resultsFor": "Resultados para \"{query}\"",
+    "showingResults": "Mostrando resultados que coinciden con tu búsqueda.",
+    "noResults": "No se encontraron posts que coincidan con esa búsqueda.",
+    "enterSearchTerm": "Ingresa un término de búsqueda para explorar el contenido del blog.",
+    "searchResults": "Resultados de Búsqueda"
+  }
+}
