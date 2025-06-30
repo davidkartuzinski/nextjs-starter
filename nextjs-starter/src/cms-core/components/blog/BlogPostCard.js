@@ -38,14 +38,21 @@ export default function BlogPostCard({ post }) {
       )}
       <CardHeader className='flex-1'>
         <div className='min-h-[56px] space-y-1'>
-          <CardTitle>
-            <Link
-              href={`/blog/${post.slug}`}
-              className='hover:underline'
-            >
-              {post.title}
-            </Link>
-          </CardTitle>
+          <div className='flex items-start justify-between gap-2'>
+            <CardTitle className='flex-1'>
+              <Link
+                href={`/blog/${post.slug}`}
+                className='hover:underline'
+              >
+                {post.title}
+              </Link>
+            </CardTitle>
+            {post.fallback && post.locale && (
+              <Badge variant='outline' className='text-xs shrink-0'>
+                {post.locale.toUpperCase()}
+              </Badge>
+            )}
+          </div>
 
           <CardDescription className='flex items-center text-xs text-muted-foreground'>
             <CalendarIcon className='mr-1 h-3 w-3' />

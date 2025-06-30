@@ -114,7 +114,7 @@ export async function syncPostWithSupabase(
 }
 
 // --- Load all MDX posts ---
-export async function getAllPosts() {
+export async function getAllPosts(locale = 'en') {
   const postsDir = path.join(process.cwd(), 'posts');
   const entries = fs.readdirSync(postsDir, { withFileTypes: true });
 
@@ -123,44 +123,87 @@ export async function getAllPosts() {
       .filter((entry) => entry.isDirectory())
       .map(async (dir) => {
         const slug = dir.name;
-        // Look for the English version first, then fallback to other locales
-        const postPath = path.join(postsDir, slug, 'en', 'page.mdx');
-        if (!fs.existsSync(postPath)) {
-          // Try other locales if English doesn't exist
-          const locales = ['es', 'fr'];
-          for (const locale of locales) {
-            const altPath = path.join(
-              postsDir,
-              slug,
-              locale,
-              'page.mdx'
-            );
-            if (fs.existsSync(altPath)) {
-              const file = fs.readFileSync(altPath, 'utf8');
-              const { data } = matter(file);
 
-              await syncPostWithSupabase(
+        // First, try to get the post in the requested locale
+        const localePostPath = path.join(
+          postsDir,
+          slug,
+          locale,
+          'page.mdx'
+        );
+        let postData = null;
+        let postLocale = locale;
+
+        if (fs.existsSync(localePostPath)) {
+          // Post exists in requested locale
+          const file = fs.readFileSync(localePostPath, 'utf8');
+          const { data } = matter(file);
+          postData = { slug, ...data, locale: locale };
+          postLocale = locale;
+        } else {
+          // Post doesn't exist in requested locale, fall back to English
+          const englishPostPath = path.join(
+            postsDir,
+            slug,
+            'en',
+            'page.mdx'
+          );
+          if (fs.existsSync(englishPostPath)) {
+            const file = fs.readFileSync(englishPostPath, 'utf8');
+            const { data } = matter(file);
+            postData = {
+              slug,
+              ...data,
+              locale: 'en',
+              fallback: true,
+            };
+            postLocale = 'en';
+          } else {
+            // Try other locales if English doesn't exist
+            const otherLocales = ['es', 'fr'].filter(
+              (l) => l !== locale
+            );
+            for (const altLocale of otherLocales) {
+              const altPath = path.join(
+                postsDir,
                 slug,
-                data,
-                data.categories || [],
-                data.tags || []
+                altLocale,
+                'page.mdx'
               );
-              return { slug, ...data };
+              if (fs.existsSync(altPath)) {
+                const file = fs.readFileSync(altPath, 'utf8');
+                const { data } = matter(file);
+                postData = {
+                  slug,
+                  ...data,
+                  locale: altLocale,
+                  fallback: true,
+                };
+                postLocale = altLocale;
+                break;
+              }
             }
           }
+        }
+
+        if (!postData) {
           return null;
         }
 
-        const file = fs.readFileSync(postPath, 'utf8');
-        const { data } = matter(file);
-
+        // Sync with Supabase using the found post data
         await syncPostWithSupabase(
           slug,
-          data,
-          data.categories || [],
-          data.tags || []
+          postData,
+          postData.categories || [],
+          postData.tags || []
         );
-        return { slug, ...data };
+
+        return {
+          ...postData,
+          published_at: postData.published_at || postData.publishedAt,
+          categories: postData.categories || [],
+          tags: postData.tags || [],
+        };
       })
   );
 
@@ -251,8 +294,8 @@ export async function searchPosts(query) {
 }
 
 // --- Get categories from MDX posts ---
-export async function getCategories() {
-  const posts = await getAllPosts();
+export async function getCategories(locale = 'en') {
+  const posts = await getAllPosts(locale);
   const categorySet = new Set();
 
   posts.forEach((post) => {
@@ -273,8 +316,11 @@ export async function getCategories() {
 }
 
 // --- Get posts by category ---
-export async function getPostsByCategory(categorySlug) {
-  const posts = await getAllPosts();
+export async function getPostsByCategory(
+  categorySlug,
+  locale = 'en'
+) {
+  const posts = await getAllPosts(locale);
 
   return posts
     .filter(
@@ -294,8 +340,8 @@ export async function getPostsByCategory(categorySlug) {
 }
 
 // --- Get posts by tag ---
-export async function getPostsByTag(tagSlug) {
-  const posts = await getAllPosts();
+export async function getPostsByTag(tagSlug, locale = 'en') {
+  const posts = await getAllPosts(locale);
 
   return posts
     .filter(
@@ -314,8 +360,8 @@ export async function getPostsByTag(tagSlug) {
 }
 
 // --- Get tags from MDX posts ---
-export async function getTags() {
-  const posts = await getAllPosts();
+export async function getTags(locale = 'en') {
+  const posts = await getAllPosts(locale);
   const tagSet = new Set();
 
   posts.forEach((post) => {
@@ -334,8 +380,8 @@ export async function getTags() {
 }
 
 // --- Get featured posts ---
-export async function getFeaturedPosts(limit = 3) {
-  const posts = await getAllPosts();
+export async function getFeaturedPosts(limit = 3, locale = 'en') {
+  const posts = await getAllPosts(locale);
 
   return posts
     .filter((post) => post.featured)
@@ -349,8 +395,8 @@ export async function getFeaturedPosts(limit = 3) {
 }
 
 // --- Get recent posts ---
-export async function getRecentPosts(limit = 3) {
-  const posts = await getAllPosts();
+export async function getRecentPosts(limit = 3, locale = 'en') {
+  const posts = await getAllPosts(locale);
 
   return posts.slice(0, limit).map((post) => ({
     ...post,

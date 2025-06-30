@@ -18,13 +18,14 @@ import {
 import { Skeleton } from '@/cms-core/components/ui/skeleton';
 
 // Number of posts per page
-const POSTS_PER_PAGE = 6;
+const POSTS_PER_PAGE = 12;
 
 export default async function BlogPage(props) {
   const searchParams = await props.searchParams;
+  const { locale } = await Promise.resolve(props.params);
   const page = parseInt(searchParams?.page || '1', 10);
-  const posts = await getAllPosts();
-  const categories = await getCategories();
+  const posts = await getAllPosts(locale);
+  const categories = await getCategories(locale);
 
   // Calculate pagination
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
