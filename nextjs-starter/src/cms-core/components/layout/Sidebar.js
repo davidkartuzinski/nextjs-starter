@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import AboutWidget from '@/user-content/components/sidebar/optional/about-widget';
 import SearchWidget from '@/user-content/components/sidebar/optional/search-widget';
+import CategoryWidget from '@/user-content/components/sidebar/optional/category-widget';
+import RecentPostsWidget from '@/user-content/components/sidebar/optional/recent-posts-widget';
+import RecentPostsList from '@/user-content/components/sidebar/optional/recent-posts-list';
 
 export default function Sidebar({
   recentPosts = [],
@@ -78,58 +81,13 @@ export default function Sidebar({
 
       <AboutWidget locale={locale} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {translations.recentPosts?.title || 'Recent Posts'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {recentPosts.length > 0 ? (
-            <ul className='space-y-3'>
-              {recentPosts.map((post) => (
-                <li key={post.slug}>
-                  <Link
-                    href={`/${locale}/blog/${post.slug}`}
-                    className='text-sm font-medium hover:underline'
-                  >
-                    {post.title}
-                  </Link>
-                  <p className='text-xs text-muted-foreground'>
-                    {post.date}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className='text-sm text-muted-foreground'>
-              {translations.recentPosts?.noPosts ||
-                'No recent posts.'}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      <RecentPostsWidget
+        posts={recentPosts}
+        locale={locale}
+        maxPosts={2}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {translations.categories?.title || 'Categories'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='flex flex-wrap gap-2'>
-            {categories.map((category) => (
-              <Badge key={category.slug} variant='outline' asChild>
-                <Link
-                  href={`/${locale}/blog/category/${category.slug}`}
-                >
-                  {category.name}
-                </Link>
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <CategoryWidget categories={categories} locale={locale} />
     </aside>
   );
 }

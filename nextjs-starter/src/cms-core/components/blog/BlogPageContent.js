@@ -2,31 +2,19 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import {
-  getAllPosts,
-  getCategories,
-} from '@/cms-core/lib/supabase/blog.client';
-import BlogPostCard from '@/components/blog/BlogPostCard';
-import Sidebar from '@/components/layout/Sidebar';
-import Pagination from '@/components/blog/Pagination';
+import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
+import Sidebar from '@/cms-core/components/layout/Sidebar';
+import Pagination from '@/cms-core/components/blog/Pagination';
 
 const POSTS_PER_PAGE = 6;
 
-export default function BlogPageContent() {
+export default function BlogPageContent({
+  posts = [],
+  categories = [],
+  locale = 'en',
+}) {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
-
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const allPosts = await getAllPosts();
-      const allCategories = await getCategories();
-      setPosts(allPosts);
-      setCategories(allCategories);
-    })();
-  }, []);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPagePosts = posts.slice(
@@ -42,14 +30,18 @@ export default function BlogPageContent() {
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4'>
           <div className='col-span-1 md:col-span-2 lg:col-span-3'>
             {currentPagePosts.map((post) => (
-              <BlogPostCard key={post.slug} post={post} />
+              <BlogPostCard
+                key={post.slug}
+                post={post}
+                locale={locale}
+              />
             ))}
             {totalPages > 1 && (
               <div className='mt-8'>
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath='/blog'
+                  basePath={`/${locale}/blog`}
                 />
               </div>
             )}
@@ -65,6 +57,7 @@ export default function BlogPageContent() {
                 ).toLocaleDateString(),
               }))}
               categories={categories}
+              locale={locale}
             />
           </div>
         </div>

@@ -15,6 +15,7 @@ export default async function BlogPosts({
   tag = null,
   category = null,
   limit = 3,
+  locale,
 }) {
   let posts = [];
   let totalCount = 0;
@@ -62,7 +63,11 @@ export default async function BlogPosts({
 
         <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {posts.map((post) => (
-            <BlogPostCard key={post.slug} post={post} />
+            <BlogPostCard
+              key={post.slug}
+              post={post}
+              locale={locale}
+            />
           ))}
         </div>
       </div>

@@ -1,20 +1,17 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
+
 import {
   getAllPosts,
   getCategories,
 } from '@/cms-core/lib/supabase/blog.server';
+import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
+import { locales } from '@/cms-core/lib/i18n/config';
 import Sidebar from '@/cms-core/components/layout/Sidebar';
 import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
 import Pagination from '@/cms-core/components/blog/Pagination';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/cms-core/components/ui/card';
+import { Card, CardContent } from '@/cms-core/components/ui/card';
 import { Skeleton } from '@/cms-core/components/ui/skeleton';
 
 // Number of posts per page
@@ -24,6 +21,12 @@ export default async function BlogPage(props) {
   const searchParams = await props.searchParams;
   const { locale } = await Promise.resolve(props.params);
   const page = parseInt(searchParams?.page || '1', 10);
+
+  if (!locales.includes(locale)) notFound();
+
+  // Load translations
+  const t = await loadTranslation(locale, 'pages');
+
   const posts = await getAllPosts(locale);
   const categories = await getCategories(locale);
 
@@ -53,10 +56,7 @@ export default async function BlogPage(props) {
                     key={post.slug}
                     fallback={<PostSkeleton />}
                   >
-                    <BlogPostCard
-                      key={post.id || post.slug}
-                      post={post}
-                    />
+                    <BlogPostCard post={post} locale={locale} />
                   </Suspense>
                 ))}
               </div>
@@ -75,7 +75,7 @@ export default async function BlogPage(props) {
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
-                  basePath='/blog'
+                  basePath={`/${locale}/blog`}
                 />
               </div>
             )}
@@ -107,18 +107,13 @@ export default async function BlogPage(props) {
 function PostSkeleton() {
   return (
     <Card>
-      <CardHeader className='space-y-2'>
+      <CardContent className='space-y-2'>
         <Skeleton className='h-4 w-1/2' />
         <Skeleton className='h-4 w-1/4' />
-      </CardHeader>
-      <CardContent className='space-y-2'>
         <Skeleton className='h-4 w-full' />
         <Skeleton className='h-4 w-full' />
         <Skeleton className='h-4 w-2/3' />
       </CardContent>
-      <CardFooter>
-        <Skeleton className='h-8 w-24' />
-      </CardFooter>
     </Card>
   );
 }

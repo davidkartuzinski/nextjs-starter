@@ -341,24 +341,61 @@ export async function searchPosts(query, locale = 'en') {
 
 // --- Get categories from MDX posts ---
 export async function getCategories(locale = 'en') {
-  const posts = await getAllPosts(locale);
-  const categorySet = new Set();
+  try {
+    // Import the category utility functions
+    const { getAllCategories } = await import(
+      '@/cms-core/lib/i18n/category-utils'
+    );
 
-  posts.forEach((post) => {
-    if (post.categories) {
-      post.categories.forEach((category) =>
-        categorySet.add(category)
-      );
-    }
-  });
+    // Get categories from translation files
+    const translatedCategories = await getAllCategories(locale);
 
-  return Array.from(categorySet).map((category) => ({
-    id: category,
-    name: category
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase()),
-    slug: category,
-  }));
+    // Also get posts to ensure we only show categories that have posts
+    const posts = await getAllPosts(locale);
+    const categorySet = new Set();
+
+    posts.forEach((post) => {
+      if (post.categories) {
+        post.categories.forEach((category) =>
+          categorySet.add(category)
+        );
+      }
+    });
+
+    // Filter translated categories to only include those that have posts
+    const availableCategories = translatedCategories.filter(
+      (category) => categorySet.has(category.slug)
+    );
+
+    return availableCategories.map((category) => ({
+      id: category.slug,
+      name: category.name,
+      slug: category.slug,
+      description: category.description,
+      path: category.path,
+    }));
+  } catch (error) {
+    console.error('Error getting categories:', error);
+    // Fallback to original method
+    const posts = await getAllPosts(locale);
+    const categorySet = new Set();
+
+    posts.forEach((post) => {
+      if (post.categories) {
+        post.categories.forEach((category) =>
+          categorySet.add(category)
+        );
+      }
+    });
+
+    return Array.from(categorySet).map((category) => ({
+      id: category,
+      name: category
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+      slug: category,
+    }));
+  }
 }
 
 // --- Get posts by category ---

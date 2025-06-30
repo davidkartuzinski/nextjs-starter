@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -12,10 +14,46 @@ import { Badge } from '@/cms-core/components/ui/badge';
 import { Button } from '@/cms-core/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
 import ImageWithFallback from '@/cms-core/components/optional/ImageWithFallback';
+import { useState, useEffect } from 'react';
 
 import slugify from 'react-slugify';
 
-export default function BlogPostCard({ post }) {
+export default function BlogPostCard({ post, locale = 'en' }) {
+  const [categoryUrls, setCategoryUrls] = useState({});
+
+  useEffect(() => {
+    async function loadCategoryUrls() {
+      try {
+        const { getCategoryUrl } = await import(
+          '@/cms-core/lib/i18n/category-utils'
+        );
+        const urls = {};
+
+        if (post.categories) {
+          for (const category of post.categories) {
+            urls[category] = await getCategoryUrl(category, locale);
+          }
+        }
+
+        setCategoryUrls(urls);
+      } catch (error) {
+        console.error('Error loading category URLs:', error);
+        // Fallback to simple URLs
+        const fallbackUrls = {};
+        if (post.categories) {
+          post.categories.forEach((category) => {
+            fallbackUrls[
+              category
+            ] = `/${locale}/blog/category/${category}`;
+          });
+        }
+        setCategoryUrls(fallbackUrls);
+      }
+    }
+
+    loadCategoryUrls();
+  }, [post.categories, locale]);
+
   const featuredImage = `/user-content/images/posts/${post.slug}/hero-image.jpg`;
 
   return (
@@ -23,7 +61,7 @@ export default function BlogPostCard({ post }) {
       {featuredImage && (
         <div className='aspect-video w-full overflow-hidden'>
           <Link
-            href={`/blog/${post.slug}`}
+            href={`/${locale}/blog/${post.slug}`}
             className='hover:underline'
           >
             <ImageWithFallback
@@ -41,15 +79,19 @@ export default function BlogPostCard({ post }) {
           <div className='flex items-start justify-between gap-2'>
             <CardTitle className='flex-1'>
               <Link
-                href={`/blog/${post.slug}`}
+                href={`/${locale}/blog/${post.slug}`}
                 className='hover:underline'
               >
                 {post.title}
               </Link>
             </CardTitle>
-            {post.fallback && post.locale && (
+            {post.fallback && (
               <Badge variant='outline' className='text-xs shrink-0'>
-                {post.locale.toUpperCase()}
+                {locale === 'es'
+                  ? 'EN'
+                  : locale === 'fr'
+                  ? 'EN'
+                  : 'EN'}
               </Badge>
             )}
           </div>
@@ -81,7 +123,13 @@ export default function BlogPostCard({ post }) {
 
                   return (
                     <Badge key={key} variant='secondary'>
-                      <Link href={`/blog/category/${slug}`}>
+                      <Link
+                        href={
+                          categoryUrls[cat] ||
+                          `/${locale}/blog/category/${slug}`
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {label || 'Unnamed'}
                       </Link>
                     </Badge>
@@ -89,7 +137,7 @@ export default function BlogPostCard({ post }) {
                 })}
               {post.categories.length > 2 && (
                 <Link
-                  href={`/blog/${post.slug}`}
+                  href={`/${locale}/blog/${post.slug}`}
                   className='text-muted-foreground text-sm'
                 >
                   &hellip;
@@ -116,13 +164,15 @@ export default function BlogPostCard({ post }) {
 
                   return (
                     <Badge key={key} variant='secondary'>
-                      <Link href={`/blog/tag/${slug}`}>{label}</Link>
+                      <Link href={`/${locale}/blog/tag/${slug}`}>
+                        {label}
+                      </Link>
                     </Badge>
                   );
                 })}
               {post.tags.length > 2 && (
                 <Link
-                  href={`/blog/${post.slug}`}
+                  href={`/${locale}/blog/${post.slug}`}
                   className='text-muted-foreground text-sm'
                 >
                   &hellip;
@@ -132,14 +182,9 @@ export default function BlogPostCard({ post }) {
           </div>
         )}
       </CardHeader>
-      <CardContent>
-        <p className='text-sm text-primary line-clamp-3 min-h-[60px]'>
-          {post.summary}
-        </p>
-      </CardContent>
       <CardFooter className='pb-6'>
         <Button asChild variant='ghost' size='sm' className='w-full'>
-          <Link href={`/blog/${post.slug}`}>Read more</Link>
+          <Link href={`/${locale}/blog/${post.slug}`}>Read more</Link>
         </Button>
       </CardFooter>
     </Card>

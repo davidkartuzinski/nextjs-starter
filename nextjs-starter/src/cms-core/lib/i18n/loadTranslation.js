@@ -25,6 +25,10 @@ import enSearch from '@/user-content/translations/en/search.json';
 import esSearch from '@/user-content/translations/es/search.json';
 import frSearch from '@/user-content/translations/fr/search.json';
 
+import enCategories from '@/user-content/translations/en/categories.json';
+import esCategories from '@/user-content/translations/es/categories.json';
+import frCategories from '@/user-content/translations/fr/categories.json';
+
 // Translation mapping
 const translations = {
   pages: {
@@ -56,6 +60,11 @@ const translations = {
     en: enSearch,
     es: esSearch,
     fr: frSearch,
+  },
+  categories: {
+    en: enCategories,
+    es: esCategories,
+    fr: frCategories,
   },
 };
 
