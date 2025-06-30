@@ -12,29 +12,85 @@ import { Input } from '@/cms-core/components/ui/input';
 import { Button } from '@/cms-core/components/ui/button';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AboutWidget from '@/user-content/components/sidebar/optional/about-widget';
 
 export default function Sidebar({
   recentPosts = [],
   categories = [],
+  locale = 'en',
 }) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [translations, setTranslations] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadTranslations() {
+      try {
+        // Import the translation file dynamically
+        const module = await import(
+          `@/user-content/translations/${locale}/sidebar.json`
+        );
+        setTranslations(module.default);
+      } catch (error) {
+        console.warn(
+          `Failed to load sidebar translations for ${locale}:`,
+          error
+        );
+        // Fallback to English
+        try {
+          const fallbackModule = await import(
+            '@/user-content/translations/en/sidebar.json'
+          );
+          setTranslations(fallbackModule.default);
+        } catch (fallbackError) {
+          console.error(
+            'Failed to load fallback sidebar translations:',
+            fallbackError
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadTranslations();
+  }, [locale]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(
-        `/blog/search?q=${encodeURIComponent(searchQuery)}`
+        `/${locale}/blog/search?q=${encodeURIComponent(searchQuery)}`
       );
     }
   };
+
+  if (loading) {
+    return (
+      <aside className='space-y-6'>
+        <Card>
+          <CardHeader>
+            <CardTitle>Loading...</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className='text-sm text-muted-foreground'>
+              Loading sidebar...
+            </p>
+          </CardContent>
+        </Card>
+      </aside>
+    );
+  }
 
   return (
     <aside className='space-y-6'>
       <Card>
         <CardHeader>
-          <CardTitle>Search</CardTitle>
+          <CardTitle>
+            {translations.search?.title || 'Search'}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form
@@ -43,35 +99,29 @@ export default function Sidebar({
           >
             <Input
               type='search'
-              placeholder='Search blog...'
+              placeholder={
+                translations.search?.placeholder || 'Search blog...'
+              }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button type='submit' size='icon'>
               <Search className='h-4 w-4' />
-              <span className='sr-only'>Search</span>
+              <span className='sr-only'>
+                {translations.search?.button || 'Search'}
+              </span>
             </Button>
           </form>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>About</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className='text-sm text-muted-foreground mb-4'>
-            A brief description about yourself or your blog.
-          </p>
-          <Button variant='outline' asChild>
-            <Link href='/about'>Learn more</Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <AboutWidget locale={locale} />
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Posts</CardTitle>
+          <CardTitle>
+            {translations.recentPosts?.title || 'Recent Posts'}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {recentPosts.length > 0 ? (
@@ -79,7 +129,7 @@ export default function Sidebar({
               {recentPosts.map((post) => (
                 <li key={post.slug}>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/${locale}/blog/${post.slug}`}
                     className='text-sm font-medium hover:underline'
                   >
                     {post.title}
@@ -92,7 +142,8 @@ export default function Sidebar({
             </ul>
           ) : (
             <p className='text-sm text-muted-foreground'>
-              No recent posts.
+              {translations.recentPosts?.noPosts ||
+                'No recent posts.'}
             </p>
           )}
         </CardContent>
@@ -100,13 +151,17 @@ export default function Sidebar({
 
       <Card>
         <CardHeader>
-          <CardTitle>Categories</CardTitle>
+          <CardTitle>
+            {translations.categories?.title || 'Categories'}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className='flex flex-wrap gap-2'>
             {categories.map((category) => (
               <Badge key={category.slug} variant='outline' asChild>
-                <Link href={`/blog/category/${category.slug}`}>
+                <Link
+                  href={`/${locale}/blog/category/${category.slug}`}
+                >
                   {category.name}
                 </Link>
               </Badge>

@@ -95,6 +95,7 @@ export default async function BlogPage(props) {
                 }),
               }))}
               categories={categories}
+              locale={locale}
             />
           </div>
         </div>
