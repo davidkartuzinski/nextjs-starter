@@ -344,7 +344,7 @@ export async function getCategories(locale = 'en') {
   try {
     // Import the category utility functions
     const { getAllCategories } = await import(
-      '../i18n/category-utils'
+      '../../i18n/category-utils'
     );
 
     // Get categories from translation files
@@ -428,7 +428,7 @@ export async function getPostsByTag(tagSlug, locale = 'en') {
     const posts = await getAllPosts(locale);
 
     // Import tag utilities to get tag info
-    const { getTagInfo } = await import('../i18n/tag-utils');
+    const { getTagInfo } = await import('../../i18n/tag-utils');
 
     // Get tag info to find the tag name
     const tagInfo = await getTagInfo(tagSlug, locale);
@@ -477,7 +477,7 @@ export async function getTags(locale = 'en') {
   try {
     // Import the tag utility functions
     const { getAllTags, getTagInfo } = await import(
-      '../i18n/tag-utils'
+      '../../i18n/tag-utils'
     );
 
     // Get tags from translation files - return ALL tags, not just those with posts
