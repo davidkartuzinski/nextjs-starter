@@ -126,7 +126,7 @@ export default async function HomePage({ params }) {
             Something went wrong
           </h1>
           <p className='text-muted-foreground'>
-            We're experiencing technical difficulties. Please try
+            We&apos;re experiencing technical difficulties. Please try
             again later.
           </p>
           <pre className='mt-4 text-xs text-red-500 bg-red-50 p-2 rounded'>
