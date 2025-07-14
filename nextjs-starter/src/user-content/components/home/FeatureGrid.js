@@ -3,15 +3,21 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Icons from Lucide - https://lucide.dev/icons/
+// Import specific icons instead of all icons
+import { Rocket, Wrench, ShieldCheck } from 'lucide-react';
 
-import * as Icons from 'lucide-react';
+// Map icon names to components
+const iconMap = {
+  Rocket,
+  Wrench,
+  ShieldCheck,
+};
 
 export default function FeatureGrid({ features }) {
   return (
     <section className='grid grid-cols-1 md:grid-cols-3 gap-8 py-20 px-8 max-w-7xl mx-auto'>
       {features.map((feature, i) => {
-        const LucideIcon = Icons[feature.icon]; // Pull the icon by string
+        const LucideIcon = iconMap[feature.icon]; // Get icon from map
 
         return (
           <div key={i} className='p-6 text-center shadow-lg '>
