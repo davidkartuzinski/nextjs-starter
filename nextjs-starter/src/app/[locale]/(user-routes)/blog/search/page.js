@@ -4,19 +4,19 @@ import {
   searchPosts,
   getCategories,
   getTags,
-} from '@/cms-core/lib/supabase/blog.server';
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { locales } from '@/cms-core/lib/i18n/config';
-import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
-import Pagination from '@/cms-core/components/blog/Pagination';
-import Sidebar from '@/cms-core/components/layout/Sidebar';
+} from '../../../../../../cms-core/lib/database/supabase/blog.server';
+import { loadTranslation } from '../../../../../../cms-core/lib/i18n/loadTranslation';
+import { locales } from '../../../../../../cms-core/lib/i18n/config';
+import BlogPostCard from '@/user-content/components/blog/BlogPostCard';
+import Pagination from '@/user-content/components/blog/Pagination';
+import Sidebar from '../../../../../../cms-core/components/layout/Sidebar';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from '@/cms-core/components/ui/card';
-import { Skeleton } from '@/cms-core/components/ui/skeleton';
+} from '../../../../../../cms-core/components/ui/card';
+import { Skeleton } from '../../../../../../cms-core/components/ui/skeleton';
 
 const POSTS_PER_PAGE = 6;
 

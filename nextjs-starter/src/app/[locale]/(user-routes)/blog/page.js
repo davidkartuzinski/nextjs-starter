@@ -6,14 +6,17 @@ import {
   getAllPosts,
   getCategories,
   getTags,
-} from '@/cms-core/lib/supabase/blog.server';
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { locales } from '@/cms-core/lib/i18n/config';
-import Sidebar from '@/cms-core/components/layout/Sidebar';
-import BlogPostCard from '@/cms-core/components/blog/BlogPostCard';
-import Pagination from '@/cms-core/components/blog/Pagination';
-import { Card, CardContent } from '@/cms-core/components/ui/card';
-import { Skeleton } from '@/cms-core/components/ui/skeleton';
+} from '../../../../../cms-core/lib/database/supabase/blog.server';
+import { loadTranslation } from '../../../../../cms-core/lib/i18n/loadTranslation';
+import { locales } from '../../../../../cms-core/lib/i18n/config';
+import Sidebar from '../../../../../cms-core/components/layout/Sidebar';
+import BlogPostCard from '@/user-content/components/blog/BlogPostCard';
+import Pagination from '@/user-content/components/blog/Pagination';
+import {
+  Card,
+  CardContent,
+} from '../../../../../cms-core/components/ui/card';
+import { Skeleton } from '../../../../../cms-core/components/ui/skeleton';
 
 // Number of posts per page
 const POSTS_PER_PAGE = 12;
@@ -45,7 +48,7 @@ export default async function BlogPage(props) {
         <div className='space-y-2'>
           <h1 className='text-3xl font-bold tracking-tight'>Blog</h1>
           <p className='text-muted-foreground'>
-            Explore the latest articles and tutorials.
+            Explore the latest articles and tutorials. Now.
           </p>
         </div>
 

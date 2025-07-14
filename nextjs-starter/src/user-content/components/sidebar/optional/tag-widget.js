@@ -6,10 +6,10 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
-import { Badge } from '@/cms-core/components/ui/badge';
+} from '../../../../../cms-core/components/ui/card';
+import { Badge } from '../../../../../cms-core/components/ui/badge';
 import { useState, useEffect } from 'react';
-import { getTagUrl } from '@/cms-core/lib/i18n/tag-utils';
+import { getTagUrl } from '../../../../../cms-core/lib/i18n/tag-utils';
 
 export default function TagWidget({
   tags = [],

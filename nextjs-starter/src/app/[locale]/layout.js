@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
-import { locales } from '@/cms-core/lib/i18n/config';
+import { locales } from '../../../cms-core/lib/i18n/config';
 
-import Header from '@/cms-core/components/layout/Header';
-import Footer from '@/cms-core/components/layout/Footer';
-import { AuthProvider } from '@/cms-core/contexts/auth-context';
+import Header from '../../../cms-core/components/layout/Header';
+import Footer from '../../../cms-core/components/layout/Footer';
+import { AuthProvider } from '../../../cms-core/contexts/auth-context';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

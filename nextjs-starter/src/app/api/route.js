@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createServerComponentClient } from '@/cms-core/lib/supabase/server';
+import { createServerComponentClient } from '../../../cms-core/lib/database/supabase/server';
 
 export async function GET() {
   const supabase = createServerComponentClient();

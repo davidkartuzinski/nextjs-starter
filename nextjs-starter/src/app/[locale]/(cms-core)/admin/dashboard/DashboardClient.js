@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/cms-core/components/ui/card';
-import { createClientComponentClient } from '@/cms-core/lib/supabase/client';
+import { createClientComponentClient } from '@/cms-core/lib/database/supabase/client';
 
 const supabase = createClientComponentClient();
 

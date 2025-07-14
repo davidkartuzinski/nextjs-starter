@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Negotiator from 'negotiator';
-import { locales, defaultLocale } from '@/cms-core/lib/i18n/config';
+import { locales, defaultLocale } from '../cms-core/lib/i18n/config';
 
 const PUBLIC_FILE = /\.(.*)$/;
 

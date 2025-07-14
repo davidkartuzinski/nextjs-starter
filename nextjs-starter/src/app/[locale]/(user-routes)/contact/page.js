@@ -1,5 +1,5 @@
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { locales } from '@/cms-core/lib/i18n/config';
+import { loadTranslation } from '../../../../../cms-core/lib/i18n/loadTranslation';
+import { locales } from '../../../../../cms-core/lib/i18n/config';
 import { notFound } from 'next/navigation';
 
 export default async function ContactPage({ params }) {

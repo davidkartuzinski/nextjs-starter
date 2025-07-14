@@ -2,8 +2,8 @@ import Link from 'next/link';
 import {
   getPostsByTag,
   getTags,
-} from '@/cms-core/lib/supabase/blog.server';
-import { locales } from '@/cms-core/lib/i18n/config';
+} from '../../../../../../cms-core/lib/database/supabase/blog.server';
+import { locales } from '../../../../../../cms-core/lib/i18n/config';
 
 export const metadata = {
   title: 'All Tags | Your Blog Name',

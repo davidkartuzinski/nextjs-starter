@@ -5,7 +5,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
+} from '../../../../../cms-core/components/ui/card';
 import { useState, useEffect } from 'react';
 import RecentPostsList from './recent-posts-list';
 

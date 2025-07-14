@@ -5,19 +5,19 @@ import { notFound } from 'next/navigation';
 import {
   getCategories,
   getTags,
-} from '@/cms-core/lib/supabase/blog.server';
-import { getCategoryUrl } from '@/cms-core/lib/i18n/category-utils';
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { locales } from '@/cms-core/lib/i18n/config';
-import Sidebar from '@/cms-core/components/layout/Sidebar';
+} from '../../../../../../cms-core/lib/database/supabase/blog.server';
+import { getCategoryUrl } from '../../../../../../cms-core/lib/i18n/category-utils';
+import { loadTranslation } from '../../../../../../cms-core/lib/i18n/loadTranslation';
+import { locales } from '../../../../../../cms-core/lib/i18n/config';
+import Sidebar from '../../../../../../cms-core/components/layout/Sidebar';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
-import { Badge } from '@/cms-core/components/ui/badge';
-import { Skeleton } from '@/cms-core/components/ui/skeleton';
+} from '../../../../../../cms-core/components/ui/card';
+import { Badge } from '../../../../../../cms-core/components/ui/badge';
+import { Skeleton } from '../../../../../../cms-core/components/ui/skeleton';
 
 // --- Metadata ---
 export async function generateMetadata({ params }) {

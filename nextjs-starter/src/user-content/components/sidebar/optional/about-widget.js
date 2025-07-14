@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
-import { Button } from '@/cms-core/components/ui/button';
+} from '../../../../../cms-core/components/ui/card';
+import { Button } from '../../../../../cms-core/components/ui/button';
 import { useEffect, useState } from 'react';
 
 export default function AboutWidget({ locale }) {

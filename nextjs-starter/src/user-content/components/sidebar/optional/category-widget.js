@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
-import { Badge } from '@/cms-core/components/ui/badge';
+} from '../../../../../cms-core/components/ui/card';
+import { Badge } from '../../../../../cms-core/components/ui/badge';
 import { useState, useEffect } from 'react';
 
 export default function CategoryWidget({
@@ -49,7 +49,7 @@ export default function CategoryWidget({
     async function loadCategoryUrls() {
       try {
         const { getCategoryUrl } = await import(
-          '@/cms-core/lib/i18n/category-utils'
+          '../../../../../cms-core/lib/i18n/category-utils'
         );
         const urls = {};
 

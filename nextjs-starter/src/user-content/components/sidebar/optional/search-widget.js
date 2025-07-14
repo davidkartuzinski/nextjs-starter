@@ -5,9 +5,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/cms-core/components/ui/card';
-import { Input } from '@/cms-core/components/ui/input';
-import { Button } from '@/cms-core/components/ui/button';
+} from '../../../../../cms-core/components/ui/card';
+import { Input } from '../../../../../cms-core/components/ui/input';
+import { Button } from '../../../../../cms-core/components/ui/button';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';

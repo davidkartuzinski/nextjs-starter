@@ -5,14 +5,14 @@ import Image from 'next/image';
 import {
   getCategories,
   getTags,
-} from '@/cms-core/lib/supabase/blog.client';
-import { getAllPosts } from '@/cms-core/lib/supabase/blog.server';
-import Sidebar from '@/cms-core/components/layout/Sidebar';
-import { Badge } from '@/cms-core/components/ui/badge';
+} from '../../../../../../cms-core/lib/database/supabase/blog.client';
+import { getAllPosts } from '../../../../../../cms-core/lib/database/supabase/blog.server';
+import Sidebar from '../../../../../../cms-core/components/layout/Sidebar';
+import { Badge } from '../../../../../../cms-core/components/ui/badge';
 import { CalendarIcon } from 'lucide-react';
-import { useMDXComponents } from '@/cms-core/components/mdx-components';
+import { useMDXComponents } from '../../../../../../cms-core/components/mdx-components';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { locales } from '@/cms-core/lib/i18n/config';
+import { locales } from '../../../../../../cms-core/lib/i18n/config';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();

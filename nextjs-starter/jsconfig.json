@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/cms-core/*": ["./cms-core/*"],
+      "@/cms-core/translations/*": ["./cms-core/translations/*"],
+      "@/cms-core/translations": ["./cms-core/translations"],
+      "@/cms-core/components/*": ["./cms-core/components/*"],
+      "@/cms-core/lib/*": ["./cms-core/lib/*"],
+      "@/cms-core/styles/*": ["./cms-core/styles/*"]
     }
   }
 }

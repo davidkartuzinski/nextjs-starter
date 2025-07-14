@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { locales } from '@/cms-core/lib/i18n/config';
+import { loadTranslation } from '../../../../../../cms-core/lib/i18n/loadTranslation';
+import { locales } from '../../../../../../cms-core/lib/i18n/config';
 import DashboardClient from './DashboardClient';
 
 export async function generateStaticParams() {

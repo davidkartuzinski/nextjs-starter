@@ -1,13 +1,13 @@
-import HeroSection from '@/cms-core/components/home/HeroSection';
-import BlogPosts from '@/cms-core/components/home/BlogPosts';
+import HeroSection from '@/user-content/components/home/HeroSection';
+import BlogPosts from '@/user-content/components/home/BlogPosts';
 
-import FeatureGrid from '@/cms-core/components/home/FeatureGrid';
-import SplitSection from '@/cms-core/components/home/SplitSection';
-import CallToAction from '@/cms-core/components/optional/CallToAction';
-import CallToActionWithPicture from '@/cms-core/components/optional/CallToActionWithPicture';
+import FeatureGrid from '@/user-content/components/home/FeatureGrid';
+import SplitSection from '@/user-content/components/home/SplitSection';
+import CallToAction from '@/user-content/components/optional/CallToAction';
+import CallToActionWithPicture from '@/user-content/components/optional/CallToActionWithPicture';
 import { Features, SplitSectionFeatures } from '../site-config';
-import CenterTitlePicture from '@/cms-core/components/optional/CenterTitlePicture';
-import LogoColumns from '@/cms-core/components/optional/LogoColumns';
+import CenterTitlePicture from '@/user-content/components/optional/CenterTitlePicture';
+import LogoColumns from '@/user-content/components/optional/LogoColumns';
 import { logos } from '../site-config';
 export default function HomePage() {
   return (

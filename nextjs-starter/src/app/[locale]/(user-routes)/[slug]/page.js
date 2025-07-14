@@ -1,7 +1,7 @@
-import { loadTranslation } from '@/cms-core/lib/i18n/loadTranslation';
-import { resolveTranslationKey } from '@/cms-core/lib/i18n/route-utils';
+import { loadTranslation } from '../../../../../cms-core/lib/i18n/loadTranslation';
+import { resolveTranslationKey } from '../../../../../cms-core/lib/i18n/route-utils';
 import { notFound } from 'next/navigation';
-import { locales } from '@/cms-core/lib/i18n/config';
+import { locales } from '../../../../../cms-core/lib/i18n/config';
 import { localizedSlugs } from '@/user-content/routes/slugs';
 
 export default async function Page({ params }) {
