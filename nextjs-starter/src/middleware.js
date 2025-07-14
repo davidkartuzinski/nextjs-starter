@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server';
-import Negotiator from 'negotiator';
 import { locales, defaultLocale } from '../cms-core/lib/i18n/config';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
 function getLocale(request) {
+  // Simple locale detection from Accept-Language header
   const acceptLanguage = request.headers.get('accept-language') || '';
-  const negotiator = new Negotiator({
-    headers: { 'accept-language': acceptLanguage },
-  });
-  return (
-    locales.find((locale) =>
-      negotiator.languages().includes(locale)
-    ) || defaultLocale
-  );
+
+  // Find the first supported locale in the Accept-Language header
+  for (const locale of locales) {
+    if (acceptLanguage.toLowerCase().includes(locale.toLowerCase())) {
+      return locale;
+    }
+  }
+
+  return defaultLocale;
 }
 
 export function middleware(request) {
