@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Panel de control",
+    "signOut": "Cerrar sesión",
+    "addTitle": "Agregar nueva tarea",
+    "addDescription": "¿Qué necesitas hacer hoy?",
+    "inputPlaceholder": "Escribe una nueva tarea...",
+    "addButton": "Agregar",
+    "yourTodos": "Tus tareas",
+    "loading": "Cargando tareas...",
+    "empty": "Aún no hay tareas.",
+    "delete": "Eliminar",
+    "authMessage": "Por favor inicia sesión para acceder.",
+    "signIn": "Inicia sesión aquí."
+  }
+}

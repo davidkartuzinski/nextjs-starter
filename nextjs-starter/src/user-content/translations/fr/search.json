@@ -1,0 +1,10 @@
+{
+  "search": {
+    "title": "Rechercher",
+    "resultsFor": "Résultats pour \"{query}\"",
+    "showingResults": "Affichage des résultats correspondant à votre recherche.",
+    "noResults": "Aucun article trouvé correspondant à cette recherche.",
+    "enterSearchTerm": "Entrez un terme de recherche pour explorer le contenu du blog.",
+    "searchResults": "Résultats de Recherche"
+  }
+}

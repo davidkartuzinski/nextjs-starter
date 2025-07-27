@@ -1,0 +1,274 @@
+---
+title: How to Add Categories to Posts
+published_at: '2025-06-30'
+summary: A complete guide to adding, managing, and translating categories in your Next.js blog
+featured: true
+categories:
+  - tutorial
+  - nextjs
+  - mdx
+tags:
+  ['Categories', 'MDX', 'Next.js', 'Tutorial', 'Content Management']
+---
+
+# How to Add Categories to Posts
+
+This guide will walk you through the complete process of adding, managing, and translating categories in your Next.js blog. Categories help organize your content and improve user navigation.
+
+## Overview
+
+Categories in this blog system are managed through:
+
+1. **Frontmatter** - Adding categories to individual posts
+2. **Translation Files** - Managing category names and URLs
+3. **Route Structure** - Handling multilingual category pages
+
+## Step 1: Adding Categories to a Post
+
+### 1.1 Edit the Post Frontmatter
+
+Open your post's MDX file and add categories to the frontmatter:
+
+```yaml
+---
+title: Your Post Title
+published_at: '2025-06-30'
+summary: Your post summary
+featured: false
+categories:
+  - nextjs
+  - tutorial
+  - mdx
+tags: ['Your', 'Tags', 'Here']
+---
+```
+
+**File Location**: `posts/your-post-name/en/page.mdx`
+
+### 1.2 Category Naming Convention
+
+- Use **lowercase** category names
+- Use **hyphens** for multi-word categories (e.g., `getting-started`)
+- Keep names **short and descriptive**
+- Use **English** as the base language
+
+**Examples**:
+
+- `nextjs` (not `Next.js`)
+- `getting-started` (not `getting started`)
+- `tutorial` (not `tutorials`)
+
+## Step 2: Adding New Categories to Translation Files
+
+When you add a new category to a post, you need to add it to the translation files.
+
+### 2.1 English Translation File
+
+**File Location**: `src/user-content/translations/en/categories.json`
+
+Add your new category:
+
+```json
+{
+  "categories": {
+    "your-new-category": {
+      "name": "Your New Category",
+      "description": "Description of your new category",
+      "path": "category"
+    }
+  }
+}
+```
+
+### 2.2 Spanish Translation File
+
+**File Location**: `src/user-content/translations/es/categories.json`
+
+Add the Spanish translation:
+
+```json
+{
+  "categories": {
+    "your-new-category": {
+      "name": "Tu Nueva Categoría",
+      "description": "Descripción de tu nueva categoría",
+      "path": "categoria"
+    }
+  }
+}
+```
+
+### 2.3 French Translation File
+
+**File Location**: `src/user-content/translations/fr/categories.json`
+
+Add the French translation:
+
+```json
+{
+  "categories": {
+    "your-new-category": {
+      "name": "Votre Nouvelle Catégorie",
+      "description": "Description de votre nouvelle catégorie",
+      "path": "categorie"
+    }
+  }
+}
+```
+
+## Step 3: Understanding the URL Structure
+
+Categories use translated URL paths:
+
+| Language | URL Pattern                 | Example                     |
+| -------- | --------------------------- | --------------------------- |
+| English  | `/en/blog/category/{slug}`  | `/en/blog/category/nextjs`  |
+| Spanish  | `/es/blog/categoria/{slug}` | `/es/blog/categoria/nextjs` |
+| French   | `/fr/blog/categorie/{slug}` | `/fr/blog/categorie/nextjs` |
+
+## Step 4: Deleting Categories
+
+### 4.1 Remove from Posts
+
+First, remove the category from all posts that use it:
+
+**File Location**: `posts/your-post-name/en/page.mdx`
+
+```yaml
+categories:
+  - nextjs
+  - tutorial
+  # Remove the category you want to delete
+```
+
+### 4.2 Remove from Translation Files
+
+Remove the category from all three translation files:
+
+**Files to Edit**:
+
+- `src/user-content/translations/en/categories.json`
+- `src/user-content/translations/es/categories.json`
+- `src/user-content/translations/fr/categories.json`
+
+Delete the category object:
+
+```json
+{
+  "categories": {
+    // Remove this entire block
+    "category-to-delete": {
+      "name": "Category to Delete",
+      "description": "Description",
+      "path": "category"
+    }
+  }
+}
+```
+
+## Step 5: Best Practices
+
+### 5.1 Category Organization
+
+- **Keep it simple**: Don't create too many categories
+- **Be consistent**: Use the same naming pattern
+- **Think globally**: Categories should work across all languages
+- **Plan ahead**: Consider how categories will scale
+
+### 5.2 Recommended Categories
+
+Here are some recommended categories for a Next.js blog:
+
+- `nextjs` - Next.js specific content
+- `tutorial` - Step-by-step guides
+- `mdx` - MDX and content authoring
+- `design` - UI/UX and design topics
+- `deployment` - Hosting and deployment
+- `performance` - Performance optimization
+- `seo` - Search engine optimization
+
+### 5.3 Category Limits
+
+- **Per post**: 1-3 categories maximum
+- **Total categories**: 10-15 categories maximum
+- **Category names**: Keep under 20 characters
+
+## Step 6: Testing Your Changes
+
+### 6.1 Verify Category Display
+
+1. Start your development server: `npm run dev`
+2. Navigate to your blog: `http://localhost:3000/en/blog`
+3. Check the sidebar categories
+4. Click on a category to verify the URL works
+
+### 6.2 Test Multilingual URLs
+
+Test category URLs in all languages:
+
+- English: `http://localhost:3000/en/blog/category/your-category`
+- Spanish: `http://localhost:3000/es/blog/categoria/your-category`
+- French: `http://localhost:3000/fr/blog/categorie/your-category`
+
+### 6.3 Verify Translations
+
+Check that category names display correctly in each language:
+
+- English: "Your Category"
+- Spanish: "Tu Categoría"
+- French: "Votre Catégorie"
+
+## Troubleshooting
+
+### Common Issues
+
+**Category not showing in sidebar**:
+
+- Check that the category exists in translation files
+- Verify the category slug matches exactly
+- Ensure the post is published
+
+**404 error on category page**:
+
+- Verify the category exists in all translation files
+- Check that route directories exist (`category`, `categoria`, `categorie`)
+- Ensure the category slug is correct
+
+**Translation not working**:
+
+- Check that all three translation files have the category
+- Verify the locale is correct
+- Clear browser cache and restart dev server
+
+## File Structure Summary
+
+```
+posts/
+├── your-post-name/
+│   ├── en/page.mdx          # Add categories to frontmatter
+│   ├── es/page.mdx
+│   └── fr/page.mdx
+
+src/user-content/translations/
+├── en/categories.json       # English category translations
+├── es/categories.json       # Spanish category translations
+└── fr/categories.json       # French category translations
+
+src/app/[locale]/(user-routes)/blog/
+├── category/[category]/     # English category pages
+├── categoria/[category]/    # Spanish category pages
+└── categorie/[category]/    # French category pages
+```
+
+## Conclusion
+
+Categories are a powerful way to organize your blog content and improve user experience. By following this guide, you can effectively manage categories across multiple languages while maintaining a clean, scalable structure.
+
+Remember to:
+
+- Use consistent naming conventions
+- Keep categories simple and focused
+- Test thoroughly across all languages
+- Plan for future growth
+
+Happy categorizing!

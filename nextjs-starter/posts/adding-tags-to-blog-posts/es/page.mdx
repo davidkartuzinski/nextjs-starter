@@ -1,0 +1,433 @@
+---
+title: Agregar Etiquetas a las Publicaciones del Blog - Una Guía Completa
+published_at: '2025-01-27'
+summary: Aprende cómo agregar etiquetas a tus publicaciones del blog con traducciones apropiadas, enrutamiento e implementación técnica. Esta guía cubre todo desde la creación de etiquetas hasta la generación de URLs e integración de la barra lateral.
+featured: true
+categories:
+  - tutorial
+  - nextjs
+  - mdx
+tags:
+  [
+    'Etiquetas',
+    'Tutorial',
+    'Next.js',
+    'Traducción',
+    'Enrutamiento',
+    'Blog',
+  ]
+---
+
+# Agregar Etiquetas a las Publicaciones del Blog - Una Guía Completa
+
+Las etiquetas son una característica esencial para organizar y categorizar el contenido del blog. En esta guía completa, recorreremos cada paso necesario para agregar etiquetas a tus publicaciones del blog, incluyendo traducciones, enrutamiento y consideraciones técnicas.
+
+## Descripción General
+
+Nuestro sistema de etiquetas incluye:
+
+- **Definiciones de etiquetas** en archivos de traducción
+- **Asignación de etiquetas** en el frontmatter de las publicaciones
+- **Generación automática de URLs** con enrutamiento específico por idioma
+- **Integración de la barra lateral** con filtrado por conteo de publicaciones
+- **Enlaces de tarjetas de blog** para navegación fluida
+
+## Paso 1: Definir Etiquetas en Archivos de Traducción
+
+### Etiquetas en Español (`src/user-content/translations/es/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenido del framework Next.js",
+      "path": "etiqueta"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Tutoriales paso a paso",
+      "path": "etiqueta"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "Programación en JavaScript",
+      "path": "etiqueta"
+    }
+  }
+}
+```
+
+### Etiquetas en Inglés (`src/user-content/translations/en/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Next.js framework content",
+      "path": "tag"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Step-by-step tutorials",
+      "path": "tag"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "JavaScript programming",
+      "path": "tag"
+    }
+  }
+}
+```
+
+### Etiquetas en Francés (`src/user-content/translations/fr/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenu du framework Next.js",
+      "path": "etiquette"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Tutoriels étape par étape",
+      "path": "etiquette"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "Programmation JavaScript",
+      "path": "etiquette"
+    }
+  }
+}
+```
+
+## Paso 2: Agregar Etiquetas al Frontmatter de la Publicación
+
+### Estructura de Archivos
+
+```
+posts/
+├── tu-slug-de-publicacion/
+│   ├── en/
+│   │   └── page.mdx
+│   ├── es/
+│   │   └── page.mdx
+│   └── fr/
+│       └── page.mdx
+```
+
+### Publicación en Español (`posts/tu-slug-de-publicacion/es/page.mdx`)
+
+```mdx
+---
+title: Título de tu publicación
+published_at: '2025-01-27'
+summary: Resumen de tu publicación
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Contenido de tu publicación
+
+El contenido de tu publicación va aquí...
+```
+
+### Publicación en Inglés (`posts/tu-slug-de-publicacion/en/page.mdx`)
+
+```mdx
+---
+title: Your Post Title
+published_at: '2025-01-27'
+summary: Your post summary
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Your Post Content
+
+Your blog post content goes here...
+```
+
+### Publicación en Francés (`posts/tu-slug-de-publicacion/fr/page.mdx`)
+
+```mdx
+---
+title: Titre de votre publication
+published_at: '2025-01-27'
+summary: Résumé de votre publication
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Contenu de votre publication
+
+Le contenu de votre publication va ici...
+```
+
+## Paso 3: Entender el Enrutamiento de Etiquetas
+
+### Estructura de URLs
+
+Nuestro sistema de etiquetas usa enrutamiento específico por idioma:
+
+- **Inglés**: `/en/blog/tag/[tag]`
+- **Español**: `/es/blog/etiqueta/[tag]`
+- **Francés**: `/fr/blog/etiquette/[tag]`
+
+### Archivos de Rutas
+
+```
+src/app/[locale]/(user-routes)/blog/
+├── tag/[tag]/page.js          # Etiquetas en inglés
+├── etiqueta/[tag]/page.js     # Etiquetas en español
+└── etiquette/[tag]/page.js    # Etiquetas en francés
+```
+
+### Ejemplos de URLs
+
+- Inglés: `/en/blog/tag/nextjs`
+- Español: `/es/blog/etiqueta/nextjs`
+- Francés: `/fr/blog/etiquette/nextjs`
+
+## Paso 4: Mapeo de Nombres de Etiquetas a Slugs
+
+### Cómo Funciona
+
+El sistema mapea automáticamente los nombres de etiquetas a slugs:
+
+```javascript
+// Nombres de etiquetas en publicaciones
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+
+// Mapeados a slugs
+'Next.js' → 'nextjs'
+'Tutorial' → 'tutorial'
+'JavaScript' → 'javascript'
+```
+
+### Lógica de Mapeo
+
+```javascript
+const matchingTag = translatedTags.find(
+  (t) =>
+    t.name === tag ||
+    t.name.toLowerCase() === tag.toLowerCase() ||
+    t.slug ===
+      tag
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+);
+```
+
+## Paso 5: Integración del Widget de Etiquetas
+
+### Configuración de la Barra Lateral
+
+El TagWidget muestra etiquetas con conteos de publicaciones y filtra por conteo mínimo:
+
+```javascript
+<TagWidget
+  tags={tags}
+  locale={locale}
+  minPostCount={2} // Mostrar etiquetas con 2+ publicaciones
+/>
+```
+
+### Filtrado por Conteo de Publicaciones
+
+- `minPostCount={1}`: Mostrar todas las etiquetas
+- `minPostCount={2}`: Mostrar solo etiquetas con 2+ publicaciones
+- `minPostCount={3}`: Mostrar solo etiquetas con 3+ publicaciones
+
+## Paso 6: Enlaces de Etiquetas en Tarjetas de Blog
+
+### Generación Automática de URLs
+
+Las tarjetas de blog generan automáticamente enlaces clickeables de etiquetas:
+
+```javascript
+// En BlogPostCard.js
+const tagUrls = {};
+for (const tag of post.tags) {
+  const matchingTag = translatedTags.find((t) => t.name === tag);
+  const tagSlug = matchingTag ? matchingTag.slug : tag;
+  tagUrls[tag] = await getTagUrl(tagSlug, locale);
+}
+```
+
+### Visualización en Tarjetas
+
+```jsx
+{
+  post.tags?.map((tag) => (
+    <Badge key={tag} variant='secondary'>
+      <Link href={tagUrls[tag]}>{tagNames[tag] || tag}</Link>
+    </Badge>
+  ));
+}
+```
+
+## Paso 7: Utilidades de Etiquetas
+
+### Funciones Principales (`src/cms-core/lib/i18n/tag-utils.js`)
+
+```javascript
+// Obtener información de etiqueta
+export async function getTagInfo(tagSlug, locale)
+
+// Obtener todas las etiquetas para un idioma
+export async function getAllTags(locale)
+
+// Generar URL de etiqueta
+export async function getTagUrl(tagSlug, locale)
+
+// Encontrar etiqueta por nombre
+export async function findTagByName(translatedName, locale)
+```
+
+### Funciones del Servidor de Blog (`src/cms-core/lib/supabase/blog.server.js`)
+
+```javascript
+// Obtener todas las etiquetas con conteos de publicaciones
+export async function getTags(locale = 'en')
+
+// Obtener publicaciones por etiqueta
+export async function getPostsByTag(tagSlug, locale = 'en')
+```
+
+## Paso 8: Agregar Nuevas Etiquetas
+
+### 1. Agregar a Archivos de Traducción
+
+Agrega la nueva etiqueta a todos los archivos de idioma:
+
+```json
+{
+  "tags": {
+    "nueva-etiqueta": {
+      "name": "Nueva Etiqueta",
+      "description": "Descripción de la nueva etiqueta",
+      "path": "etiqueta"
+    }
+  }
+}
+```
+
+### 2. Usar en Publicaciones del Blog
+
+Agrega el nombre de la etiqueta al frontmatter de tu publicación:
+
+```yaml
+tags: ['Nueva Etiqueta', 'Etiqueta Existente']
+```
+
+### 3. Verificar Enrutamiento
+
+El sistema crea automáticamente la ruta:
+
+- `/en/blog/tag/nueva-etiqueta`
+- `/es/blog/etiqueta/nueva-etiqueta`
+- `/fr/blog/etiquette/nueva-etiqueta`
+
+## Consideraciones Importantes
+
+### 1. Convenciones de Nomenclatura de Etiquetas
+
+- **Usar nombres descriptivos**: "Next.js" en lugar de "next"
+- **Ser consistente**: Usar el mismo nombre de etiqueta en todos los idiomas
+- **Evitar caracteres especiales**: Usar solo letras, números y espacios
+
+### 2. Consistencia de Traducción
+
+- **Mantener nombres de etiquetas consistentes** en todos los archivos de idioma
+- **Actualizar todos los idiomas** al agregar nuevas etiquetas
+- **Usar traducciones apropiadas** para las descripciones
+
+### 3. Estructura de URLs
+
+- **Los slugs se generan automáticamente** desde los nombres de etiquetas
+- **Las URLs son específicas por idioma** con enrutamiento apropiado
+- **Manejo de respaldo** para traducciones faltantes
+
+### 4. Consideraciones de Rendimiento
+
+- **Los datos de etiquetas se almacenan en caché** para mejor rendimiento
+- **Los conteos de publicaciones se calculan** dinámicamente
+- **La generación de URLs** se optimiza con respaldos
+
+### 5. Beneficios SEO
+
+- **Las páginas de etiquetas son SEO-friendly** con metadatos apropiados
+- **Las URLs de etiquetas son limpias** y descriptivas
+- **Las páginas de etiquetas muestran contenido relacionado** para mejor experiencia de usuario
+
+## Solución de Problemas
+
+### Problemas Comunes
+
+1. **Las etiquetas no aparecen en la barra lateral**
+
+   - Verificar configuración de `minPostCount`
+   - Verificar que los nombres de etiquetas coincidan con archivos de traducción
+   - Asegurar que las etiquetas estén asignadas correctamente a las publicaciones
+
+2. **Los enlaces de etiquetas no funcionan**
+
+   - Verificar nombres de etiquetas en archivos de traducción
+   - Verificar lógica de generación de slugs
+   - Asegurar enrutamiento apropiado de URLs
+
+3. **Traducciones faltantes**
+   - Agregar etiquetas a todos los archivos de idioma
+   - Usar nombres de etiquetas consistentes
+   - Verificar manejo de respaldo
+
+### Pasos de Depuración
+
+1. **Verificar consola del navegador** para errores
+2. **Verificar datos de etiquetas** en solicitudes de red
+3. **Probar generación de URLs** manualmente
+4. **Verificar archivos de traducción** para consistencia
+
+## Mejores Prácticas
+
+### 1. Organización de Etiquetas
+
+- **Usar etiquetas jerárquicas** cuando sea apropiado
+- **Mantener conteo de etiquetas razonable** (5-10 por publicación)
+- **Usar etiquetas específicas y descriptivas**
+
+### 2. Estrategia de Contenido
+
+- **Planificar tu taxonomía de etiquetas** antes de la implementación
+- **Usar etiquetas consistentemente** en contenido similar
+- **Revisar y limpiar** etiquetas no utilizadas periódicamente
+
+### 3. Experiencia de Usuario
+
+- **Hacer etiquetas clickeables** en todos los contextos
+- **Mostrar conteos de publicaciones** para mejor navegación
+- **Proporcionar retroalimentación visual clara** para interacciones de etiquetas
+
+## Conclusión
+
+Agregar etiquetas a tus publicaciones del blog es una forma poderosa de organizar contenido y mejorar la navegación del usuario. Siguiendo esta guía completa, tendrás un sistema de etiquetas completamente funcional con traducciones apropiadas, enrutamiento e integración.
+
+La clave del éxito es mantener consistencia en tus archivos de traducción y asegurar el mapeo apropiado de nombres de etiquetas a slugs. Con la configuración correcta, tus usuarios podrán descubrir fácilmente contenido relacionado y navegar tu blog efectivamente.
+
+Recuerda probar tu sistema de etiquetas exhaustivamente en todos los idiomas y monitorear el compromiso del usuario para optimizar tu estrategia de etiquetas con el tiempo.

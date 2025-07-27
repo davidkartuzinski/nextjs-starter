@@ -1,0 +1,199 @@
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Next.js framework content",
+      "path": "tag"
+    },
+    "tailwind": {
+      "name": "Tailwind",
+      "description": "Tailwind CSS styling",
+      "path": "tag"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Step-by-step tutorials",
+      "path": "tag"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "JavaScript programming",
+      "path": "tag"
+    },
+    "learning": {
+      "name": "Learning",
+      "description": "Learning resources",
+      "path": "tag"
+    },
+    "introduction": {
+      "name": "Introduction",
+      "description": "Introductory content",
+      "path": "tag"
+    },
+    "framer-motion": {
+      "name": "Framer Motion",
+      "description": "Animation library",
+      "path": "tag"
+    },
+    "front-pages": {
+      "name": "Front Pages",
+      "description": "Frontend page development",
+      "path": "tag"
+    },
+    "tailwindcss": {
+      "name": "TailwindCSS",
+      "description": "Tailwind CSS framework",
+      "path": "tag"
+    },
+    "shadcn": {
+      "name": "Shadcn",
+      "description": "Shadcn UI components",
+      "path": "tag"
+    },
+    "ui": {
+      "name": "UI",
+      "description": "User interface design",
+      "path": "tag"
+    },
+    "supabase": {
+      "name": "Supabase",
+      "description": "Supabase database",
+      "path": "tag"
+    },
+    "vercel": {
+      "name": "Vercel",
+      "description": "Vercel hosting platform",
+      "path": "tag"
+    },
+    "github": {
+      "name": "GitHub",
+      "description": "GitHub version control",
+      "path": "tag"
+    },
+    "remix": {
+      "name": "Remix",
+      "description": "Remix framework",
+      "path": "tag"
+    },
+    "react": {
+      "name": "React",
+      "description": "React library",
+      "path": "tag"
+    },
+    "web-development": {
+      "name": "Web Development",
+      "description": "Web development topics",
+      "path": "tag"
+    },
+    "hosting": {
+      "name": "Hosting",
+      "description": "Web hosting services",
+      "path": "tag"
+    },
+    "netlify": {
+      "name": "Netlify",
+      "description": "Netlify hosting platform",
+      "path": "tag"
+    },
+    "mdx": {
+      "name": "MDX",
+      "description": "MDX content format",
+      "path": "tag"
+    },
+    "editor": {
+      "name": "Editor",
+      "description": "Code editors and tools",
+      "path": "tag"
+    },
+    "markdown": {
+      "name": "Markdown",
+      "description": "Markdown formatting",
+      "path": "tag"
+    },
+    "categories": {
+      "name": "Categories",
+      "description": "Content categorization",
+      "path": "tag"
+    },
+    "content-management": {
+      "name": "Content Management",
+      "description": "Content management systems",
+      "path": "tag"
+    },
+    "your": {
+      "name": "Your",
+      "description": "Your content",
+      "path": "tag"
+    },
+    "tags": {
+      "name": "Tags",
+      "description": "Tagging system",
+      "path": "tag"
+    },
+    "here": {
+      "name": "Here",
+      "description": "Placeholder content",
+      "path": "tag"
+    },
+    "tus": {
+      "name": "Tus",
+      "description": "Your content in Spanish",
+      "path": "tag"
+    },
+    "etiquetas": {
+      "name": "Etiquetas",
+      "description": "Tags in Spanish",
+      "path": "tag"
+    },
+    "aquí": {
+      "name": "Aquí",
+      "description": "Here in Spanish",
+      "path": "tag"
+    },
+    "vos": {
+      "name": "Vos",
+      "description": "Your content in French",
+      "path": "tag"
+    },
+    "étiquettes": {
+      "name": "Étiquettes",
+      "description": "Tags in French",
+      "path": "tag"
+    },
+    "ici": {
+      "name": "Ici",
+      "description": "Here in French",
+      "path": "tag"
+    },
+    "desarrollo-web": {
+      "name": "Desarrollo Web",
+      "description": "Web development in Spanish",
+      "path": "tag"
+    },
+    "développement-web": {
+      "name": "Développement Web",
+      "description": "Web development in French",
+      "path": "tag"
+    },
+    "aprendizaje": {
+      "name": "Aprendizaje",
+      "description": "Learning in Spanish",
+      "path": "tag"
+    },
+    "translation": {
+      "name": "Translation",
+      "description": "Translation and localization",
+      "path": "tag"
+    },
+    "routing": {
+      "name": "Routing",
+      "description": "URL routing and navigation",
+      "path": "tag"
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Blog content and management",
+      "path": "tag"
+    }
+  }
+}

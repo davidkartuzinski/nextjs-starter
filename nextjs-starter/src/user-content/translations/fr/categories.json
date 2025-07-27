@@ -1,0 +1,94 @@
+{
+  "categories": {
+    "getting-started": {
+      "name": "Pour Commencer",
+      "description": "Commencez votre voyage ici",
+      "path": "categorie"
+    },
+    "tutorials": {
+      "name": "Tutoriels",
+      "description": "Guides étape par étape",
+      "path": "categorie"
+    },
+    "advanced": {
+      "name": "Avancé",
+      "description": "Contenu de niveau expert",
+      "path": "categorie"
+    },
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenu lié à Next.js",
+      "path": "categorie"
+    },
+    "react": {
+      "name": "React",
+      "description": "Contenu lié à React",
+      "path": "categorie"
+    },
+    "mdx": {
+      "name": "MDX",
+      "description": "MDX et création de contenu",
+      "path": "categorie"
+    },
+    "tutorial": {
+      "name": "Tutoriels",
+      "description": "Guides étape par étape et tutoriels",
+      "path": "categorie"
+    },
+    "summary": {
+      "name": "Résumé",
+      "description": "Contenu de résumé et aperçu",
+      "path": "categorie"
+    },
+    "markdown": {
+      "name": "Markdown",
+      "description": "Markdown et formatage de contenu",
+      "path": "categorie"
+    },
+    "coding": {
+      "name": "Programmation",
+      "description": "Contenu de programmation et développement",
+      "path": "categorie"
+    },
+    "tailwind": {
+      "name": "Tailwind CSS",
+      "description": "Tailwind CSS et styles",
+      "path": "categorie"
+    },
+    "design": {
+      "name": "Design",
+      "description": "Contenu de design et UI/UX",
+      "path": "categorie"
+    },
+    "supabase": {
+      "name": "Supabase",
+      "description": "Base de données et backend Supabase",
+      "path": "categorie"
+    },
+    "stack": {
+      "name": "Stack Technologique",
+      "description": "Stacks technologiques et architecture",
+      "path": "categorie"
+    },
+    "framework": {
+      "name": "Frameworks",
+      "description": "Frameworks web et outils",
+      "path": "categorie"
+    },
+    "comparison": {
+      "name": "Comparaisons",
+      "description": "Comparaisons et analyses de technologies",
+      "path": "categorie"
+    },
+    "hosting": {
+      "name": "Hébergement",
+      "description": "Hébergement web et déploiement",
+      "path": "categorie"
+    },
+    "deployment": {
+      "name": "Déploiement",
+      "description": "Déploiement et DevOps",
+      "path": "categorie"
+    }
+  }
+}

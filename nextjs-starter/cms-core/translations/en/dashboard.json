@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "signOut": "Sign Out",
+    "addTitle": "Add New Todo",
+    "addDescription": "What do you need to do today?",
+    "inputPlaceholder": "Enter a new todo...",
+    "addButton": "Add",
+    "yourTodos": "Your Todos",
+    "loading": "Loading todos...",
+    "empty": "No todos yet. Add one above!",
+    "delete": "Delete",
+    "authMessage": "Please sign in to access this page.",
+    "signIn": "Sign in here."
+  }
+}

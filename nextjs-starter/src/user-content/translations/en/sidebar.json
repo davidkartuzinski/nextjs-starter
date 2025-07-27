@@ -1,0 +1,22 @@
+{
+  "search": {
+    "title": "Search",
+    "placeholder": "Search blog...",
+    "button": "Search"
+  },
+  "about": {
+    "title": "About",
+    "description": "A brief description about yourself or your blog.",
+    "learnMore": "Learn more"
+  },
+  "recentPosts": {
+    "title": "Recent Posts",
+    "noPosts": "No recent posts."
+  },
+  "categories": {
+    "title": "Categories"
+  },
+  "tags": {
+    "title": "Tags"
+  }
+}

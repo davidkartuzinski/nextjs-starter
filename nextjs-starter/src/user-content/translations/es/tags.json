@@ -1,0 +1,199 @@
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenido del framework Next.js",
+      "path": "etiqueta"
+    },
+    "tailwind": {
+      "name": "Tailwind",
+      "description": "Estilos CSS con Tailwind",
+      "path": "etiqueta"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Tutoriales paso a paso",
+      "path": "etiqueta"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "Programación en JavaScript",
+      "path": "etiqueta"
+    },
+    "learning": {
+      "name": "Aprendizaje",
+      "description": "Recursos de aprendizaje",
+      "path": "etiqueta"
+    },
+    "introduction": {
+      "name": "Introducción",
+      "description": "Contenido introductorio",
+      "path": "etiqueta"
+    },
+    "framer-motion": {
+      "name": "Framer Motion",
+      "description": "Biblioteca de animación",
+      "path": "etiqueta"
+    },
+    "front-pages": {
+      "name": "Páginas Frontend",
+      "description": "Desarrollo de páginas frontend",
+      "path": "etiqueta"
+    },
+    "tailwindcss": {
+      "name": "TailwindCSS",
+      "description": "Framework CSS Tailwind",
+      "path": "etiqueta"
+    },
+    "shadcn": {
+      "name": "Shadcn",
+      "description": "Componentes UI Shadcn",
+      "path": "etiqueta"
+    },
+    "ui": {
+      "name": "UI",
+      "description": "Diseño de interfaz de usuario",
+      "path": "etiqueta"
+    },
+    "supabase": {
+      "name": "Supabase",
+      "description": "Base de datos Supabase",
+      "path": "etiqueta"
+    },
+    "vercel": {
+      "name": "Vercel",
+      "description": "Plataforma de hosting Vercel",
+      "path": "etiqueta"
+    },
+    "github": {
+      "name": "GitHub",
+      "description": "Control de versiones GitHub",
+      "path": "etiqueta"
+    },
+    "remix": {
+      "name": "Remix",
+      "description": "Framework Remix",
+      "path": "etiqueta"
+    },
+    "react": {
+      "name": "React",
+      "description": "Biblioteca React",
+      "path": "etiqueta"
+    },
+    "web-development": {
+      "name": "Desarrollo Web",
+      "description": "Temas de desarrollo web",
+      "path": "etiqueta"
+    },
+    "hosting": {
+      "name": "Hosting",
+      "description": "Servicios de hosting web",
+      "path": "etiqueta"
+    },
+    "netlify": {
+      "name": "Netlify",
+      "description": "Plataforma de hosting Netlify",
+      "path": "etiqueta"
+    },
+    "mdx": {
+      "name": "MDX",
+      "description": "Formato de contenido MDX",
+      "path": "etiqueta"
+    },
+    "editor": {
+      "name": "Editor",
+      "description": "Editores de código y herramientas",
+      "path": "etiqueta"
+    },
+    "markdown": {
+      "name": "Markdown",
+      "description": "Formato Markdown",
+      "path": "etiqueta"
+    },
+    "categories": {
+      "name": "Categorías",
+      "description": "Categorización de contenido",
+      "path": "etiqueta"
+    },
+    "content-management": {
+      "name": "Gestión de Contenido",
+      "description": "Sistemas de gestión de contenido",
+      "path": "etiqueta"
+    },
+    "your": {
+      "name": "Tus",
+      "description": "Tu contenido",
+      "path": "etiqueta"
+    },
+    "tags": {
+      "name": "Etiquetas",
+      "description": "Sistema de etiquetado",
+      "path": "etiqueta"
+    },
+    "here": {
+      "name": "Aquí",
+      "description": "Contenido de marcador de posición",
+      "path": "etiqueta"
+    },
+    "tus": {
+      "name": "Tus",
+      "description": "Tu contenido",
+      "path": "etiqueta"
+    },
+    "etiquetas": {
+      "name": "Etiquetas",
+      "description": "Sistema de etiquetado",
+      "path": "etiqueta"
+    },
+    "aquí": {
+      "name": "Aquí",
+      "description": "Contenido de marcador de posición",
+      "path": "etiqueta"
+    },
+    "vos": {
+      "name": "Vos",
+      "description": "Tu contenido",
+      "path": "etiqueta"
+    },
+    "étiquettes": {
+      "name": "Étiquettes",
+      "description": "Sistema de etiquetado",
+      "path": "etiqueta"
+    },
+    "ici": {
+      "name": "Ici",
+      "description": "Contenido de marcador de posición",
+      "path": "etiqueta"
+    },
+    "desarrollo-web": {
+      "name": "Desarrollo Web",
+      "description": "Desarrollo web",
+      "path": "etiqueta"
+    },
+    "développement-web": {
+      "name": "Développement Web",
+      "description": "Desarrollo web",
+      "path": "etiqueta"
+    },
+    "aprendizaje": {
+      "name": "Aprendizaje",
+      "description": "Recursos de aprendizaje",
+      "path": "etiqueta"
+    },
+    "translation": {
+      "name": "Traducción",
+      "description": "Traducción y localización",
+      "path": "etiqueta"
+    },
+    "routing": {
+      "name": "Enrutamiento",
+      "description": "Enrutamiento de URLs y navegación",
+      "path": "etiqueta"
+    },
+    "blog": {
+      "name": "Blog",
+      "description": "Contenido y gestión del blog",
+      "path": "etiqueta"
+    }
+  }
+}

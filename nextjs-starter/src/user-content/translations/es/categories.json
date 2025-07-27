@@ -1,0 +1,94 @@
+{
+  "categories": {
+    "getting-started": {
+      "name": "Comenzando",
+      "description": "Comienza tu viaje aquí",
+      "path": "categoria"
+    },
+    "tutorials": {
+      "name": "Tutoriales",
+      "description": "Guías paso a paso",
+      "path": "categoria"
+    },
+    "advanced": {
+      "name": "Avanzado",
+      "description": "Contenido de nivel experto",
+      "path": "categoria"
+    },
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenido relacionado con Next.js",
+      "path": "categoria"
+    },
+    "react": {
+      "name": "React",
+      "description": "Contenido relacionado con React",
+      "path": "categoria"
+    },
+    "mdx": {
+      "name": "MDX",
+      "description": "MDX y creación de contenido",
+      "path": "categoria"
+    },
+    "tutorial": {
+      "name": "Tutoriales",
+      "description": "Guías paso a paso y tutoriales",
+      "path": "categoria"
+    },
+    "summary": {
+      "name": "Resumen",
+      "description": "Contenido de resumen y descripción general",
+      "path": "categoria"
+    },
+    "markdown": {
+      "name": "Markdown",
+      "description": "Markdown y formato de contenido",
+      "path": "categoria"
+    },
+    "coding": {
+      "name": "Programación",
+      "description": "Contenido de programación y desarrollo",
+      "path": "categoria"
+    },
+    "tailwind": {
+      "name": "Tailwind CSS",
+      "description": "Tailwind CSS y estilos",
+      "path": "categoria"
+    },
+    "design": {
+      "name": "Diseño",
+      "description": "Contenido de diseño y UI/UX",
+      "path": "categoria"
+    },
+    "supabase": {
+      "name": "Supabase",
+      "description": "Base de datos y backend de Supabase",
+      "path": "categoria"
+    },
+    "stack": {
+      "name": "Stack Tecnológico",
+      "description": "Stacks tecnológicos y arquitectura",
+      "path": "categoria"
+    },
+    "framework": {
+      "name": "Frameworks",
+      "description": "Frameworks web y herramientas",
+      "path": "categoria"
+    },
+    "comparison": {
+      "name": "Comparaciones",
+      "description": "Comparaciones y análisis de tecnologías",
+      "path": "categoria"
+    },
+    "hosting": {
+      "name": "Alojamiento",
+      "description": "Alojamiento web y despliegue",
+      "path": "categoria"
+    },
+    "deployment": {
+      "name": "Despliegue",
+      "description": "Despliegue y DevOps",
+      "path": "categoria"
+    }
+  }
+}

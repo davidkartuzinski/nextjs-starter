@@ -1,0 +1,426 @@
+---
+title: Adding Tags to Blog Posts - A Complete Guide
+published_at: '2025-01-27'
+summary: Learn how to add tags to your blog posts with proper translations, routing, and technical implementation. This guide covers everything from tag creation to URL generation and sidebar integration.
+featured: true
+categories:
+  - tutorial
+  - nextjs
+  - mdx
+tags:
+  ['Tags', 'Tutorial', 'Next.js', 'Translation', 'Routing', 'Blog']
+---
+
+# Adding Tags to Blog Posts - A Complete Guide
+
+Tags are an essential feature for organizing and categorizing blog content. In this comprehensive guide, we'll walk through every step needed to add tags to your blog posts, including translations, routing, and technical considerations.
+
+## Overview
+
+Our tag system includes:
+
+- **Tag definitions** in translation files
+- **Tag assignment** in blog post frontmatter
+- **Automatic URL generation** with locale-specific routing
+- **Sidebar integration** with post count filtering
+- **Blog card linking** for seamless navigation
+
+## Step 1: Define Tags in Translation Files
+
+### English Tags (`src/user-content/translations/en/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Next.js framework content",
+      "path": "tag"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Step-by-step tutorials",
+      "path": "tag"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "JavaScript programming",
+      "path": "tag"
+    }
+  }
+}
+```
+
+### Spanish Tags (`src/user-content/translations/es/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenido del framework Next.js",
+      "path": "etiqueta"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Tutoriales paso a paso",
+      "path": "etiqueta"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "Programación en JavaScript",
+      "path": "etiqueta"
+    }
+  }
+}
+```
+
+### French Tags (`src/user-content/translations/fr/tags.json`)
+
+```json
+{
+  "tags": {
+    "nextjs": {
+      "name": "Next.js",
+      "description": "Contenu du framework Next.js",
+      "path": "etiquette"
+    },
+    "tutorial": {
+      "name": "Tutorial",
+      "description": "Tutoriels étape par étape",
+      "path": "etiquette"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "description": "Programmation JavaScript",
+      "path": "etiquette"
+    }
+  }
+}
+```
+
+## Step 2: Add Tags to Blog Post Frontmatter
+
+### File Structure
+
+```
+posts/
+├── your-post-slug/
+│   ├── en/
+│   │   └── page.mdx
+│   ├── es/
+│   │   └── page.mdx
+│   └── fr/
+│       └── page.mdx
+```
+
+### English Post (`posts/your-post-slug/en/page.mdx`)
+
+```mdx
+---
+title: Your Post Title
+published_at: '2025-01-27'
+summary: Your post summary
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Your Post Content
+
+Your blog post content goes here...
+```
+
+### Spanish Post (`posts/your-post-slug/es/page.mdx`)
+
+```mdx
+---
+title: Título de tu publicación
+published_at: '2025-01-27'
+summary: Resumen de tu publicación
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Contenido de tu publicación
+
+El contenido de tu publicación va aquí...
+```
+
+### French Post (`posts/your-post-slug/fr/page.mdx`)
+
+```mdx
+---
+title: Titre de votre publication
+published_at: '2025-01-27'
+summary: Résumé de votre publication
+featured: false
+categories:
+  - nextjs
+  - tutorial
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+---
+
+# Contenu de votre publication
+
+Le contenu de votre publication va ici...
+```
+
+## Step 3: Understanding Tag Routing
+
+### URL Structure
+
+Our tag system uses locale-specific routing:
+
+- **English**: `/en/blog/tag/[tag]`
+- **Spanish**: `/es/blog/etiqueta/[tag]`
+- **French**: `/fr/blog/etiquette/[tag]`
+
+### Route Files
+
+```
+src/app/[locale]/(user-routes)/blog/
+├── tag/[tag]/page.js          # English tags
+├── etiqueta/[tag]/page.js     # Spanish tags
+└── etiquette/[tag]/page.js    # French tags
+```
+
+### Example URLs
+
+- English: `/en/blog/tag/nextjs`
+- Spanish: `/es/blog/etiqueta/nextjs`
+- French: `/fr/blog/etiquette/nextjs`
+
+## Step 4: Tag Name to Slug Mapping
+
+### How It Works
+
+The system automatically maps tag names to slugs:
+
+```javascript
+// Tag names in posts
+tags: ['Next.js', 'Tutorial', 'JavaScript']
+
+// Mapped to slugs
+'Next.js' → 'nextjs'
+'Tutorial' → 'tutorial'
+'JavaScript' → 'javascript'
+```
+
+### Mapping Logic
+
+```javascript
+const matchingTag = translatedTags.find(
+  (t) =>
+    t.name === tag ||
+    t.name.toLowerCase() === tag.toLowerCase() ||
+    t.slug ===
+      tag
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+);
+```
+
+## Step 5: Tag Widget Integration
+
+### Sidebar Configuration
+
+The TagWidget displays tags with post counts and filters by minimum post count:
+
+```javascript
+<TagWidget
+  tags={tags}
+  locale={locale}
+  minPostCount={2} // Show tags with 2+ posts
+/>
+```
+
+### Post Count Filtering
+
+- `minPostCount={1}`: Show all tags
+- `minPostCount={2}`: Show only tags with 2+ posts
+- `minPostCount={3}`: Show only tags with 3+ posts
+
+## Step 6: Blog Card Tag Links
+
+### Automatic URL Generation
+
+Blog cards automatically generate clickable tag links:
+
+```javascript
+// In BlogPostCard.js
+const tagUrls = {};
+for (const tag of post.tags) {
+  const matchingTag = translatedTags.find((t) => t.name === tag);
+  const tagSlug = matchingTag ? matchingTag.slug : tag;
+  tagUrls[tag] = await getTagUrl(tagSlug, locale);
+}
+```
+
+### Display in Cards
+
+```jsx
+{
+  post.tags?.map((tag) => (
+    <Badge key={tag} variant='secondary'>
+      <Link href={tagUrls[tag]}>{tagNames[tag] || tag}</Link>
+    </Badge>
+  ));
+}
+```
+
+## Step 7: Tag Utilities
+
+### Core Functions (`src/cms-core/lib/i18n/tag-utils.js`)
+
+```javascript
+// Get tag information
+export async function getTagInfo(tagSlug, locale)
+
+// Get all tags for a locale
+export async function getAllTags(locale)
+
+// Generate tag URL
+export async function getTagUrl(tagSlug, locale)
+
+// Find tag by name
+export async function findTagByName(translatedName, locale)
+```
+
+### Blog Server Functions (`src/cms-core/lib/supabase/blog.server.js`)
+
+```javascript
+// Get all tags with post counts
+export async function getTags(locale = 'en')
+
+// Get posts by tag
+export async function getPostsByTag(tagSlug, locale = 'en')
+```
+
+## Step 8: Adding New Tags
+
+### 1. Add to Translation Files
+
+Add the new tag to all locale files:
+
+```json
+{
+  "tags": {
+    "new-tag": {
+      "name": "New Tag",
+      "description": "Description of the new tag",
+      "path": "tag"
+    }
+  }
+}
+```
+
+### 2. Use in Blog Posts
+
+Add the tag name to your post frontmatter:
+
+```yaml
+tags: ['New Tag', 'Existing Tag']
+```
+
+### 3. Verify Routing
+
+The system automatically creates the route:
+
+- `/en/blog/tag/new-tag`
+- `/es/blog/etiqueta/new-tag`
+- `/fr/blog/etiquette/new-tag`
+
+## Important Considerations
+
+### 1. Tag Naming Conventions
+
+- **Use descriptive names**: "Next.js" instead of "next"
+- **Be consistent**: Use the same tag name across all locales
+- **Avoid special characters**: Stick to letters, numbers, and spaces
+
+### 2. Translation Consistency
+
+- **Keep tag names consistent** across all locale files
+- **Update all locales** when adding new tags
+- **Use appropriate translations** for descriptions
+
+### 3. URL Structure
+
+- **Slugs are automatically generated** from tag names
+- **URLs are locale-specific** with proper routing
+- **Fallback handling** for missing translations
+
+### 4. Performance Considerations
+
+- **Tag data is cached** for better performance
+- **Post counts are calculated** dynamically
+- **URL generation** is optimized with fallbacks
+
+### 5. SEO Benefits
+
+- **Tag pages are SEO-friendly** with proper metadata
+- **Tag URLs are clean** and descriptive
+- **Tag pages show related content** for better user experience
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Tags not showing in sidebar**
+
+   - Check `minPostCount` setting
+   - Verify tag names match translation files
+   - Ensure tags are properly assigned to posts
+
+2. **Tag links not working**
+
+   - Verify tag names in translation files
+   - Check slug generation logic
+   - Ensure proper URL routing
+
+3. **Missing translations**
+   - Add tags to all locale files
+   - Use consistent tag names
+   - Check fallback handling
+
+### Debug Steps
+
+1. **Check browser console** for errors
+2. **Verify tag data** in network requests
+3. **Test URL generation** manually
+4. **Check translation files** for consistency
+
+## Best Practices
+
+### 1. Tag Organization
+
+- **Use hierarchical tags** when appropriate
+- **Keep tag count reasonable** (5-10 per post)
+- **Use specific, descriptive tags**
+
+### 2. Content Strategy
+
+- **Plan your tag taxonomy** before implementation
+- **Use tags consistently** across similar content
+- **Review and clean up** unused tags periodically
+
+### 3. User Experience
+
+- **Make tags clickable** in all contexts
+- **Show post counts** for better navigation
+- **Provide clear visual feedback** for tag interactions
+
+## Conclusion
+
+Adding tags to your blog posts is a powerful way to organize content and improve user navigation. By following this comprehensive guide, you'll have a fully functional tag system with proper translations, routing, and integration.
+
+The key to success is maintaining consistency across your translation files and ensuring proper tag name to slug mapping. With the right setup, your users will be able to easily discover related content and navigate your blog effectively.
+
+Remember to test your tag system thoroughly across all locales and monitor user engagement to optimize your tag strategy over time.

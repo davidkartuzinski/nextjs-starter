@@ -1,0 +1,164 @@
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
+import {
+  getPostsByTag,
+  getTags,
+  getCategories,
+} from '../../../../../../../cms-core/lib/database/supabase/blog.server';
+import { locales } from '../../../../../../../cms-core/lib/i18n/config';
+import Sidebar from '../../../../../../../cms-core/components/layout/Sidebar';
+import BlogPostCard from '@/user-content/components/blog/BlogPostCard';
+import Pagination from '@/user-content/components/blog/Pagination';
+import {
+  Card,
+  CardContent,
+} from '../../../../../../../cms-core/components/ui/card';
+import { Skeleton } from '../../../../../../../cms-core/components/ui/skeleton';
+
+const POSTS_PER_PAGE = 6;
+
+// --- Metadata ---
+export async function generateMetadata({ params }) {
+  const { tag, locale } = await params;
+
+  if (!locales.includes(locale)) {
+    return {
+      title: 'Tag Not Found',
+    };
+  }
+
+  const tags = await getTags(locale);
+  const tagFound = tags.find((t) => t.slug === tag);
+
+  if (!tagFound) {
+    return {
+      title: 'Tag Not Found',
+    };
+  }
+
+  return {
+    title: `${tagFound.name} | Your Blog Name`,
+    description: `Articles tagged with ${tagFound.name}`,
+  };
+}
+
+// --- Optimized Page ---
+export default async function TagPage({ params, searchParams }) {
+  const { tag, locale } = await params;
+  const { page: pageParam } = await searchParams;
+
+  if (!locales.includes(locale)) notFound();
+
+  const tagSlug = tag;
+  const page = parseInt(pageParam || '1', 10);
+
+  // Parallel data fetching
+  const [tags, posts, categories] = await Promise.all([
+    getTags(locale),
+    getPostsByTag(tagSlug, locale),
+    getCategories(locale),
+  ]);
+
+  const tagFound = tags.find((t) => t.slug === tagSlug);
+  if (!tagFound) notFound();
+
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+  const currentPagePosts = posts.slice(
+    (page - 1) * POSTS_PER_PAGE,
+    page * POSTS_PER_PAGE
+  );
+
+  return (
+    <div className='container py-8'>
+      <div className='flex flex-col gap-4 md:gap-8'>
+        {/* Page Header */}
+        <div className='space-y-2'>
+          <h1 className='text-3xl font-bold tracking-tight'>
+            Tag: {tagFound.name}
+          </h1>
+          <p className='text-muted-foreground'>
+            Browse articles tagged with {tagFound.name}.
+          </p>
+        </div>
+
+        {/* Grid Layout */}
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4'>
+          {/* Main Content */}
+          <div className='col-span-1 md:col-span-2 lg:col-span-3'>
+            {currentPagePosts.length > 0 ? (
+              <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+                {currentPagePosts.map((post) => (
+                  <Suspense
+                    key={post.id || post.slug}
+                    fallback={<PostSkeleton />}
+                  >
+                    <BlogPostCard post={post} locale={locale} />
+                  </Suspense>
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className='flex flex-col items-center justify-center py-12'>
+                  <p className='text-center text-muted-foreground'>
+                    No posts found with this tag.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {totalPages > 1 && (
+              <div className='mt-8'>
+                <Pagination
+                  currentPage={page}
+                  totalPages={totalPages}
+                  basePath={`/${locale}/blog/etiquette/${tagSlug}`}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className='col-span-1'>
+            <Sidebar
+              recentPosts={posts.slice(0, 5).map((post) => ({
+                slug: post.slug,
+                title: post.title,
+                date: new Date(
+                  post.published_at || post.publishedAt
+                ).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }),
+              }))}
+              categories={categories}
+              tags={tags}
+              locale={locale}
+              minPostCount={2}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PostSkeleton() {
+  return (
+    <Card>
+      <div className='p-6 space-y-2'>
+        <Skeleton className='h-4 w-1/2' />
+        <Skeleton className='h-4 w-1/4' />
+        <div className='space-y-2 mt-4'>
+          <Skeleton className='h-4 w-full' />
+          <Skeleton className='h-4 w-full' />
+          <Skeleton className='h-4 w-2/3' />
+        </div>
+        <div className='mt-4'>
+          <Skeleton className='h-8 w-24' />
+        </div>
+      </div>
+    </Card>
+  );
+}

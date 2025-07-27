@@ -1,0 +1,274 @@
+---
+title: Comment Ajouter des Catégories aux Articles
+published_at: '2025-06-30'
+summary: Un guide complet pour ajouter, gérer et traduire les catégories dans votre blog Next.js
+featured: true
+categories:
+  - tutorial
+  - nextjs
+  - mdx
+tags:
+  ['Catégories', 'MDX', 'Next.js', 'Tutoriel', 'Gestion de Contenu']
+---
+
+# Comment Ajouter des Catégories aux Articles
+
+Ce guide vous accompagnera à travers le processus complet d'ajout, de gestion et de traduction des catégories dans votre blog Next.js. Les catégories aident à organiser votre contenu et améliorent la navigation des utilisateurs.
+
+## Aperçu
+
+Les catégories dans ce système de blog sont gérées via :
+
+1. **Frontmatter** - Ajouter des catégories aux articles individuels
+2. **Fichiers de Traduction** - Gérer les noms et URLs des catégories
+3. **Structure de Routes** - Gérer les pages de catégories multilingues
+
+## Étape 1 : Ajouter des Catégories à un Article
+
+### 1.1 Modifier le Frontmatter de l'Article
+
+Ouvrez le fichier MDX de votre article et ajoutez des catégories au frontmatter :
+
+```yaml
+---
+title: Titre de votre Article
+published_at: '2025-06-30'
+summary: Résumé de votre article
+featured: false
+categories:
+  - nextjs
+  - tutorial
+  - mdx
+tags: ['Vos', 'Étiquettes', 'Ici']
+---
+```
+
+**Emplacement du Fichier** : `posts/nom-de-votre-article/fr/page.mdx`
+
+### 1.2 Convention de Nommage des Catégories
+
+- Utilisez des noms de catégories en **minuscules**
+- Utilisez des **tirets** pour les catégories multi-mots (ex., `getting-started`)
+- Gardez les noms **courts et descriptifs**
+- Utilisez l'**anglais** comme langue de base
+
+**Exemples** :
+
+- `nextjs` (pas `Next.js`)
+- `getting-started` (pas `getting started`)
+- `tutorial` (pas `tutorials`)
+
+## Étape 2 : Ajouter de Nouvelles Catégories aux Fichiers de Traduction
+
+Lorsque vous ajoutez une nouvelle catégorie à un article, vous devez l'ajouter aux fichiers de traduction.
+
+### 2.1 Fichier de Traduction Anglais
+
+**Emplacement du Fichier** : `src/user-content/translations/en/categories.json`
+
+Ajoutez votre nouvelle catégorie :
+
+```json
+{
+  "categories": {
+    "votre-nouvelle-categorie": {
+      "name": "Your New Category",
+      "description": "Description of your new category",
+      "path": "category"
+    }
+  }
+}
+```
+
+### 2.2 Fichier de Traduction Espagnol
+
+**Emplacement du Fichier** : `src/user-content/translations/es/categories.json`
+
+Ajoutez la traduction espagnole :
+
+```json
+{
+  "categories": {
+    "votre-nouvelle-categorie": {
+      "name": "Tu Nueva Categoría",
+      "description": "Descripción de tu nueva categoría",
+      "path": "categoria"
+    }
+  }
+}
+```
+
+### 2.3 Fichier de Traduction Français
+
+**Emplacement du Fichier** : `src/user-content/translations/fr/categories.json`
+
+Ajoutez la traduction française :
+
+```json
+{
+  "categories": {
+    "votre-nouvelle-categorie": {
+      "name": "Votre Nouvelle Catégorie",
+      "description": "Description de votre nouvelle catégorie",
+      "path": "categorie"
+    }
+  }
+}
+```
+
+## Étape 3 : Comprendre la Structure des URLs
+
+Les catégories utilisent des chemins d'URL traduits :
+
+| Langue   | Modèle d'URL                | Exemple                     |
+| -------- | --------------------------- | --------------------------- |
+| Anglais  | `/en/blog/category/{slug}`  | `/en/blog/category/nextjs`  |
+| Espagnol | `/es/blog/categoria/{slug}` | `/es/blog/categoria/nextjs` |
+| Français | `/fr/blog/categorie/{slug}` | `/fr/blog/categorie/nextjs` |
+
+## Étape 4 : Supprimer des Catégories
+
+### 4.1 Retirer des Articles
+
+D'abord, supprimez la catégorie de tous les articles qui l'utilisent :
+
+**Emplacement du Fichier** : `posts/nom-de-votre-article/fr/page.mdx`
+
+```yaml
+categories:
+  - nextjs
+  - tutorial
+  # Supprimez la catégorie que vous voulez supprimer
+```
+
+### 4.2 Retirer des Fichiers de Traduction
+
+Supprimez la catégorie des trois fichiers de traduction :
+
+**Fichiers à Modifier** :
+
+- `src/user-content/translations/en/categories.json`
+- `src/user-content/translations/es/categories.json`
+- `src/user-content/translations/fr/categories.json`
+
+Supprimez l'objet de la catégorie :
+
+```json
+{
+  "categories": {
+    // Supprimez ce bloc entier
+    "categorie-a-supprimer": {
+      "name": "Catégorie à Supprimer",
+      "description": "Description",
+      "path": "category"
+    }
+  }
+}
+```
+
+## Étape 5 : Bonnes Pratiques
+
+### 5.1 Organisation des Catégories
+
+- **Gardez-le simple** : Ne créez pas trop de catégories
+- **Soyez cohérent** : Utilisez le même modèle de nommage
+- **Pensez globalement** : Les catégories doivent fonctionner dans toutes les langues
+- **Planifiez à l'avance** : Considérez comment les catégories évolueront
+
+### 5.2 Catégories Recommandées
+
+Voici quelques catégories recommandées pour un blog Next.js :
+
+- `nextjs` - Contenu spécifique à Next.js
+- `tutorial` - Guides étape par étape
+- `mdx` - MDX et création de contenu
+- `design` - Sujets UI/UX et design
+- `deployment` - Hébergement et déploiement
+- `performance` - Optimisation des performances
+- `seo` - Optimisation pour les moteurs de recherche
+
+### 5.3 Limites des Catégories
+
+- **Par article** : Maximum 1-3 catégories
+- **Total des catégories** : Maximum 10-15 catégories
+- **Noms des catégories** : Gardez sous 20 caractères
+
+## Étape 6 : Tester vos Modifications
+
+### 6.1 Vérifier l'Affichage des Catégories
+
+1. Démarrez votre serveur de développement : `npm run dev`
+2. Naviguez vers votre blog : `http://localhost:3000/fr/blog`
+3. Vérifiez les catégories dans la barre latérale
+4. Cliquez sur une catégorie pour vérifier que l'URL fonctionne
+
+### 6.2 Tester les URLs Multilingues
+
+Testez les URLs de catégories dans toutes les langues :
+
+- Anglais : `http://localhost:3000/en/blog/category/votre-categorie`
+- Espagnol : `http://localhost:3000/es/blog/categoria/votre-categorie`
+- Français : `http://localhost:3000/fr/blog/categorie/votre-categorie`
+
+### 6.3 Vérifier les Traductions
+
+Vérifiez que les noms des catégories s'affichent correctement dans chaque langue :
+
+- Anglais : "Your Category"
+- Espagnol : "Tu Categoría"
+- Français : "Votre Catégorie"
+
+## Dépannage
+
+### Problèmes Courants
+
+**La catégorie n'apparaît pas dans la barre latérale** :
+
+- Vérifiez que la catégorie existe dans les fichiers de traduction
+- Confirmez que le slug de la catégorie correspond exactement
+- Assurez-vous que l'article est publié
+
+**Erreur 404 sur la page de catégorie** :
+
+- Vérifiez que la catégorie existe dans tous les fichiers de traduction
+- Vérifiez que les répertoires de routes existent (`category`, `categoria`, `categorie`)
+- Assurez-vous que le slug de la catégorie est correct
+
+**La traduction ne fonctionne pas** :
+
+- Vérifiez que les trois fichiers de traduction ont la catégorie
+- Confirmez que la locale est correcte
+- Videz le cache du navigateur et redémarrez le serveur de développement
+
+## Résumé de la Structure des Fichiers
+
+```
+posts/
+├── nom-de-votre-article/
+│   ├── en/page.mdx          # Ajouter des catégories au frontmatter
+│   ├── es/page.mdx
+│   └── fr/page.mdx
+
+src/user-content/translations/
+├── en/categories.json       # Traductions des catégories en anglais
+├── es/categories.json       # Traductions des catégories en espagnol
+└── fr/categories.json       # Traductions des catégories en français
+
+src/app/[locale]/(user-routes)/blog/
+├── category/[category]/     # Pages de catégories en anglais
+├── categoria/[category]/    # Pages de catégories en espagnol
+└── categorie/[category]/    # Pages de catégories en français
+```
+
+## Conclusion
+
+Les catégories sont un moyen puissant d'organiser le contenu de votre blog et d'améliorer l'expérience utilisateur. En suivant ce guide, vous pouvez gérer efficacement les catégories dans plusieurs langues tout en maintenant une structure propre et évolutive.
+
+N'oubliez pas de :
+
+- Utiliser des conventions de nommage cohérentes
+- Garder les catégories simples et ciblées
+- Tester exhaustivement dans toutes les langues
+- Planifier pour la croissance future
+
+Bonne catégorisation !
